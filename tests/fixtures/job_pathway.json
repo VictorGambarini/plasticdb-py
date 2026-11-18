@@ -1,0 +1,151 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json"
+ },
+ "body": {
+  "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
+  "job_type": "pathway_analysis",
+  "status": "done",
+  "evalue": 1e-05,
+  "pident": 30.0,
+  "organism_type": "no_signalp",
+  "blast_type": "blastp",
+  "include_variants": false,
+  "error_message": null,
+  "created_at": "2026-11-18T01:00:00Z",
+  "completed_at": "2026-11-18T01:07:30Z",
+  "has_result_file": true,
+  "result_count": 0,
+  "result_metadata": {
+   "release_pin": {
+    "version": "2026.30",
+    "pinned": true,
+    "data_version": "2026-07-27T03:00:00+00:00",
+    "manifest_sha256": "abababababababababababababababababababababababababababababababab",
+    "files": {
+     "reference": {
+      "path": "reference/PlasticDB.dmnd",
+      "sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
+     }
+    },
+    "release_tools": {
+     "diamond": "2.1.9"
+    }
+   },
+   "view_defaults": {
+    "min_scov": 70.0,
+    "min_qcov": null,
+    "min_bitscore": null
+   },
+   "input_filename": "genome.faa.gz",
+   "provenance": {
+    "job_id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
+    "data_release": {
+     "version": "2026.30",
+     "snapshot_id": null,
+     "reference_fingerprint": null,
+     "pinned": true
+    },
+    "release": "2026.30",
+    "release_source": "snapshot",
+    "release_data_version": "2026-07-27T03:00:00+00:00",
+    "release_manifest_sha256": "abababababababababababababababababababababababababababababababab",
+    "release_tools": {
+     "diamond": "2.1.9"
+    },
+    "input_filename": "genome.faa.gz",
+    "app_version": "2.85.0",
+    "recorded_at": "2026-11-18T01:02:03+00:00",
+    "diamond_version": "2.1.9",
+    "reference_db": {
+     "name": "PlasticDB.dmnd",
+     "sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571",
+     "records": 4211
+    },
+    "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
+   },
+   "pathway_id": 1,
+   "plastic_id": 16,
+   "pathway_name": "PET degradation",
+   "hit_accessions": [
+    "PBFCTW"
+   ],
+   "hit_step_ids": [
+    11
+   ],
+   "step_table": [
+    {
+     "order": 1,
+     "step_id": 11,
+     "substrate": "PET",
+     "product": "MHET",
+     "substrate_compartment": "extracellular",
+     "product_compartment": "extracellular",
+     "step_type": "conversion",
+     "enzyme": "PET hydrolase",
+     "ec": "3.1.1.101",
+     "present": true,
+     "best_hit": {
+      "query": "contig_1_0",
+      "subject_label": "IsPETase",
+      "pident": 88.0,
+      "evalue": 1e-120,
+      "bitscore": 480.0,
+      "passes": true
+     },
+     "hits_considered": 3,
+     "subunits_total": null,
+     "subunits_matched": null,
+     "references": 4,
+     "reference_organisms": 3,
+     "single_organism": false
+    },
+    {
+     "order": 2,
+     "step_id": 12,
+     "substrate": "MHET",
+     "product": "TPA",
+     "substrate_compartment": "extracellular",
+     "product_compartment": "periplasm",
+     "step_type": "conversion",
+     "enzyme": "MHET hydrolase",
+     "ec": "3.1.1.102",
+     "present": false,
+     "best_hit": null,
+     "hits_considered": 0,
+     "subunits_total": null,
+     "subunits_matched": null,
+     "references": 2,
+     "reference_organisms": 2,
+     "single_organism": false
+    }
+   ],
+   "missing_steps": [
+    {
+     "order": 2,
+     "step": "MHET \u2192 TPA",
+     "enzyme": "MHET hydrolase"
+    }
+   ],
+   "steps_total": 2,
+   "steps_present": 1
+  },
+  "view_defaults": null,
+  "runtime_seconds": 450.0,
+  "input_filename": "genome.faa.gz",
+  "parameters_summary": "BLASTP; e-value 1e-05; identity >= 30%",
+  "result_summary": "0 hits",
+  "results_expire_at": "2027-02-16T01:00:00Z",
+  "results_expired_at": null,
+  "release": "2026.30",
+  "release_source": "snapshot",
+  "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571",
+  "tool_versions": {
+   "diamond": "2.1.9"
+  },
+  "result_newick": null,
+  "results": [],
+  "comparison": null
+ }
+}

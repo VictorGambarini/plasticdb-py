@@ -1,0 +1,268 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json"
+ },
+ "body": {
+  "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
+  "job_type": "compare_genomes",
+  "status": "done",
+  "evalue": 1e-05,
+  "pident": 30.0,
+  "organism_type": "no_signalp",
+  "blast_type": "blastp",
+  "include_variants": false,
+  "error_message": null,
+  "created_at": "2026-11-18T01:00:00Z",
+  "completed_at": "2026-11-18T01:07:30Z",
+  "has_result_file": true,
+  "result_count": 2,
+  "result_metadata": {
+   "release_pin": {
+    "version": "2026.30",
+    "pinned": true,
+    "data_version": "2026-07-27T03:00:00+00:00",
+    "manifest_sha256": "abababababababababababababababababababababababababababababababab",
+    "files": {
+     "reference": {
+      "path": "reference/PlasticDB.dmnd",
+      "sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
+     }
+    },
+    "release_tools": {
+     "diamond": "2.1.9"
+    }
+   },
+   "view_defaults": {
+    "min_scov": 70.0,
+    "min_qcov": null,
+    "min_bitscore": null
+   },
+   "input_filename": "genome.faa.gz",
+   "provenance": {
+    "job_id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
+    "data_release": {
+     "version": "2026.30",
+     "snapshot_id": null,
+     "reference_fingerprint": null,
+     "pinned": true
+    },
+    "release": "2026.30",
+    "release_source": "snapshot",
+    "release_data_version": "2026-07-27T03:00:00+00:00",
+    "release_manifest_sha256": "abababababababababababababababababababababababababababababababab",
+    "release_tools": {
+     "diamond": "2.1.9"
+    },
+    "input_filename": "genome.faa.gz",
+    "app_version": "2.85.0",
+    "recorded_at": "2026-11-18T01:02:03+00:00",
+    "diamond_version": "2.1.9",
+    "reference_db": {
+     "name": "PlasticDB.dmnd",
+     "sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571",
+     "records": 4211
+    },
+    "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
+   },
+   "genomes": {
+    "E_coli_K12": {
+     "sequences": 4300,
+     "residues": 1324000
+    },
+    "I_sakaiensis": {
+     "sequences": 3200,
+     "residues": 980000
+    }
+   }
+  },
+  "view_defaults": {
+   "min_scov": 70.0,
+   "min_qcov": null,
+   "min_bitscore": null
+  },
+  "runtime_seconds": 450.0,
+  "input_filename": "genome.faa.gz",
+  "parameters_summary": "BLASTP; e-value 1e-05; identity >= 30%",
+  "result_summary": "2 hits",
+  "results_expire_at": "2027-02-16T01:00:00Z",
+  "results_expired_at": null,
+  "release": "2026.30",
+  "release_source": "snapshot",
+  "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571",
+  "tool_versions": {
+   "diamond": "2.1.9"
+  },
+  "result_newick": null,
+  "results": [
+   {
+    "id": 100,
+    "evidence": [
+     {
+      "plastic": "PET",
+      "positive": 3,
+      "negative": 0,
+      "inconclusive": 1
+     },
+     {
+      "plastic": "PE",
+      "positive": 0,
+      "negative": 2,
+      "inconclusive": 0
+     }
+    ],
+    "evidence_polarity": "positive",
+    "source_label": "E_coli_K12",
+    "query_seq_id": "b0001",
+    "subject_seq_id": "protein|PBFCTW",
+    "pident": 91.5,
+    "length": 290,
+    "evalue": 1e-150,
+    "bitscore": 540.2,
+    "qcov": 98.0,
+    "scov": 99.3,
+    "subject_accession": "PBFCTW",
+    "protein": {
+     "id": 17,
+     "plasticdb_id": "PlasticDB_17",
+     "accession": "PBFCTW",
+     "name": "PETase",
+     "genbank_id": "GAP38373.1",
+     "uniprot_accession": "A0A0K8P6T7",
+     "source_microorganism": {
+      "id": 5,
+      "accession": "PB1ABC",
+      "name": "Ideonella sakaiensis",
+      "tax_id": 1547922
+     },
+     "degradation_links": [
+      {
+       "plastic": {
+        "id": 16,
+        "name": "PET",
+        "abbreviation": "PET"
+       },
+       "result": "positive",
+       "positive_count": 12,
+       "negative_count": 0,
+       "inconclusive_count": 0
+      }
+     ],
+     "paper_count": 14
+    },
+    "variant": null,
+    "calibration_status": null,
+    "calibration_status_reason": null
+   },
+   {
+    "id": 101,
+    "evidence": [
+     {
+      "plastic": "PET",
+      "positive": 3,
+      "negative": 0,
+      "inconclusive": 1
+     },
+     {
+      "plastic": "PE",
+      "positive": 0,
+      "negative": 2,
+      "inconclusive": 0
+     }
+    ],
+    "evidence_polarity": "positive",
+    "source_label": "I_sakaiensis",
+    "query_seq_id": "ISF6_4831",
+    "subject_seq_id": "protein|PBFCTW",
+    "pident": 90.5,
+    "length": 290,
+    "evalue": 1e-150,
+    "bitscore": 539.2,
+    "qcov": 98.0,
+    "scov": 99.3,
+    "subject_accession": "PBFCTW",
+    "protein": {
+     "id": 17,
+     "plasticdb_id": "PlasticDB_17",
+     "accession": "PBFCTW",
+     "name": "PETase",
+     "genbank_id": "GAP38373.1",
+     "uniprot_accession": "A0A0K8P6T7",
+     "source_microorganism": {
+      "id": 5,
+      "accession": "PB1ABC",
+      "name": "Ideonella sakaiensis",
+      "tax_id": 1547922
+     },
+     "degradation_links": [
+      {
+       "plastic": {
+        "id": 16,
+        "name": "PET",
+        "abbreviation": "PET"
+       },
+       "result": "positive",
+       "positive_count": 12,
+       "negative_count": 0,
+       "inconclusive_count": 0
+      }
+     ],
+     "paper_count": 14
+    },
+    "variant": null,
+    "calibration_status": null,
+    "calibration_status_reason": null
+   }
+  ],
+  "comparison": {
+   "blast_type": "blastp",
+   "counted": "distinct query proteins with a hit",
+   "normalisation": {
+    "key": "per_1000_proteins",
+    "label": "per 1,000 proteins",
+    "denominator": "proteins in the genome"
+   },
+   "normalised": true,
+   "plastics": [
+    "PE",
+    "PET"
+   ],
+   "genomes": [
+    {
+     "label": "E_coli_K12",
+     "hits": 1,
+     "positive": 1,
+     "not_positive": 0,
+     "counts": {
+      "PE": 0,
+      "PET": 1
+     },
+     "normalised": {
+      "PE": 0.0,
+      "PET": 0.23
+     },
+     "positive_normalised": 0.23,
+     "residues": 1324000,
+     "sequences": 4300
+    },
+    {
+     "label": "I_sakaiensis",
+     "hits": 1,
+     "positive": 1,
+     "not_positive": 0,
+     "counts": {
+      "PE": 0,
+      "PET": 1
+     },
+     "normalised": {
+      "PE": 0.0,
+      "PET": 0.31
+     },
+     "positive_normalised": 0.31,
+     "residues": 980000,
+     "sequences": 3200
+    }
+   ]
+  }
+ }
+}

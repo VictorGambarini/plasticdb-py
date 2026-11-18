@@ -1,0 +1,21 @@
+{
+ "status": 422,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
+ },
+ "body": {
+  "detail": [
+   {
+    "type": "release_unsupported",
+    "loc": [
+     "query",
+     "release"
+    ],
+    "msg": "Release 2026.30 did not archive an HMM profile library (it predates HMM archiving), so hmm_screen cannot run against it.",
+    "input": "2026.30"
+   }
+  ]
+ }
+}

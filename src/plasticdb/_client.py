@@ -5,7 +5,7 @@ import os
 import platform
 import random
 import time
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass
 from datetime import date, datetime
 from pathlib import Path
@@ -25,6 +25,7 @@ from .models.releases import DATA_LICENSE, DATA_LICENSE_URL, PAPER_CITATION, PAP
 from .resources.catalogue import Microorganisms, Papers, Plastics
 from .resources.downloads import Downloads
 from .resources.evidence import Evidence, Pathways, Search, StatsResource
+from .resources.jobs import Jobs
 from .resources.proteins import Proteins, Variants
 from .resources.releases import Releases
 
@@ -150,6 +151,7 @@ class Client:
         self.pathways = Pathways(self)
         self.stats = StatsResource(self)
         self.downloads = Downloads(self)
+        self.jobs = Jobs(self)
 
     # ── configuration ────────────────────────────────────────────────────────
 
@@ -165,6 +167,14 @@ class Client:
     @property
     def has_api_key(self) -> bool:
         return bool(self._api_key)
+
+    def require_api_key(self, what: str = "Jobs") -> None:
+        """Raise :class:`~plasticdb.AuthenticationError` before a call that needs a key."""
+        if not self._api_key:
+            raise errors.AuthenticationError(
+                f"{what} need an API key. Pass Client(api_key=...) or set PLASTICDB_API_KEY; "
+                f"create a key at {self._root_url}/profile/api-keys"
+            )
 
     @property
     def cache(self) -> ResponseCache | None:
@@ -320,6 +330,8 @@ class Client:
         *,
         params: Mapping[str, Any] | None = None,
         json: Any = None,
+        data: Mapping[str, Any] | None = None,
+        files: FilesFactory | None = None,
         follow_redirects: bool = False,
         record: bool = True,
         **path_params: Any,
@@ -337,7 +349,9 @@ class Client:
                 )
                 return self._decode(cached, endpoint, from_cache=True, record=record)
 
-        response = self._send(method, url, json=json, follow_redirects=follow_redirects)
+        response = self._send(
+            method, url, json=json, data=data, files=files, follow_redirects=follow_redirects
+        )
         if not response.is_success:
             raise error_from_response(response)
         result = self._decode(response, endpoint, record=record)
@@ -459,15 +473,25 @@ class Client:
         url: httpx.URL,
         *,
         json: Any = None,
+        data: Mapping[str, Any] | None = None,
+        files: FilesFactory | None = None,
         follow_redirects: bool = False,
         stream: bool = False,
     ) -> httpx.Response:
-        """Send with retries. With ``stream``, a successful body is left unread."""
+        """Send with retries. With ``stream``, a successful body is left unread.
+
+        A non-idempotent request (``POST``) is resent only when it never reached
+        the server (a connection error) or the server refused it unprocessed
+        (429). ``files`` is a factory so every attempt uploads from fresh handles.
+        """
         idempotent = method in _IDEMPOTENT
         attempt = 0
         while True:
-            request = self._http.build_request(method, url, json=json)
+            uploads = files() if files is not None else None
             try:
+                request = self._http.build_request(
+                    method, url, json=json, data=dict(data) if data else None, files=uploads
+                )
                 response = self._http.send(
                     request, stream=stream, follow_redirects=follow_redirects
                 )
@@ -486,6 +510,8 @@ class Client:
                     attempt += 1
                     continue
                 raise _transport_error(exc) from exc
+            finally:
+                _close_uploads(uploads)
 
             if attempt >= self.max_retries:
                 return response
@@ -510,6 +536,17 @@ class Client:
     @staticmethod
     def _sleep(seconds: float) -> None:
         time.sleep(seconds)
+
+
+#: Opens the multipart files of one attempt: ``[(field, (filename, handle, type)), ...]``.
+FilesFactory = Callable[[], list[tuple[str, tuple[str, Any, str]]]]
+
+
+def _close_uploads(uploads: list[tuple[str, tuple[str, Any, str]]] | None) -> None:
+    for _, (_, handle, _) in uploads or []:
+        close = getattr(handle, "close", None)
+        if callable(close):
+            close()
 
 
 def _is_permanent(response: httpx.Response) -> bool:

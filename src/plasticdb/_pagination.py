@@ -53,7 +53,69 @@ def normalise_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [{k: row.get(k) for k in columns} for row in rows]
 
 
-class Collection(Generic[T]):
+class Tabular(Generic[T]):
+    """Table conversions over :meth:`all` (shared by paged and in-memory results)."""
+
+    def all(self) -> list[T]:  # pragma: no cover - overridden
+        raise NotImplementedError
+
+    def records(self) -> list[dict[str, Any]]:
+        """Every item as a JSON-compatible dict, nested exactly as the API sends it."""
+        return [item.model_dump(mode="json") for item in self.all()]
+
+    def rows(self) -> list[dict[str, Any]]:
+        """Every item as one flat row (see ``PlasticDBModel.to_row``)."""
+        return normalise_rows([_row(item) for item in self.all()])
+
+    def to_pandas(self) -> Any:
+        """A ``pandas.DataFrame``, one flat row per item (needs ``plasticdb[pandas]``).
+
+        Nested objects become ``parent.child`` columns; lists of plain values stay
+        lists. ``records()`` keeps the full nesting.
+        """
+        pd = _require("pandas", "pandas", "to_pandas()")
+        return pd.DataFrame.from_records(self.rows())
+
+    def to_polars(self) -> Any:
+        """A ``polars.DataFrame``, one flat row per item (needs ``plasticdb[polars]``)."""
+        pl = _require("polars", "polars", "to_polars()")
+        return _polars_frame(pl, self.rows())
+
+
+class ResultTable(Tabular[T]):
+    """An in-memory list of typed rows (a job's hits, a pathway's steps).
+
+    Iterate it, index it, or convert it: ``rows()``, ``records()``,
+    ``to_pandas()``, ``to_polars()``.
+    """
+
+    def __init__(self, items: Iterable[T], *, name: str = "results") -> None:
+        self._items = list(items)
+        self._name = name
+
+    def all(self) -> list[T]:
+        return list(self._items)
+
+    def first(self) -> T | None:
+        return self._items[0] if self._items else None
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def __iter__(self) -> Iterator[T]:
+        return iter(self._items)
+
+    def __getitem__(self, index: int) -> T:
+        return self._items[index]
+
+    def __bool__(self) -> bool:
+        return bool(self._items)
+
+    def __repr__(self) -> str:
+        return f"<ResultTable {self._name} ({len(self._items)} rows)>"
+
+
+class Collection(Tabular[T]):
     """A lazy, paged list result (``{total, items}`` envelopes).
 
     Nothing is fetched until it is used. Iterating walks the pages in order, one
@@ -235,30 +297,6 @@ class Collection(Generic[T]):
             # time and let Retry-After pace the rest.
             return 1
         return workers
-
-    # ── conversions ──────────────────────────────────────────────────────────
-
-    def records(self) -> list[dict[str, Any]]:
-        """Every item as a JSON-compatible dict, nested exactly as the API sends it."""
-        return [item.model_dump(mode="json") for item in self.all()]
-
-    def rows(self) -> list[dict[str, Any]]:
-        """Every item as one flat row (see ``PlasticDBModel.to_row``)."""
-        return normalise_rows([_row(item) for item in self.all()])
-
-    def to_pandas(self) -> Any:
-        """A ``pandas.DataFrame``, one flat row per item (needs ``plasticdb[pandas]``).
-
-        Nested objects become ``parent.child`` columns; lists of plain values stay
-        lists. ``records()`` keeps the full nesting.
-        """
-        pd = _require("pandas", "pandas", "to_pandas()")
-        return pd.DataFrame.from_records(self.rows())
-
-    def to_polars(self) -> Any:
-        """A ``polars.DataFrame``, one flat row per item (needs ``plasticdb[polars]``)."""
-        pl = _require("polars", "polars", "to_polars()")
-        return _polars_frame(pl, self.rows())
 
     def _sequences(self) -> list[tuple[str, str | None, str]]:
         if "sequence" not in self._model.model_fields:

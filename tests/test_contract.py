@@ -83,19 +83,46 @@ def test_live_only_matches_the_contract(endpoint: Endpoint) -> None:
     assert endpoint.live_only == ("409" in responses)
 
 
+# Unpinned reads whose contract still lists a ``release`` the server ignores
+# (deprecated: a tree job answers with the release it was built against).
+IGNORED_RELEASE = {("GET", "/tree/{job_id}")}
+
+
 @pytest.mark.parametrize(
     "endpoint",
     [e for e in _sdk_endpoints() if e.method == "GET" and not e.pinnable],
     ids=lambda e: f"{e.method} {e.path}",
 )
 def test_unpinnable_endpoints_take_no_release(endpoint: Endpoint) -> None:
+    params = {p["name"]: p for p in _operation(endpoint).get("parameters", [])}
+    if (endpoint.method, endpoint.path) in IGNORED_RELEASE:
+        assert params["release"].get("deprecated") is True
+        return
+    assert "release" not in params
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [e for e in _sdk_endpoints() if e.method == "POST"],
+    ids=lambda e: f"{e.method} {e.path}",
+)
+def test_job_submissions_pin_exactly_when_the_server_takes_release(endpoint: Endpoint) -> None:
+    """A pinned client sends ``release`` to every submission that accepts one, and no other."""
     names = {p["name"] for p in _operation(endpoint).get("parameters", [])}
-    assert "release" not in names
+    assert endpoint.pinnable == ("release" in names)
 
 
-# Contract operations the SDK deliberately does not wrap (yet): jobs and compute
-# are phase P3; the rest are site plumbing or duplicates of a wrapped call.
+# Contract operations the SDK deliberately does not wrap: site plumbing, or
+# duplicates of a wrapped call. The base64 submit routes under /bioinformatics
+# carry the whole input in the query string (no genome fits in a URL) and are
+# the same jobs as POST /jobs, which uploads multipart and is what the SDK uses.
 NOT_WRAPPED = {
+    ("POST", "/api/v1/bioinformatics/annotate-gene"),
+    ("POST", "/api/v1/bioinformatics/annotate-genome"),
+    ("POST", "/api/v1/bioinformatics/annotate-list"),
+    ("POST", "/api/v1/bioinformatics/compare-genomes"),
+    ("POST", "/api/v1/bioinformatics/hmm-screen"),
+    ("POST", "/api/v1/bioinformatics/pathway-analysis"),
     ("GET", "/api/v1/auth/me"),
     ("GET", "/api/v1/compounds"),
     ("GET", "/api/v1/compounds/{}"),
@@ -111,15 +138,23 @@ NOT_WRAPPED = {
 }
 
 
-def _is_p3(path: str) -> bool:
-    return path.startswith(("/api/v1/jobs", "/api/v1/bioinformatics", "/api/v1/tree"))
-
-
 def test_every_contract_operation_is_wrapped_or_listed() -> None:
     wrapped = {(e.method, _normalise(PREFIX + e.path)) for e in _sdk_endpoints()}
-    missing = {op for op in _operations() if op not in wrapped and not _is_p3(op[1])}
+    missing = {op for op in _operations() if op not in wrapped}
     assert missing == NOT_WRAPPED
     assert not NOT_WRAPPED & wrapped
+
+
+def test_every_job_operation_is_wrapped() -> None:
+    """Jobs, share links, the tree and the sequence search: all wrapped (bar the base64 twins)."""
+    wrapped = {(e.method, _normalise(PREFIX + e.path)) for e in _sdk_endpoints()}
+    jobs = {
+        op
+        for op in _operations()
+        if op[1].startswith(("/api/v1/jobs", "/api/v1/tree", "/api/v1/bioinformatics"))
+    }
+    assert len(jobs) == 20
+    assert jobs - wrapped == {op for op in NOT_WRAPPED if "/bioinformatics/" in op[1]}
 
 
 def test_only_known_endpoints_are_outside_the_contract() -> None:

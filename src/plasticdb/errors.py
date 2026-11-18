@@ -22,10 +22,14 @@ __all__ = [
     "ConflictError",
     "EngineeredVariantError",
     "GoneError",
+    "JobError",
+    "JobFailedError",
+    "JobTimeoutError",
     "LiveOnlyError",
     "MergedError",
     "MergedRecordWarning",
     "NotFoundError",
+    "PayloadTooLargeError",
     "PermissionDenied",
     "PlasticDBError",
     "RateLimitError",
@@ -148,6 +152,10 @@ class ConflictError(PlasticDBError):
     """409."""
 
 
+class PayloadTooLargeError(PlasticDBError):
+    """413: an upload is over the server's per-file or per-job size limit."""
+
+
 class ValidationError(PlasticDBError):
     """422: a parameter was invalid. ``errors`` is the server's list of problems."""
 
@@ -253,3 +261,19 @@ class UnsupportedFilterError(ReleaseUnsupportedError, ValidationError):
             if loc:
                 names.append(str(loc[-1]))
         return names
+
+
+class JobError(PlasticDBError):
+    """A problem with a submitted job. ``job`` is the :class:`~plasticdb.Job`."""
+
+    def __init__(self, message: str, *, job: Any, **kwargs: Any) -> None:
+        super().__init__(message, **kwargs)
+        self.job = job
+
+
+class JobFailedError(JobError):
+    """The job finished with status ``error``; ``message`` is the server's reason."""
+
+
+class JobTimeoutError(JobError, TimeoutError):
+    """``Job.wait(timeout=)`` ran out before the job finished. The job keeps running."""

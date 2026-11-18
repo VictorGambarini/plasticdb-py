@@ -3,9 +3,9 @@
 Python client for the [PlasticDB](https://v2.plasticdb.org) API: microorganisms
 and proteins linked to plastic biodegradation, and the evidence behind them.
 
-> **Pre-alpha.** This release covers the client core, dataset releases and every
-> public data endpoint. Jobs (sequence annotation, HMM screens, trees) and the
-> command-line tool come in later versions.
+> **Pre-alpha.** This release covers the client core, dataset releases, every
+> public data endpoint and the analysis jobs. The command-line tool comes in a
+> later version.
 
 ## Install
 
@@ -111,6 +111,68 @@ per-protein collections (`interactions`, `kinetics`, …) raise
 so a pinned `get()` answers `NotFoundError` for them. `client.changes()` lists
 merges with their survivors.
 
+### Jobs
+
+Annotation, genome comparison, pathway analysis, HMM screens and taxonomy trees
+run on the server as jobs. Jobs need an API key (create one under *Profile → API
+keys* on the website; `Client(api_key=)` or `PLASTICDB_API_KEY`); without one
+the call raises `AuthenticationError` before anything is sent.
+
+```python
+client = plasticdb.Client(release="2026.30")  # jobs run against that release's databases
+
+job = client.jobs.annotate_genome("genome.faa.gz", evalue=1e-10)
+job.wait()  # polls with backoff; JobFailedError if the job fails
+hits = job.results()  # every hit, typed (JobHit); .to_pandas() / .to_polars()
+job.download("results/")  # the server's TSV, with its provenance header
+job.provenance  # release, reference_sha256, tool_versions, full record
+
+genomes = client.jobs.compare_genomes({"K-12": "ecoli.faa", "201-F6": "isak.faa.gz"})
+genomes.wait().comparison().to_pandas()  # genome x plastic matrix
+genomes.download("compare.zip")  # per-genome hits, matrix, provenance.json
+
+client.jobs.hmm_screen(records, target_polymers=["PET", "PLA"])  # Bio.SeqRecord list
+client.jobs.pathway_analysis("proteins.faa").wait().steps()  # PET pathway steps
+client.jobs.annotate_list("taxa.tsv", genus_column=1, species_column=2).wait().taxa()
+client.jobs.build_tree(plastic="PET", genus="Pseudomonas").wait().tree().newick
+client.jobs.annotate_gene(">q\nMNFPRASRLMQAAVLGG...")  # FASTA text, bytes, a file object
+client.jobs.search_sequence("MNFPRASRLMQ...")  # synchronous DIAMOND search, no job
+
+link = job.share(expires_in_days=30)  # read-only link; the token is shown once
+client.jobs.shared(link.url).results()  # anyone with the link, no key needed
+job.shares()
+job.unshare(link)
+client.jobs.list().to_pandas()  # your jobs; client.jobs.get(id) to resume one
+```
+
+| Job type (`jobs.submit(name, ...)`) | Helper | Input | Results |
+|---|---|---|---|
+| `annotate_gene`, `annotate_genome` | `annotate_gene()`, `annotate_genome()` | protein (or with `blast_type="blastx"` nucleotide) FASTA | `hits()` |
+| `compare_genomes` | `compare_genomes()` | 2-20 genomes: a list or `{label: genome}` | `hits()`, `comparison()`, ZIP download |
+| `pathway_analysis` | `pathway_analysis()` | protein FASTA | `steps()` |
+| `hmm_screen` | `hmm_screen()` | protein FASTA | `hits()` (profiles), `info.result_metadata["polymer_hits"]` |
+| `annotate_list` | `annotate_list()` | a taxa table (path, text or rows) | `taxa()` |
+| `build_tree` | `build_tree(**filters)` | organism filters or `microorganism_ids` | `tree()` (Newick + matrix) |
+
+Each helper takes the server's own parameter names (`evalue`, `pident`,
+`include_variants`, `min_scov`, `threshold_mode`, `min_step_identity`, …); an
+unknown one is a `TypeError`. A FASTA input is a path (plain or gzip), FASTA
+text, bytes, a file object, or `Bio.SeqRecord`s. Uploads are named after their
+contents (`.gz` exactly when the bytes are gzip), and a genome's label is the
+name its rows carry in the results. `results()` returns every stored hit; the
+website and `download()` start from the job's default view (hits covering at
+least 70 % of the reference), which `download(scov=0)` or `all_hits=True` turns off.
+
+A pinned client (or `release=` on the call) runs the job against that release's
+archived DIAMOND databases, HMM library or tables; what a release cannot answer
+raises `UnsupportedFilterError` (422) and an unknown release
+`UnknownReleaseError`. `job.wait(timeout=)` raises `JobTimeoutError` but leaves
+the job running; call `wait()` again or `client.jobs.get(id)` later.
+Submissions are rate-limited (30 an hour): a 429 is retried after `Retry-After`
+when that is within `max_retry_wait`, otherwise it raises `RateLimitError`. A
+submission is never resent after it may have reached the server (a 5xx or a
+dropped connection); the error says to check `client.jobs.list()` first.
+
 ### Configuration
 
 | Argument | Environment variable | Default |
@@ -130,6 +192,7 @@ requests are retried with backoff on 5xx and connection errors.
 Every exception subclasses `plasticdb.PlasticDBError`. Examples are
 `NotFoundError`, `GoneError`, `MergedError` (with `.merged_into`),
 `EngineeredVariantError`, `AuthenticationError`, `PermissionDenied`,
+`PayloadTooLargeError`, `JobFailedError` and `JobTimeoutError` (with `.job`),
 `RateLimitError` and `ServiceUnavailableError` (with `.retry_after`),
 `ValidationError`, `ServerError`, `ChecksumError`, and the release errors
 `UnknownReleaseError`, `LiveOnlyError`, `UnsupportedFilterError` and

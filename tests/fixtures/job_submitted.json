@@ -1,0 +1,62 @@
+{
+ "status": 201,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
+ },
+ "body": {
+  "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
+  "job_type": "annotate_genome",
+  "status": "waiting",
+  "evalue": 1e-05,
+  "pident": 30.0,
+  "organism_type": "no_signalp",
+  "blast_type": "blastp",
+  "include_variants": false,
+  "error_message": null,
+  "created_at": "2026-11-18T01:00:00Z",
+  "completed_at": null,
+  "has_result_file": false,
+  "result_count": 0,
+  "result_metadata": {
+   "release_pin": {
+    "version": "2026.30",
+    "pinned": true,
+    "data_version": "2026-07-27T03:00:00+00:00",
+    "manifest_sha256": "abababababababababababababababababababababababababababababababab",
+    "files": {
+     "reference": {
+      "path": "reference/PlasticDB.dmnd",
+      "sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
+     }
+    },
+    "release_tools": {
+     "diamond": "2.1.9"
+    }
+   },
+   "view_defaults": {
+    "min_scov": 70.0,
+    "min_qcov": null,
+    "min_bitscore": null
+   },
+   "input_filename": "genome.faa.gz"
+  },
+  "view_defaults": {
+   "min_scov": 70.0,
+   "min_qcov": null,
+   "min_bitscore": null
+  },
+  "runtime_seconds": null,
+  "input_filename": "genome.faa.gz",
+  "parameters_summary": "BLASTP; e-value 1e-05; identity >= 30%",
+  "result_summary": null,
+  "results_expire_at": "2027-02-16T01:00:00Z",
+  "results_expired_at": null,
+  "release": "2026.30",
+  "release_source": "snapshot",
+  "reference_sha256": null,
+  "tool_versions": null,
+  "result_newick": null
+ }
+}
