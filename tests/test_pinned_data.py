@@ -76,6 +76,8 @@ PINNED_READS: list[tuple[str, str, Callable[[plasticdb.Client], Any]]] = [
     ("/binding-assays", "binding_assays", lambda c: c.evidence.binding_assays().all()),
     ("/constructs", "constructs", lambda c: c.evidence.constructs().all()),
     ("/preparations", "preparations", lambda c: c.evidence.preparations().all()),
+    ("/variants/PBDTZX", "variant", lambda c: c.variants.get("PBDTZX")),
+    ("/variants/PBDTZX/fasta", "fasta_one", lambda c: c.variants.fasta("PBDTZX")),
 ]
 
 
@@ -103,7 +105,7 @@ LIVE_ONLY_CALLS: list[tuple[str, Callable[[plasticdb.Client], Any]]] = [
     ("/stats", lambda c: c.stats.summary()),
     ("/stats/protein-activity", lambda c: c.stats.protein_activity()),
     ("/changes", lambda c: c.changes("2026-01-01").all()),
-    ("/variants/PBDTZX", lambda c: c.variants.get("PBDTZX")),
+    ("/variants/PBDTZX/structure", lambda c: c.variants.structure("PBDTZX")),
     ("/proteins/PBFCTW/fasta", lambda c: c.proteins.fasta("PBFCTW")),
     ("/proteins/PBFCTW/structure", lambda c: c.proteins.structure("PBFCTW")),
     ("/plastics/names", lambda c: c.plastics.names()),
@@ -124,6 +126,33 @@ def test_live_only_endpoints_refuse_a_past_release(
     assert info.value.current_release == "2026.35"
     assert isinstance(info.value, errors.ConflictError)
     assert route.calls.last.request.url.params["release"] == "2026.30"
+
+
+def test_pinned_variant_missing_from_the_release(
+    api: respx.MockRouter, pinned: plasticdb.Client
+) -> None:
+    api.get("/variants/PBNEW1").respond(404, json={"detail": "Variant not in release 2026.30"})
+    with pytest.raises(errors.NotFoundError):
+        pinned.variants.get("PBNEW1", follow_merges=True)
+
+
+def test_pinned_variant_names_the_fields_it_cannot_fill(
+    api: respx.MockRouter, pinned: plasticdb.Client
+) -> None:
+    headers = {**snapshot(), "X-PlasticDB-Snapshot-Unavailable": "structures, identity_sources"}
+    api.get("/variants/PBDTZX").mock(return_value=reply("variant", **headers))
+    pinned.variants.get("PBDTZX")
+    assert pinned.last_response is not None
+    assert pinned.last_response.unavailable_fields == ("structures", "identity_sources")
+
+
+def test_pinned_variant_rejects_sequenceless(
+    api: respx.MockRouter, pinned: plasticdb.Client
+) -> None:
+    api.get("/variants/PBDTZX").respond(422, json=_unsupported("include_sequenceless"))
+    with pytest.raises(errors.UnsupportedFilterError) as info:
+        pinned.variants.get("PBDTZX", include_sequenceless=True)
+    assert info.value.parameters == ["include_sequenceless"]
 
 
 def test_unsupported_filter_names_the_parameter(

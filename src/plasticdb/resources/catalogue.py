@@ -26,6 +26,7 @@ from ..models import (
 )
 from ._base import Resource
 from ._filters import (
+    EvidenceScope,
     MicroorganismListFilters,
     PaperExportFilters,
     PaperListFilters,
@@ -62,13 +63,17 @@ class Microorganisms(Resource):
         self,
         ref: str | int,
         *,
-        evidence_scope: RowEvidenceScope = "organism_or_enzyme",
+        evidence_scope: EvidenceScope = "organism_or_enzyme",
         follow_merges: bool = False,
     ) -> Microorganism:
         """One microorganism by NCBI tax-id or PlasticDB accession.
 
-        ``evidence_scope="whole_organism"`` counts only assays on the organism
-        itself, not on enzymes purified from it. Merges behave as in
+        ``evidence_scope="whole_organism"`` keeps only assays on the organism
+        itself, ``"enzyme_only"`` only the evidence of enzymes purified from it
+        (``interactions`` empty, ``indirect_interactions`` kept). A merged
+        organism raises :class:`~plasticdb.errors.MergedError` (or, with
+        ``follow_merges=True``, returns the survivor), a withdrawn one
+        :class:`~plasticdb.errors.GoneError`, as in
         :meth:`Proteins.get <plasticdb.resources.Proteins.get>`.
         """
         current: str | int = ref

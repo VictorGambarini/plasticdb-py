@@ -119,11 +119,14 @@ workflow {
 }
 ```
 
-!!! warning "Retries resubmit the job"
-    Retrying `jobs submit --wait` submits a new job. For a long analysis,
-    split it: `plasticdb jobs submit ...` prints the id, and
-    `plasticdb jobs wait ID` and `plasticdb jobs download ID` can be retried
-    safely.
+!!! tip "Make a retried task reuse its job"
+    The client already retries a submission safely within one run. A workflow
+    engine that re-runs a failed task starts a new process, though, so a plain
+    `jobs submit --wait` would submit a new job. Pass a stable
+    `--idempotency-key` (the sample name and a run tag, say): a re-run within 24
+    hours gets the first job back and waits on it. Alternatively split the task:
+    `plasticdb jobs submit ...` prints the id, and `plasticdb jobs wait ID` and
+    `plasticdb jobs download ID` can be retried freely.
 
 ## Notebook
 

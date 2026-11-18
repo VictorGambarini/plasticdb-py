@@ -1,7 +1,9 @@
 {
  "status": 200,
  "headers": {
-  "content-type": "application/json"
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
  },
  "body": {
   "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
@@ -55,7 +57,7 @@
      "diamond": "2.1.9"
     },
     "input_filename": "genome.faa.gz",
-    "app_version": "2.85.0",
+    "app_version": "2.87.0",
     "recorded_at": "2026-11-18T01:02:03+00:00",
     "diamond_version": "2.1.9",
     "reference_db": {
@@ -65,6 +67,7 @@
     },
     "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
    },
+   "target_plastic": "PET",
    "pathway_id": 1,
    "plastic_id": 16,
    "pathway_name": "PET degradation",

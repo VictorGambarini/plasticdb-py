@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import email.utils
 import time
+import uuid
 from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any
 
 import httpx
@@ -12,6 +14,10 @@ from . import errors
 RELEASE_HEADER = "X-PlasticDB-Release"
 RELEASE_SOURCE_HEADER = "X-PlasticDB-Release-Source"
 UNAVAILABLE_HEADER = "X-PlasticDB-Snapshot-Unavailable"
+SHA256_HEADER = "X-PlasticDB-SHA256"
+SOURCE_SHA256_HEADER = "X-PlasticDB-Source-SHA256"
+IDEMPOTENCY_HEADER = "Idempotency-Key"
+REPLAYED_HEADER = "Idempotent-Replayed"
 
 
 @dataclass(frozen=True)
@@ -31,6 +37,34 @@ class APIResponse:
     def pinned(self) -> bool:
         """True when a past release's snapshot answered (not the live database)."""
         return self.release_source == "snapshot"
+
+    @property
+    def etag(self) -> str | None:
+        """The ``ETag`` (weak on a pinned download, the file's SHA-256 on an artefact)."""
+        return self.headers.get("etag") or None
+
+    @property
+    def sha256(self) -> str | None:
+        """A release artefact's own SHA-256 (``X-PlasticDB-SHA256``)."""
+        return self.headers.get(SHA256_HEADER) or None
+
+    @property
+    def source_sha256(self) -> tuple[str, ...]:
+        """A pinned download's source: the SHA-256 of each release Parquet artefact
+        it was rendered from, as in the release's ``MANIFEST.json``
+        (``X-PlasticDB-Source-SHA256``; FASTA: proteins, then protein_variants)."""
+        raw = self.headers.get(SOURCE_SHA256_HEADER) or ""
+        return tuple(p.strip() for p in raw.split(",") if p.strip())
+
+    @property
+    def replayed(self) -> bool:
+        """True when an ``Idempotency-Key`` submission returned what an earlier one created."""
+        return (self.headers.get(REPLAYED_HEADER) or "").lower() == "true"
+
+
+def new_idempotency_key() -> str:
+    """A fresh ``Idempotency-Key``: one per logical submission, reused on every retry."""
+    return str(uuid.uuid4())
 
 
 def release_headers(headers: httpx.Headers) -> tuple[str | None, str | None, tuple[str, ...]]:
@@ -81,7 +115,7 @@ def _message(response: httpx.Response, detail: Any) -> str:
 
 
 def merge_target(response: httpx.Response) -> dict[str, Any] | None:
-    """The body of a merge redirect (``{"accession", "location", "kind"?}``), if it is one."""
+    """The body of a record redirect (``{accession, location, kind, reason, merged_into?}``)."""
     if response.status_code not in (301, 308):
         return None
     body = _body(response)
@@ -90,13 +124,22 @@ def merge_target(response: httpx.Response) -> dict[str, Any] | None:
     return None
 
 
-def _requested(response: httpx.Response) -> str:
-    """The accession segment of a ``/proteins/{accession}[/...]`` request."""
-    parts = [p for p in response.request.url.path.split("/") if p]
+def _text(body: Any, key: str) -> str | None:
+    value = body.get(key) if isinstance(body, dict) else None
+    return value if isinstance(value, str) and value else None
+
+
+def _when(value: str | None) -> datetime | None:
+    if not value:
+        return None
     try:
-        return parts[parts.index("proteins") + 1]
-    except (ValueError, IndexError):
-        return ""
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _variant_message(accession: str) -> str:
+    return f"{accession} is an engineered variant: use client.variants.get({accession!r})"
 
 
 def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
@@ -112,30 +155,44 @@ def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
         "response": response,
     }
 
-    merged = merge_target(response)
-    if merged is not None:
-        target = merged["accession"]
-        location = merged.get("location") or response.headers.get("location")
-        if merged.get("kind") == "engineered" and _requested(response).upper() == target.upper():
+    redirect = merge_target(response)
+    if redirect is not None:
+        target = redirect["accession"]
+        location = _text(redirect, "location") or response.headers.get("location")
+        if redirect.get("reason") == "engineered_variant":
             return errors.EngineeredVariantError(
-                f"{target} is an engineered variant: use client.variants.get({target!r})",
-                accession=target,
-                location=location,
-                **common,
+                _variant_message(target), accession=target, location=location, **common
             )
         return errors.MergedError(
             f"This accession was merged into {target}",
-            merged_into=target,
+            merged_into=_text(redirect, "merged_into") or target,
             location=location,
-            kind=merged.get("kind"),
+            kind=_text(redirect, "kind"),
             **common,
         )
 
-    reason = body.get("reason") if isinstance(body, dict) else None
-    if isinstance(reason, str):
+    reason = _text(body, "reason")
+    if status == 404 and reason == "engineered_variant":
+        accession = _text(body, "accession") or ""
+        return errors.EngineeredVariantError(
+            _variant_message(accession) + " (variants have no per-protein sub-resources)",
+            accession=accession,
+            location=_text(body, "location"),
+            merged_into=_text(body, "merged_into"),
+            **common,
+        )
+    if status == 410 and reason == "expired":
+        return errors.ResultsExpiredError(
+            message, results_expired_at=_when(_text(body, "results_expired_at")), **common
+        )
+    if status == 422 and isinstance(detail, list):
+        types = {e.get("type") for e in detail if isinstance(e, dict)}
+        if "idempotency_key_reused" in types:
+            return errors.IdempotencyKeyReusedError(message, **common)
+    if reason is not None:
         release_fields: dict[str, Any] = {
-            "release": body.get("release"),
-            "current_release": body.get("current_release"),
+            "release": _text(body, "release"),
+            "current_release": _text(body, "current_release"),
             "reason": reason,
             **common,
         }

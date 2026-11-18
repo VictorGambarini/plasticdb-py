@@ -1,0 +1,15 @@
+{
+ "status": 404,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "detail": "PBDTZX is an engineered variant: variants have no /interactions sub-resource. Its record, with its interactions, kinetics and properties, is at /api/v1/variants/PBDTZX.",
+  "accession": "PBDTZX",
+  "kind": "engineered",
+  "reason": "engineered_variant",
+  "location": "/api/v1/variants/PBDTZX",
+  "merged_into": null
+ }
+}

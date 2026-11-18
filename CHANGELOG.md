@@ -2,6 +2,55 @@
 
 ## Unreleased
 
+- Server 2.86.0 and 2.87.0 (re-vendored SDK contract, fixtures re-captured live):
+  - Job submissions, tree builds and share links send an `Idempotency-Key` (a
+    new UUID per call, or `idempotency_key=` / `--idempotency-key`), the same on
+    every retry, so they are now retried like reads on a timeout, a dropped
+    connection or a 5xx. A replay is `job.replayed`; when retries run out the
+    error names the key to resubmit with. `IdempotencyKeyReusedError` (422) for
+    a key reused with a different request. Without an API key (which the server
+    needs to honour the key) a `POST` is still never resent after it may have
+    reached the server.
+  - Polling and `jobs.get()` / `jobs.shared()` ask for `?include=none`;
+    `Job.hits()` / `results()` page `GET /jobs/{id}/results` (and the share
+    link's `/results`), `Job.iter_hits()` lazily. A tree job reads its Newick
+    from `GET /jobs/{id}`; `/tree/{id}` is no longer called.
+  - `Job.provenance` and `Job.release` fall back to the job read's
+    `X-PlasticDB-Release` / `-Source` headers.
+  - `pathway_analysis(target_plastic=)` (CLI `--target-plastic`);
+    `annotate_list` documents the server's 7/8/`tab` defaults.
+  - Record redirects are told apart by `reason` (`merged` or
+    `engineered_variant`), not by comparing accessions; `MergedError.kind` can
+    be `microorganism`, so `microorganisms.get(follow_merges=True)` follows
+    organism merges. A merged sub-resource raises `MergedError` with the
+    survivor's sub-resource `location`.
+  - `EngineeredVariantError` is now a `NotFoundError` and carries
+    `merged_into`; it is raised for the server's 404 `engineered_variant` on a
+    variant's per-protein sub-resources. `proteins.fasta()` / `structure()` of a
+    variant accession return the variant's.
+  - A withdrawn record (also a variant whose parent was withdrawn, formerly a
+    404) is a `GoneError` with `.accession` and `.reason == "withdrawn"`.
+    Every error now carries the server's `.reason`.
+  - `ResultsExpiredError` (a `GoneError`, `.results_expired_at`) for a job's
+    deleted result files, before or from the server's 410 `expired`.
+  - `variants.get()` and `variants.fasta()` are pinnable (answered from the
+    release snapshot); `variants.structure()` stays live only.
+  - `evidence_scope="enzyme_only"` on `microorganisms.get()` and
+    `stats.summary()` (CLI `stats --evidence-scope`); `proteins.get()` takes a
+    numeric id.
+  - `search_sequence()`: a 503 (`index_unavailable` / `binary_unavailable`) is
+    `ServiceUnavailableError` with `.retry_after`; a 504 `timeout` is a
+    `ServerError` that is not retried (CLI exit 8); it is retried on other 5xx.
+  - Downloads: a cached pinned table is revalidated with its `ETag`
+    (`If-None-Match`; 304 uses the copy, offline too); an artefact is also
+    checked against the server's `X-PlasticDB-SHA256`. `APIResponse.etag`,
+    `.sha256`, `.source_sha256` and `.replayed`.
+  - `dataset.zip`'s JSON 503 (`archive_unavailable`) keeps `.retry_after`.
+- Every public error is exported from `plasticdb` (`UnknownReleaseError`,
+  `ReleaseNotMountedError`, `ReleaseNoArtefactsError`, `BadRequestError`,
+  `ConflictError`, `UnexpectedResponseError` were only in `plasticdb.errors`),
+  and the README and errors page list them all.
+
 - Documentation site (MkDocs Material, mkdocstrings API reference) published to
   GitHub Pages: quick start, reproducibility with pinned releases, data and jobs
   guides, a CLI reference generated from the Typer app, errors, Snakemake and

@@ -14,7 +14,7 @@
     "items": []
    },
    "protein": {
-    "total": 388,
+    "total": 2,
     "more_query": "protein:PETase",
     "items": [
      {
@@ -23,7 +23,7 @@
       "name": "PETase",
       "entity_type": "protein",
       "rank": 0.3603,
-      "extra": "Gene: N/A · from Pseudideonella sakaiensis",
+      "extra": "Gene: N/A \u00b7 from Pseudideonella sakaiensis",
       "match": null,
       "detail_url": null
      },
@@ -33,7 +33,7 @@
       "name": "PETase candidate PC3 (WP_103939557.1)",
       "entity_type": "protein",
       "rank": 0.304,
-      "extra": "Gene: N/A · from Thermomonospora echinospora",
+      "extra": "Gene: N/A \u00b7 from Thermomonospora echinospora",
       "match": null,
       "detail_url": null
      }
@@ -45,7 +45,7 @@
     "items": []
    },
    "paper": {
-    "total": 86,
+    "total": 2,
     "more_query": "paper:PETase",
     "items": [
      {

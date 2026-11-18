@@ -1,7 +1,9 @@
 {
  "status": 200,
  "headers": {
-  "content-type": "application/json"
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
  },
  "body": {
   "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
@@ -55,7 +57,7 @@
      "diamond": "2.1.9"
     },
     "input_filename": "genome.faa.gz",
-    "app_version": "2.85.0",
+    "app_version": "2.87.0",
     "recorded_at": "2026-11-18T01:02:03+00:00",
     "diamond_version": "2.1.9",
     "reference_db": {
@@ -94,126 +96,7 @@
    "diamond": "2.1.9"
   },
   "result_newick": null,
-  "results": [
-   {
-    "id": 100,
-    "evidence": [
-     {
-      "plastic": "PET",
-      "positive": 3,
-      "negative": 0,
-      "inconclusive": 1
-     },
-     {
-      "plastic": "PE",
-      "positive": 0,
-      "negative": 2,
-      "inconclusive": 0
-     }
-    ],
-    "evidence_polarity": "positive",
-    "source_label": "E_coli_K12",
-    "query_seq_id": "b0001",
-    "subject_seq_id": "protein|PBFCTW",
-    "pident": 91.5,
-    "length": 290,
-    "evalue": 1e-150,
-    "bitscore": 540.2,
-    "qcov": 98.0,
-    "scov": 99.3,
-    "subject_accession": "PBFCTW",
-    "protein": {
-     "id": 17,
-     "plasticdb_id": "PlasticDB_17",
-     "accession": "PBFCTW",
-     "name": "PETase",
-     "genbank_id": "GAP38373.1",
-     "uniprot_accession": "A0A0K8P6T7",
-     "source_microorganism": {
-      "id": 5,
-      "accession": "PB1ABC",
-      "name": "Ideonella sakaiensis",
-      "tax_id": 1547922
-     },
-     "degradation_links": [
-      {
-       "plastic": {
-        "id": 16,
-        "name": "PET",
-        "abbreviation": "PET"
-       },
-       "result": "positive",
-       "positive_count": 12,
-       "negative_count": 0,
-       "inconclusive_count": 0
-      }
-     ],
-     "paper_count": 14
-    },
-    "variant": null,
-    "calibration_status": null,
-    "calibration_status_reason": null
-   },
-   {
-    "id": 101,
-    "evidence": [
-     {
-      "plastic": "PET",
-      "positive": 3,
-      "negative": 0,
-      "inconclusive": 1
-     },
-     {
-      "plastic": "PE",
-      "positive": 0,
-      "negative": 2,
-      "inconclusive": 0
-     }
-    ],
-    "evidence_polarity": "positive",
-    "source_label": "I_sakaiensis",
-    "query_seq_id": "ISF6_4831",
-    "subject_seq_id": "protein|PBFCTW",
-    "pident": 90.5,
-    "length": 290,
-    "evalue": 1e-150,
-    "bitscore": 539.2,
-    "qcov": 98.0,
-    "scov": 99.3,
-    "subject_accession": "PBFCTW",
-    "protein": {
-     "id": 17,
-     "plasticdb_id": "PlasticDB_17",
-     "accession": "PBFCTW",
-     "name": "PETase",
-     "genbank_id": "GAP38373.1",
-     "uniprot_accession": "A0A0K8P6T7",
-     "source_microorganism": {
-      "id": 5,
-      "accession": "PB1ABC",
-      "name": "Ideonella sakaiensis",
-      "tax_id": 1547922
-     },
-     "degradation_links": [
-      {
-       "plastic": {
-        "id": 16,
-        "name": "PET",
-        "abbreviation": "PET"
-       },
-       "result": "positive",
-       "positive_count": 12,
-       "negative_count": 0,
-       "inconclusive_count": 0
-      }
-     ],
-     "paper_count": 14
-    },
-    "variant": null,
-    "calibration_status": null,
-    "calibration_status_reason": null
-   }
-  ],
+  "results": [],
   "comparison": {
    "blast_type": "blastp",
    "counted": "distinct query proteins with a hit",

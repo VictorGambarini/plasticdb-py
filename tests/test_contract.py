@@ -83,11 +83,6 @@ def test_live_only_matches_the_contract(endpoint: Endpoint) -> None:
     assert endpoint.live_only == ("409" in responses)
 
 
-# Unpinned reads whose contract still lists a ``release`` the server ignores
-# (deprecated: a tree job answers with the release it was built against).
-IGNORED_RELEASE = {("GET", "/tree/{job_id}")}
-
-
 @pytest.mark.parametrize(
     "endpoint",
     [e for e in _sdk_endpoints() if e.method == "GET" and not e.pinnable],
@@ -95,10 +90,28 @@ IGNORED_RELEASE = {("GET", "/tree/{job_id}")}
 )
 def test_unpinnable_endpoints_take_no_release(endpoint: Endpoint) -> None:
     params = {p["name"]: p for p in _operation(endpoint).get("parameters", [])}
-    if (endpoint.method, endpoint.path) in IGNORED_RELEASE:
-        assert params["release"].get("deprecated") is True
-        return
     assert "release" not in params
+
+
+@pytest.mark.parametrize("endpoint", _sdk_endpoints(), ids=lambda e: f"{e.method} {e.path}")
+def test_idempotency_key_exactly_where_the_server_honours_it(endpoint: Endpoint) -> None:
+    """The client sends ``Idempotency-Key`` (and so retries the POST) only where it counts."""
+    headers = {p["name"] for p in _operation(endpoint).get("parameters", []) if p["in"] == "header"}
+    assert endpoint.idempotency == ("Idempotency-Key" in headers)
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [e for e in _sdk_endpoints() if e.method == "POST"],
+    ids=lambda e: f"{e.method} {e.path}",
+)
+def test_every_post_is_retry_safe_or_idempotent(endpoint: Endpoint) -> None:
+    assert endpoint.idempotency != endpoint.retry_safe
+
+
+def test_wrapped_operations_are_not_deprecated() -> None:
+    deprecated = [e.path for e in _sdk_endpoints() if _operation(e).get("deprecated")]
+    assert deprecated == []
 
 
 @pytest.mark.parametrize(
@@ -114,8 +127,9 @@ def test_job_submissions_pin_exactly_when_the_server_takes_release(endpoint: End
 
 # Contract operations the SDK deliberately does not wrap: site plumbing, or
 # duplicates of a wrapped call. The base64 submit routes under /bioinformatics
-# carry the whole input in the query string (no genome fits in a URL) and are
-# the same jobs as POST /jobs, which uploads multipart and is what the SDK uses.
+# are deprecated (2.87.0) twins of POST /jobs, which uploads multipart and is
+# what the SDK uses. GET /tree/{id} duplicates GET /jobs/{id}, which carries a
+# tree job's result_newick since 2.87.0.
 NOT_WRAPPED = {
     ("POST", "/api/v1/bioinformatics/annotate-gene"),
     ("POST", "/api/v1/bioinformatics/annotate-genome"),
@@ -123,6 +137,7 @@ NOT_WRAPPED = {
     ("POST", "/api/v1/bioinformatics/compare-genomes"),
     ("POST", "/api/v1/bioinformatics/hmm-screen"),
     ("POST", "/api/v1/bioinformatics/pathway-analysis"),
+    ("GET", "/api/v1/tree/{}"),
     ("GET", "/api/v1/auth/me"),
     ("GET", "/api/v1/compounds"),
     ("GET", "/api/v1/compounds/{}"),
@@ -146,15 +161,24 @@ def test_every_contract_operation_is_wrapped_or_listed() -> None:
 
 
 def test_every_job_operation_is_wrapped() -> None:
-    """Jobs, share links, the tree and the sequence search: all wrapped (bar the base64 twins)."""
+    """Jobs, share links, the tree and the sequence search: all wrapped (bar the duplicates)."""
     wrapped = {(e.method, _normalise(PREFIX + e.path)) for e in _sdk_endpoints()}
     jobs = {
         op
         for op in _operations()
         if op[1].startswith(("/api/v1/jobs", "/api/v1/tree", "/api/v1/bioinformatics"))
     }
-    assert len(jobs) == 20
-    assert jobs - wrapped == {op for op in NOT_WRAPPED if "/bioinformatics/" in op[1]}
+    assert len(jobs) == 22
+    assert jobs - wrapped == {
+        op for op in NOT_WRAPPED if op[1].startswith(("/api/v1/bioinformatics/", "/api/v1/tree/"))
+    }
+
+
+def test_the_unwrapped_job_routes_are_the_deprecated_ones() -> None:
+    spec = _spec()["paths"]
+    for method, path in NOT_WRAPPED:
+        if "/bioinformatics/" in path:
+            assert spec[path][method.lower()].get("deprecated") is True
 
 
 def test_only_known_endpoints_are_outside_the_contract() -> None:

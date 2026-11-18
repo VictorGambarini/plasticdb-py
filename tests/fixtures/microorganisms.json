@@ -111,8 +111,7 @@
       },
       "result": "positive",
       "methods": [
-       "afm",
-       "clear_zone"
+       "afm"
       ],
       "positive_count": 1,
       "inconclusive_count": 0,

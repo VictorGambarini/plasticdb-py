@@ -1,7 +1,9 @@
 {
  "status": 200,
  "headers": {
-  "content-type": "application/json"
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
  },
  "body": {
   "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
@@ -55,7 +57,7 @@
      "diamond": "2.1.9"
     },
     "input_filename": "genome.faa.gz",
-    "app_version": "2.85.0",
+    "app_version": "2.87.0",
     "recorded_at": "2026-11-18T01:02:03+00:00",
     "diamond_version": "2.1.9",
     "reference_db": {
@@ -90,27 +92,7 @@
    "hmmer": "3.4"
   },
   "result_newick": null,
-  "results": [
-   {
-    "id": 100,
-    "evidence": [],
-    "evidence_polarity": "none",
-    "source_label": null,
-    "query_seq_id": "contig_1_0",
-    "subject_seq_id": "PET_hydrolase",
-    "pident": null,
-    "length": null,
-    "evalue": 1e-150,
-    "bitscore": 540.2,
-    "qcov": null,
-    "scov": null,
-    "subject_accession": "PET_hydrolase",
-    "protein": null,
-    "variant": null,
-    "calibration_status": "separable",
-    "calibration_status_reason": null
-   }
-  ],
+  "results": [],
   "comparison": null
  }
 }

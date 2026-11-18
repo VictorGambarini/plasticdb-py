@@ -45,8 +45,8 @@ _LINEAGES = Endpoint("GET", "/engineering/proteins", live_only=True)
 _LINEAGE = Endpoint("GET", "/engineering/proteins/{accession}", live_only=True)
 DOWNLOAD_FASTA = Endpoint("GET", "/downloads/proteins.fasta")
 
-_VARIANT_GET = Endpoint("GET", "/variants/{ref}", live_only=True)
-_VARIANT_FASTA = Endpoint("GET", "/variants/{ref}/fasta", live_only=True)
+_VARIANT_GET = Endpoint("GET", "/variants/{ref}")
+_VARIANT_FASTA = Endpoint("GET", "/variants/{ref}/fasta")
 _VARIANT_STRUCTURE = Endpoint("GET", "/variants/{ref}/structure", live_only=True)
 
 SUB_PAGE_SIZE = 25
@@ -82,13 +82,13 @@ class Proteins(Resource):
 
     def get(
         self,
-        accession: str,
+        accession: str | int,
         *,
         view: Literal["full", "summary"] = "full",
         include_sequenceless: bool = False,
         follow_merges: bool = False,
     ) -> Protein | Variant:
-        """One protein by accession (``PB…``, any case).
+        """One protein by accession (``PB…``, any case) or numeric id.
 
         An engineered variant's accession returns the :class:`~plasticdb.models.Variant`
         (the server redirects there). A merged accession raises
@@ -99,7 +99,7 @@ class Proteins(Resource):
         per-record evidence lists (much smaller for well-studied enzymes).
         """
         params = {"view": view, "include_sequenceless": include_sequenceless or None}
-        ref = accession
+        ref: str | int = accession
         for _ in range(MAX_MERGE_HOPS):
             try:
                 data = self._client._request(_GET, params=params, accession=ref).data
@@ -112,7 +112,7 @@ class Proteins(Resource):
             except errors.MergedError as exc:
                 if not follow_merges:
                     raise
-                _warn_merged(ref, exc.merged_into)
+                _warn_merged(str(ref), exc.merged_into)
                 if exc.kind == "engineered":
                     return self._client.variants.get(
                         exc.merged_into, include_sequenceless=include_sequenceless
@@ -203,18 +203,28 @@ class Proteins(Resource):
         )
 
     def fasta(self, ref: str | int) -> str:
-        """One protein's FASTA record, with the server's annotated header (live only)."""
-        return _text(self._client._request(_FASTA, ref=ref).data)
+        """One protein's FASTA record, with the server's annotated header (live only).
+
+        A variant's accession gives the variant's record (:meth:`Variants.fasta`).
+        """
+        try:
+            return _text(self._client._request(_FASTA, ref=ref).data)
+        except errors.EngineeredVariantError as exc:
+            return self._client.variants.fasta(exc.accession)
 
     def structure(self, ref: str | int, path: str | os.PathLike[str] | None = None) -> str | Path:
         """The primary structure's PDB coordinates (live only).
 
         Returns the text, or writes it to ``path`` (a file or a directory) and returns the path.
-        For a pinned release use ``client.downloads.structure()``.
+        A variant's accession gives the variant's structure. For a pinned release use
+        ``client.downloads.structure()``.
         """
-        if path is not None:
-            return self._client._download(_STRUCTURE, path, ref=ref, default_name=f"{ref}.pdb")
-        return _text(self._client._request(_STRUCTURE, ref=ref).data)
+        try:
+            if path is not None:
+                return self._client._download(_STRUCTURE, path, ref=ref, default_name=f"{ref}.pdb")
+            return _text(self._client._request(_STRUCTURE, ref=ref).data)
+        except errors.EngineeredVariantError as exc:
+            return self._client.variants.structure(exc.accession, path)
 
     def lineage(self, accession: str) -> EngineeringLineage:
         """A wild-type protein with every variant engineered from it (live only)."""
@@ -240,14 +250,20 @@ class Proteins(Resource):
 
 
 class Variants(Resource):
-    """Engineered variants. Records are live only; lists also work on a pinned release."""
+    """Engineered variants: records, FASTA and lists answer a pinned release too."""
 
     def get(
         self, ref: str | int, *, include_sequenceless: bool = False, follow_merges: bool = False
     ) -> Variant:
-        """One variant by accession or numeric id (live only: a past release is a 409).
+        """One variant by accession or numeric id.
 
-        Merges behave as in :meth:`Proteins.get`.
+        Merges behave as in :meth:`Proteins.get`; a withdrawn variant (also one
+        whose parent protein was withdrawn) raises :class:`~plasticdb.errors.GoneError`.
+        On a past release the record comes from its snapshot: a variant the
+        release did not contain is a :class:`~plasticdb.errors.NotFoundError`
+        (merges are not followed there), ``include_sequenceless=True`` raises
+        :class:`~plasticdb.errors.UnsupportedFilterError`, and the fields it
+        cannot fill are in ``client.last_response.unavailable_fields``.
         """
         params = {"include_sequenceless": include_sequenceless or None}
         current: str | int = ref
@@ -282,7 +298,7 @@ class Variants(Resource):
         return self._client.proteins.variants(parent, page_size=page_size, limit=limit)
 
     def fasta(self, ref: str | int) -> str:
-        """One variant's FASTA record with the server's annotated header (live only)."""
+        """One variant's FASTA record with the server's annotated header (pinnable)."""
         return _text(self._client._request(_VARIANT_FASTA, ref=ref).data)
 
     def structure(self, ref: str | int, path: str | os.PathLike[str] | None = None) -> str | Path:

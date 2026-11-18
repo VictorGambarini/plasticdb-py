@@ -18,7 +18,14 @@ from . import errors
 from ._cache import ResponseCache
 from ._endpoints import Endpoint
 from ._pagination import ChangeCollection
-from ._response import APIResponse, error_from_response, parse_retry_after, release_headers
+from ._response import (
+    IDEMPOTENCY_HEADER,
+    APIResponse,
+    error_from_response,
+    new_idempotency_key,
+    parse_retry_after,
+    release_headers,
+)
 from ._version import __version__
 from .models import Change
 from .models.releases import DATA_LICENSE, DATA_LICENSE_URL, PAPER_CITATION, PAPER_DOI
@@ -334,10 +341,18 @@ class Client:
         files: FilesFactory | None = None,
         follow_redirects: bool = False,
         record: bool = True,
+        idempotency_key: str | None = None,
         **path_params: Any,
     ) -> APIResponse:
-        """Send one API call; raise a :class:`~plasticdb.errors.PlasticDBError` on failure."""
+        """Send one API call; raise a :class:`~plasticdb.errors.PlasticDBError` on failure.
+
+        On an ``idempotency`` endpoint every attempt carries the same
+        ``Idempotency-Key`` (``idempotency_key``, or a new UUID).
+        """
         method, url, pinned_release = self._prepare(endpoint, params, path_params)
+        send_headers: dict[str, str] | None = None
+        if endpoint.idempotency:
+            send_headers = {IDEMPOTENCY_HEADER: idempotency_key or new_idempotency_key()}
         cache_key = None
         if self._cache is not None and method == "GET" and pinned_release is not None:
             cache_key = ResponseCache.key(method, url)
@@ -350,7 +365,14 @@ class Client:
                 return self._decode(cached, endpoint, from_cache=True, record=record)
 
         response = self._send(
-            method, url, json=json, data=data, files=files, follow_redirects=follow_redirects
+            method,
+            url,
+            json=json,
+            data=data,
+            files=files,
+            follow_redirects=follow_redirects,
+            headers=send_headers,
+            retry_safe=self._retry_safe(endpoint),
         )
         if not response.is_success:
             raise error_from_response(response)
@@ -467,6 +489,15 @@ class Client:
         else:
             log.info("PlasticDB: unpinned client; the server named no dataset release.")
 
+    def _retry_safe(self, endpoint: Endpoint) -> bool:
+        """Whether a ``POST`` to ``endpoint`` may be resent after it reached the server.
+
+        True for a search that creates nothing, and for a create operation that
+        honours ``Idempotency-Key`` when the client has a credential (the server
+        scopes keys per user and ignores them on anonymous requests).
+        """
+        return endpoint.retry_safe or (endpoint.idempotency and bool(self._api_key))
+
     def _send(
         self,
         method: str,
@@ -477,20 +508,30 @@ class Client:
         files: FilesFactory | None = None,
         follow_redirects: bool = False,
         stream: bool = False,
+        headers: Mapping[str, str] | None = None,
+        retry_safe: bool = False,
     ) -> httpx.Response:
         """Send with retries. With ``stream``, a successful body is left unread.
 
-        A non-idempotent request (``POST``) is resent only when it never reached
-        the server (a connection error) or the server refused it unprocessed
-        (429). ``files`` is a factory so every attempt uploads from fresh handles.
+        ``GET`` (and any ``retry_safe`` request: a search, or a submission whose
+        ``Idempotency-Key`` makes a repeat return the first result) is resent on
+        a transport error, a 5xx and a 429. Any other ``POST`` is resent only when
+        it never reached the server (a connection error) or the server refused it
+        unprocessed (429). ``files`` is a factory so every attempt uploads from
+        fresh handles.
         """
-        idempotent = method in _IDEMPOTENT
+        idempotent = method in _IDEMPOTENT or retry_safe
         attempt = 0
         while True:
             uploads = files() if files is not None else None
             try:
                 request = self._http.build_request(
-                    method, url, json=json, data=dict(data) if data else None, files=uploads
+                    method,
+                    url,
+                    json=json,
+                    data=dict(data) if data else None,
+                    files=uploads,
+                    headers=dict(headers) if headers else None,
                 )
                 response = self._http.send(
                     request, stream=stream, follow_redirects=follow_redirects
@@ -549,15 +590,18 @@ def _close_uploads(uploads: list[tuple[str, tuple[str, Any, str]]] | None) -> No
             close()
 
 
+_PERMANENT = frozenset({(503, "not_mounted"), (504, "timeout")})
+
+
 def _is_permanent(response: httpx.Response) -> bool:
-    """A 503 ``not_mounted`` will not fix itself by retrying."""
-    if response.status_code != 503:
+    """A 503 ``not_mounted`` (or a search's 504 ``timeout``) will not fix itself by retrying."""
+    if response.status_code not in (503, 504):
         return False
     try:
         body = response.json()
     except ValueError:
         return False
-    return isinstance(body, dict) and body.get("reason") == "not_mounted"
+    return isinstance(body, dict) and (response.status_code, body.get("reason")) in _PERMANENT
 
 
 def _transport_error(exc: httpx.TransportError) -> errors.APIConnectionError:

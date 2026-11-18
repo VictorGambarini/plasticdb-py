@@ -212,17 +212,6 @@
         "value": null,
         "unit": null,
         "text_description": "MHET (mono(2-hydroxyethyl) terephthalic acid) was the major product released from PET film, together with minor amounts of TPA and BHET."
-       },
-       {
-        "time_point": null,
-        "time_point_unit": null,
-        "sd": null,
-        "n": null,
-        "control_value": null,
-        "measurement_type": "monomer_released",
-        "value": null,
-        "unit": "mM",
-        "text_description": "TPA released as a minor product of PET film hydrolysis; quantitative values are in Fig. 2B, not the text."
        }
       ]
      }

@@ -149,6 +149,52 @@ def test_pinned_download_is_cached(api: respx.MockRouter, tmp_path: Path) -> Non
     assert second.name == "plasticdb_proteins_2026.30.csv"
 
 
+ETAG = 'W/"5f1d0c"'
+
+
+def test_cached_pinned_download_is_revalidated_by_etag(
+    api: respx.MockRouter, tmp_path: Path
+) -> None:
+    source = _sha(PARQUET)
+    route = api.get("/downloads/proteins.csv")
+    route.side_effect = [
+        _csv(**snapshot(), ETag=ETAG, **{"X-PlasticDB-Source-SHA256": source}),
+        httpx.Response(304, headers={**snapshot(), "ETag": ETAG}),
+    ]
+    with plasticdb.Client(release="2026.30", cache_dir=tmp_path / "cache") as c:
+        c.downloads.proteins(tmp_path / "a.csv")
+        assert c.last_response is not None
+        assert c.last_response.source_sha256 == (source,)
+        assert c.last_response.etag == ETAG
+        second = c.downloads.proteins(tmp_path / "b.csv")
+        assert c.last_response.from_cache
+        assert c.last_response.source_sha256 == (source,)
+    assert second.read_bytes() == CSV
+    assert route.calls[1].request.headers["if-none-match"] == ETAG
+    assert "if-none-match" not in route.calls[0].request.headers
+
+
+def test_changed_etag_replaces_the_cached_copy(api: respx.MockRouter, tmp_path: Path) -> None:
+    route = api.get("/downloads/proteins.csv")
+    newer = httpx.Response(
+        200, content=b"seq_id\nPBNEW1\n", headers={**snapshot(), "ETag": 'W/"other"'}
+    )
+    route.side_effect = [_csv(**snapshot(), ETag=ETAG), newer, _csv(**snapshot())]
+    with plasticdb.Client(release="2026.30", cache_dir=tmp_path / "cache") as c:
+        c.downloads.proteins(tmp_path / "a.csv")
+        assert c.downloads.proteins(tmp_path / "b.csv").read_bytes() == b"seq_id\nPBNEW1\n"
+        c.downloads.proteins(tmp_path / "c.csv")
+    assert route.calls[2].request.headers["if-none-match"] == 'W/"other"'
+
+
+def test_cached_pinned_download_offline(api: respx.MockRouter, tmp_path: Path) -> None:
+    route = api.get("/downloads/proteins.csv")
+    route.side_effect = [_csv(**snapshot(), ETag=ETAG)] + [httpx.ConnectError("offline")] * 4
+    with plasticdb.Client(release="2026.30", cache_dir=tmp_path / "cache") as c:
+        c.downloads.proteins(tmp_path / "a.csv")
+        assert c.downloads.proteins(tmp_path / "b.csv").read_bytes() == CSV
+
+
 def test_live_download_is_not_cached(api: respx.MockRouter, tmp_path: Path) -> None:
     route = api.get("/downloads/proteins.csv").mock(
         return_value=_csv(**{"X-PlasticDB-Release-Source": "live"})
@@ -199,6 +245,24 @@ def test_dataset_zip_being_built(
         client.downloads.dataset(tmp_path)
     assert info.value.retry_after == 120.0
     assert "temporarily unavailable" in str(info.value)
+
+
+def test_dataset_zip_503_json(
+    api: respx.MockRouter, client: plasticdb.Client, tmp_path: Path
+) -> None:
+    api.get("/downloads/dataset.zip").respond(
+        503,
+        json={
+            "detail": "The dataset archive is temporarily unavailable: building.",
+            "reason": "archive_unavailable",
+        },
+        headers={"Retry-After": "120"},
+    )
+    with pytest.raises(errors.ServiceUnavailableError) as info:
+        client.downloads.dataset(tmp_path)
+    assert info.value.reason == "archive_unavailable"
+    assert info.value.retry_after == 120.0
+    assert not isinstance(info.value, errors.ReleaseError)
 
 
 def test_dataset_zip_waits_when_asked(
@@ -252,6 +316,31 @@ def test_checksum_mismatch_keeps_nothing(
     assert info.value.expected == "0" * 64
     assert info.value.actual == _sha(PARQUET)
     assert list(tmp_path.iterdir()) == []
+
+
+def test_release_file_is_checked_against_the_servers_digest(
+    api: respx.MockRouter, client: plasticdb.Client, tmp_path: Path
+) -> None:
+    routes = _artefacts(api)
+    routes["parquet"].respond(
+        content=PARQUET, headers={"X-PlasticDB-SHA256": "f" * 64, "ETag": '"' + "f" * 64 + '"'}
+    )
+    with pytest.raises(errors.ChecksumError, match="the server's") as info:
+        client.downloads.release_file("parquet/proteins.parquet", tmp_path, release="2026.30")
+    assert info.value.expected == "f" * 64
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_release_file_reports_its_digest(
+    api: respx.MockRouter, client: plasticdb.Client, tmp_path: Path
+) -> None:
+    routes = _artefacts(api)
+    sha = _sha(PARQUET)
+    routes["parquet"].respond(
+        content=PARQUET, headers={"X-PlasticDB-SHA256": sha, "ETag": f'"{sha}"'}
+    )
+    client.downloads.release_file("parquet/proteins.parquet", tmp_path, release="2026.30")
+    assert client.last_response is not None and client.last_response.sha256 == sha
 
 
 def test_artefacts_are_cached_by_release(api: respx.MockRouter, tmp_path: Path) -> None:

@@ -1,9 +1,18 @@
-"""Streaming downloads to disk, with checksum verification and the release cache."""
+"""Streaming downloads to disk, with checksum verification and the release cache.
+
+A release artefact is checked against the SHA-256 its release published and
+the one the server sends (``X-PlasticDB-SHA256``, also its strong ``ETag``); a
+cached copy is verified locally and needs no request. A pinned download (a past
+release's table) is cached with its weak ``ETag``; reusing it costs one
+conditional request (``If-None-Match``: a 304 has no body), and if the server
+cannot be reached the cached copy is used.
+"""
 
 from __future__ import annotations
 
 import contextlib
 import hashlib
+import logging
 import os
 import re
 import shutil
@@ -17,10 +26,12 @@ import httpx
 from . import errors
 from ._cache import ResponseCache, sha256_file
 from ._endpoints import Endpoint
-from ._response import APIResponse, error_from_response, release_headers
+from ._response import SHA256_HEADER, APIResponse, error_from_response, release_headers
 
 if TYPE_CHECKING:
     from ._client import Client
+
+log = logging.getLogger("plasticdb")
 
 _FILENAME = re.compile(r"""filename\*?=(?:UTF-8'')?"?([^";]+)"?""", re.IGNORECASE)
 
@@ -79,16 +90,39 @@ def stream_to_file(
     cache_release = immutable_release or pinned
     key = ResponseCache.key(method, url) if cache is not None and cache_release else None
 
+    hit = None
     if cache is not None and cache_release and key:
         hit = cache.get_file(cache_release, key)
-        if hit is not None and (expected is None or sha256_file(hit[2]) == expected):
-            status, headers, body = hit
-            target = resolve_target(dest, headers, default_name)
-            _place(body, target)
-            client._remember(_result(status, headers, str(url), target, from_cache=True), endpoint)
-            return target
+        if hit is not None and expected is not None and sha256_file(hit[2]) != expected:
+            hit = None
 
-    response = client._send(method, url, follow_redirects=True, stream=True)
+    def from_cache(found: tuple[int, httpx.Headers, Path]) -> Path:
+        status, headers, body = found
+        target = resolve_target(dest, headers, default_name)
+        _place(body, target)
+        client._remember(_result(status, headers, str(url), target, from_cache=True), endpoint)
+        return target
+
+    conditional: dict[str, str] | None = None
+    if hit is not None:
+        etag = hit[1].get("etag")
+        if immutable_release is not None or not etag:
+            # Content-addressed (verified above), or no validator: the copy stands.
+            return from_cache(hit)
+        conditional = {"If-None-Match": etag}
+
+    try:
+        response = client._send(
+            method, url, follow_redirects=True, stream=True, headers=conditional
+        )
+    except errors.APIConnectionError as exc:
+        if hit is None:
+            raise
+        log.warning("PlasticDB: %s unreachable (%s); using the cached copy", url.path, exc)
+        return from_cache(hit)
+    if response.status_code == 304 and hit is not None:
+        response.close()
+        return from_cache(hit)
     try:
         if not response.is_success:
             raise error_from_response(response)
@@ -103,14 +137,16 @@ def stream_to_file(
                     fh.write(chunk)
                     digest.update(chunk)
             actual = digest.hexdigest()
-            if expected is not None and actual != expected:
-                raise errors.ChecksumError(
-                    f"{url.path}: SHA-256 {actual} does not match the published {expected}",
-                    expected=expected,
-                    actual=actual,
-                    status_code=response.status_code,
-                    response=response,
-                )
+            served = (response.headers.get(SHA256_HEADER) or "").strip().lower() or None
+            for want, what in ((expected, "the published"), (served, "the server's")):
+                if want is not None and actual != want:
+                    raise errors.ChecksumError(
+                        f"{url.path}: SHA-256 {actual} does not match {what} {want}",
+                        expected=want,
+                        actual=actual,
+                        status_code=response.status_code,
+                        response=response,
+                    )
             default_mode(tmp)
             os.replace(tmp, target)
         except httpx.TransportError as exc:

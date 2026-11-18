@@ -76,8 +76,13 @@ client = plasticdb.Client(release="2026.50", cache_dir="~/.cache/plasticdb")
 With `cache_dir`, answers from a past release's snapshot are kept on disk
 indefinitely (a release is immutable) and reused without a request. Live
 answers are never cached, and neither are answers of an unpinned client.
-Release artefacts (below) are verified and always cacheable. On the command line
-use `--cache-dir` or `PLASTICDB_CACHE_DIR`.
+A pinned table download (`downloads.proteins()` …) is kept with the server's
+`ETag`: using the copy again costs one conditional request that answers 304
+without a body (and if the server cannot be reached, the copy is used). The
+download's `X-PlasticDB-Source-SHA256`, the release Parquet artefact(s) it was
+rendered from as listed in `MANIFEST.json`, is
+`client.last_response.source_sha256`. Release artefacts (below) are verified and
+always cacheable. On the command line use `--cache-dir` or `PLASTICDB_CACHE_DIR`.
 
 ## Download the release itself
 
@@ -88,7 +93,10 @@ client.downloads.manifest()  # MANIFEST.json: every file, hash, size, licence
 client.downloads.structure(1234, "structures/")  # one structure of the release (gzipped PDB)
 ```
 
-A checksum mismatch raises `ChecksumError` and keeps nothing. On the command
+Each artefact is checked against the SHA-256 the release published and the one
+the server sends with it (`X-PlasticDB-SHA256`, also its `ETag`); a mismatch
+with either raises `ChecksumError` and keeps nothing. A cached artefact is
+verified locally and needs no request. On the command
 line, `plasticdb download dataset --release 2026.50 -o data/` fetches and
 verifies every artefact.
 
@@ -100,9 +108,10 @@ Some endpoints are computed from the live database. A pinned client gets a
 - **Search**: `client.search(...)`, `.grouped()`, `.autocomplete()`
 - **Statistics**: `client.stats.*`
 - **The change feed**: `client.changes()`
-- **Structures and FASTA of single records**: `proteins.fasta/structure`,
-  `variants.get/fasta/structure`. For a pinned structure use
-  `downloads.structure()`; for pinned sequences, a protein list's `to_fasta()` (below).
+- **Structures and protein FASTA of single records**: `proteins.fasta/structure`,
+  `variants.structure`. For a pinned structure use `downloads.structure()`; for
+  pinned sequences, a protein list's `to_fasta()` (below) or `variants.fasta()`,
+  which is pinnable.
 - **Lineages**: `proteins.lineage()`, `proteins.engineered_parents()`
 - **Name lists and taxonomy**: `microorganisms.names/lineage_levels/taxonomy`, `plastics.names`
 - **Paper footprints and citation exports**: `papers.footprint()`, `papers.export()`

@@ -292,7 +292,7 @@ def test_changes_feed(api: respx.MockRouter, client: plasticdb.Client) -> None:
     feed = client.changes("2026-11-10T00:00:00Z", entity_type="protein_variant")
     changes = feed.all()
     assert changes[1].entity_type == "protein_variant" and changes[1].status == "updated"
-    assert feed.as_of == "2026-11-18T06:54:00.703245+00:00"
+    assert feed.as_of == "2026-11-18T12:26:26.380062+00:00"
     assert feed.since == "2026-11-10T00:00:00+00:00"
     params = route.calls.last.request.url.params
     assert params["since"] == "2026-11-10T00:00:00Z"
@@ -309,7 +309,7 @@ def test_changes_page_size_bound(client: plasticdb.Client) -> None:
 def test_search(api: respx.MockRouter, client: plasticdb.Client) -> None:
     route = api.get("/search").mock(return_value=reply("search"))
     hits = client.search("PETase", limit=2).all()
-    assert hits[0].entity_type == "paper" and hits[0].route_key == "904"
+    assert hits[0].entity_type == "paper" and hits[0].route_key == "1199"
     assert route.calls.last.request.url.params["q"] == "PETase"
     api.get("/search/grouped").mock(return_value=reply("search_grouped"))
     grouped = client.search.grouped("PETase", limit=2)
@@ -377,7 +377,9 @@ def test_kinetics_and_properties(api: respx.MockRouter, client: plasticdb.Client
 
 
 def test_collection_surfaces_errors_lazily(api: respx.MockRouter, client: plasticdb.Client) -> None:
-    api.get("/proteins/PBGQPC/kinetics").mock(return_value=reply("protein_merged"))
+    api.get("/proteins/PBGQPC/kinetics").mock(return_value=reply("protein_merged_kinetics"))
     kinetics = client.proteins.kinetics("PBGQPC")
-    with pytest.raises(errors.MergedError):
+    with pytest.raises(errors.MergedError) as info:
         kinetics.all()
+    assert info.value.merged_into == "PBMW9H"
+    assert info.value.location == "/api/v1/proteins/PBMW9H/kinetics"

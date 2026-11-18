@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import csv
 import io
+import logging
 import os
 import time
 from collections.abc import Callable, Mapping, Sequence
@@ -15,6 +16,7 @@ from .. import errors
 from .._endpoints import Endpoint
 from .._inputs import Upload, genome_uploads, sequence_text, to_upload
 from .._pagination import Collection, ResultTable
+from .._response import APIResponse, new_idempotency_key
 from ..models.jobs import (
     FINAL_STATUSES,
     AnnotatedTaxon,
@@ -32,25 +34,29 @@ from ._base import Resource
 if TYPE_CHECKING:
     from .._client import Client
 
+log = logging.getLogger("plasticdb")
+
 PathLike = str | os.PathLike[str]
 BlastType = Literal["blastp", "blastx"]
 OrganismType = Literal["no_signalp", "arch", "gram+", "gram-", "euk"]
 ThresholdMode = Literal["gathering", "evalue"]
 
 # Submissions take the client's (or the call's) release; job reads never do: a
-# job answers with the release it ran against.
-_SUBMIT = Endpoint("POST", "/jobs")
-_TREE_BUILD = Endpoint("POST", "/tree/build")
-_SEARCH_SEQUENCE = Endpoint("POST", "/bioinformatics/search-sequence")
+# job answers with the release it ran against (and says so in its headers).
+# Creates carry an Idempotency-Key, so they are retried like reads.
+_SUBMIT = Endpoint("POST", "/jobs", idempotency=True)
+_TREE_BUILD = Endpoint("POST", "/tree/build", idempotency=True)
+_SEARCH_SEQUENCE = Endpoint("POST", "/bioinformatics/search-sequence", retry_safe=True)
 _LIST = Endpoint("GET", "/jobs", pinnable=False)
 _GET = Endpoint("GET", "/jobs/{job_id}", pinnable=False)
-_TREE_GET = Endpoint("GET", "/tree/{job_id}", pinnable=False)
+_RESULTS = Endpoint("GET", "/jobs/{job_id}/results", pinnable=False)
 _DOWNLOAD = Endpoint("GET", "/jobs/{job_id}/download", pinnable=False)
 _COMPARISON = Endpoint("GET", "/jobs/{job_id}/comparison", pinnable=False)
 _SHARES = Endpoint("GET", "/jobs/{job_id}/shares", pinnable=False)
-_SHARE_CREATE = Endpoint("POST", "/jobs/{job_id}/shares", pinnable=False)
+_SHARE_CREATE = Endpoint("POST", "/jobs/{job_id}/shares", pinnable=False, idempotency=True)
 _SHARE_REVOKE = Endpoint("DELETE", "/jobs/{job_id}/shares/{share_id}", pinnable=False)
 _SHARED_GET = Endpoint("GET", "/jobs/shared/{token}", pinnable=False)
+_SHARED_RESULTS = Endpoint("GET", "/jobs/shared/{token}/results", pinnable=False)
 _SHARED_DOWNLOAD = Endpoint("GET", "/jobs/shared/{token}/download", pinnable=False)
 _SHARED_COMPARISON = Endpoint("GET", "/jobs/shared/{token}/comparison", pinnable=False)
 
@@ -63,6 +69,7 @@ JOB_PARAMS: dict[str, tuple[str, ...]] = {
     "compare_genomes": _SEARCH + _VIEW,
     "annotate_list": ("genus_column", "species_column", "field_separator"),
     "pathway_analysis": (
+        "target_plastic",
         "blast_type",
         "evalue",
         "pident",
@@ -108,6 +115,9 @@ TREE_FILTERS = (
 JOB_TYPES = (*JOB_PARAMS, "build_tree")
 HIT_JOB_TYPES = frozenset({"annotate_gene", "annotate_genome", "compare_genomes", "hmm_screen"})
 
+#: Polls and reads leave the hits out; :meth:`Job.hits` pages them.
+_LEAN = {"include": "none"}
+
 DEFAULT_POLL_INTERVAL = 2.0
 DEFAULT_MAX_POLL_INTERVAL = 30.0
 
@@ -116,8 +126,9 @@ DEFAULT_MAX_POLL_INTERVAL = 30.0
 class JobProvenance:
     """What a job ran against: report this with its results.
 
-    ``release`` is the dataset release (``release_source`` ``snapshot`` for a
-    past release's archived databases, ``live`` for the current one),
+    ``release`` is the dataset release the job ran against (``release_source``
+    ``snapshot`` for a past release's archived databases, ``live`` for the
+    current one), as the job record and its ``X-PlasticDB-Release`` headers say;
     ``reference_sha256`` the SHA-256 of the DIAMOND database or HMM library
     searched, ``tool_versions`` e.g. ``{"diamond": "2.1.9"}``. ``record`` is
     the server's full provenance record (``result_metadata["provenance"]``).
@@ -144,10 +155,19 @@ class Job:
     gives the typed results and ``download(path)`` the server's results file.
     """
 
-    def __init__(self, client: Client, info: JobInfo, *, token: str | None = None) -> None:
+    def __init__(
+        self,
+        client: Client,
+        info: JobInfo,
+        *,
+        token: str | None = None,
+        response: APIResponse | None = None,
+    ) -> None:
         self._client = client
         self._info = info
         self._token = token
+        self._response = response
+        self._replayed = response.replayed if response is not None else False
 
     # ── state ────────────────────────────────────────────────────────────────
 
@@ -192,7 +212,19 @@ class Job:
 
     @property
     def release(self) -> str | None:
-        return self._info.release
+        """The dataset release the job ran (or runs) against."""
+        if self._info.release:
+            return self._info.release
+        return self._response.release if self._response is not None else None
+
+    @property
+    def replayed(self) -> bool:
+        """True when the submission's ``Idempotency-Key`` returned an existing job.
+
+        A retried submission whose first attempt reached the server gets that job
+        back (in its current state) instead of a duplicate.
+        """
+        return self._replayed
 
     @property
     def provenance(self) -> JobProvenance:
@@ -202,11 +234,12 @@ class Job:
         record = meta.get("provenance")
         record = dict(record) if isinstance(record, dict) else {}
         app = record.get("app_version")
+        read = self._response
         return JobProvenance(
             job_id=info.id,
             job_type=info.job_type,
-            release=info.release,
-            release_source=info.release_source,
+            release=info.release or (read.release if read else None),
+            release_source=info.release_source or (read.release_source if read else None),
             reference_sha256=info.reference_sha256,
             tool_versions=dict(info.tool_versions) if info.tool_versions else None,
             app_version=app if isinstance(app, str) else None,
@@ -220,16 +253,11 @@ class Job:
     # ── polling ──────────────────────────────────────────────────────────────
 
     def refresh(self) -> Job:
-        """Fetch the job again (status, results, provenance). Returns ``self``."""
-        client = self._client
-        if self._token is not None:
-            data = client._request(_SHARED_GET, token=self._token).data
-        elif self._info.job_type == "build_tree":
-            # GET /jobs/{id} leaves a tree job's Newick out; /tree/{id} carries it.
-            data = client._request(_TREE_GET, job_id=self.id).data
-        else:
-            data = client._request(_GET, job_id=self.id).data
-        self._info = JobInfo.model_validate(data)
+        """Fetch the job again (status, summary, provenance; not the hits). Returns ``self``."""
+        endpoint = _SHARED_GET if self._token is not None else _GET
+        response = self._client._request(endpoint, params=_LEAN, **self._ref())
+        self._info = JobInfo.model_validate(response.data)
+        self._response = response
         return self
 
     def wait(
@@ -310,8 +338,9 @@ class Job:
         """The results, typed by job type.
 
         * annotate_gene / annotate_genome / compare_genomes / hmm_screen:
-          :meth:`hits` (every stored hit; the website's and ``download()``'s
-          default view also hides hits under 70 % subject coverage).
+          :meth:`hits` (every stored hit, paged from the server; the website's
+          and ``download()``'s default view also hides hits under 70 % subject
+          coverage).
         * pathway_analysis: :meth:`steps`.
         * annotate_list: :meth:`taxa`.
         * build_tree: :meth:`tree`.
@@ -325,12 +354,28 @@ class Job:
             return self.tree()
         return self.hits()
 
-    def hits(self) -> ResultTable[JobHit]:
-        """Every hit, in the server's order (best first per query)."""
+    def hits(self, *, limit: int | None = None) -> ResultTable[JobHit]:
+        """Every hit (or the first ``limit``), in the server's order (best first per query).
+
+        Fetched page by page from ``GET /jobs/{id}/results`` (500 a request), so
+        a genome with tens of thousands of hits never arrives as one response.
+        """
         self._require_done()
-        if self._info.results is None:
-            self.refresh()
-        return ResultTable(self._info.results or [], name=f"{self.job_type} hits")
+        return ResultTable(self.iter_hits(limit=limit).all(), name=f"{self.job_type} hits")
+
+    def iter_hits(
+        self, *, page_size: int | None = None, limit: int | None = None
+    ) -> Collection[JobHit]:
+        """The hits as a lazy, paged collection (iterate it, or ``to_pandas()``)."""
+        endpoint = _SHARED_RESULTS if self._token else _RESULTS
+        return Collection(
+            self._client,
+            endpoint,
+            JobHit,
+            path_params=self._ref(),
+            page_size=page_size,
+            limit=limit,
+        )
 
     def steps(self) -> ResultTable[PathwayStep]:
         """A pathway analysis: one row per pathway step, ``present`` and the best hit."""
@@ -357,7 +402,7 @@ class Job:
     def tree(self) -> TaxonomyTree:
         """A build_tree job: the Newick cladogram and the organism x plastic matrix."""
         self._require_done()
-        if self._info.result_newick is None and self._token is None:
+        if self._info.result_newick is None:
             self.refresh()
         meta = dict(self._info.result_metadata or {})
         meta.pop("provenance", None)
@@ -400,10 +445,14 @@ class Job:
         pass thresholds (``0`` turns one off) or ``all_hits=True``. Returns the
         path written.
         """
-        if self._info.results_expired_at is not None:
-            raise errors.GoneError(
-                f"Job {self.id}'s result files were deleted on "
-                f"{self._info.results_expired_at:%Y-%m-%d} under the retention policy"
+        expired = self._info.results_expired_at
+        if expired is not None:
+            raise errors.ResultsExpiredError(
+                f"Job {self.id}'s result files were deleted on {expired:%Y-%m-%d} under the "
+                "retention policy (its hits are still readable: job.hits())",
+                results_expired_at=expired,
+                status_code=410,
+                body={"reason": "expired"},
             )
         endpoint, ref = self._download_target()
         return self._client._download(
@@ -427,17 +476,23 @@ class Job:
             raise errors.PermissionDenied("A job opened from a share link is read-only")
         self._client.require_api_key("Share links")
 
-    def share(self, *, expires_in_days: int | None = None) -> JobShareCreated:
+    def share(
+        self, *, expires_in_days: int | None = None, idempotency_key: str | None = None
+    ) -> JobShareCreated:
         """Create a read-only link to this job's results (owner only; needs the API key).
 
         The token is in the answer **once**; keep ``.url``. ``expires_in_days``
-        (1-365) defaults to a link that lasts as long as the job.
+        (1-365) defaults to a link that lasts as long as the job. The request is
+        sent with an ``Idempotency-Key`` (``idempotency_key``, or a new one), so
+        a retry returns the same link rather than a second one.
         """
         self._owner_only()
         if expires_in_days is not None and not 1 <= expires_in_days <= 365:
             raise ValueError("expires_in_days must be between 1 and 365")
         body = {"expires_in_days": expires_in_days} if expires_in_days is not None else None
-        data = self._client._request(_SHARE_CREATE, json=body, job_id=self.id).data
+        data = self._client._request(
+            _SHARE_CREATE, json=body, idempotency_key=idempotency_key, job_id=self.id
+        ).data
         created = JobShareCreated.model_validate(data)
         url = self._client._root_url + created.path
         return created.model_copy(update={"url": url})
@@ -495,27 +550,33 @@ class Jobs(Resource):
     A pinned client (or ``release=`` on the call) runs the job against that
     release's archived reference databases; a job type or option a release
     cannot answer raises :class:`~plasticdb.errors.UnsupportedFilterError`.
-    Submissions are rate-limited (30 an hour); a submission is never resent
-    after it may have reached the server.
+    Submissions are rate-limited (30 an hour). Each submission is sent with an
+    ``Idempotency-Key`` (a new UUID, or the ``idempotency_key=`` you pass), so it
+    is retried on a timeout or a 5xx: if an attempt did reach the server, the
+    retry gets that job back (``job.replayed``) instead of a duplicate. Reuse a
+    key (within 24 hours) to recover a submission whose answer you lost; a key
+    sent with a different request raises
+    :class:`~plasticdb.errors.IdempotencyKeyReusedError`.
     """
 
     # ── reading ──────────────────────────────────────────────────────────────
 
     def get(self, job_id: str) -> Job:
         """A job by id (yours, or one submitted without an account)."""
-        data = self._client._request(_GET, job_id=job_id).data
-        job = Job(self._client, JobInfo.model_validate(data))
-        if job.job_type == "build_tree" and job.done:
-            job.refresh()
-        return job
+        response = self._client._request(_GET, params=_LEAN, job_id=job_id)
+        return Job(self._client, JobInfo.model_validate(response.data), response=response)
 
     def shared(self, token_or_url: str) -> Job:
         """A job someone shared with you, from its link or token (no API key needed)."""
         token = token_or_url.strip().rstrip("/").rsplit("/", 1)[-1]
+        if "?" in token:
+            token = token.split("?", 1)[0]
         if not token:
             raise ValueError("No share token given")
-        data = self._client._request(_SHARED_GET, token=token).data
-        return Job(self._client, JobInfo.model_validate(data), token=token)
+        response = self._client._request(_SHARED_GET, params=_LEAN, token=token)
+        return Job(
+            self._client, JobInfo.model_validate(response.data), token=token, response=response
+        )
 
     # ── submitting ───────────────────────────────────────────────────────────
 
@@ -525,6 +586,7 @@ class Jobs(Resource):
         input: Any = None,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
         **params: Any,
     ) -> Job:
         """Submit a job by its server name (``annotate_genome``, ``hmm_screen``, ``build_tree``…).
@@ -532,12 +594,14 @@ class Jobs(Resource):
         ``input`` is what the job reads (see the typed helpers, which document
         each job type's parameters); ``build_tree`` takes filters instead.
         Returns the :class:`Job` at once; call ``.wait()`` for the results.
+        ``idempotency_key`` (any 1-255 printable ASCII characters; default a new
+        UUID) identifies this submission: resending it returns the same job.
         """
         kind = _normalise_type(job_type)
         if kind == "build_tree":
             if input is not None:
                 raise TypeError("build_tree takes filters, not an input file")
-            return self.build_tree(release=release, **params)
+            return self.build_tree(release=release, idempotency_key=idempotency_key, **params)
         if kind == "search_sequence":
             raise ValueError("search_sequence is synchronous: use client.jobs.search_sequence()")
         if kind not in JOB_PARAMS:
@@ -553,10 +617,15 @@ class Jobs(Resource):
             uploads = [to_upload(input, ext="tsv", kind="taxa table")]
         else:
             uploads = [to_upload(input, ext="fasta")]
-        return self._post_job(kind, uploads, params, release)
+        return self._post_job(kind, uploads, params, release, idempotency_key)
 
     def _post_job(
-        self, kind: str, uploads: list[Upload], params: Mapping[str, Any], release: str | None
+        self,
+        kind: str,
+        uploads: list[Upload],
+        params: Mapping[str, Any],
+        release: str | None,
+        idempotency_key: str | None,
     ) -> Job:
         field_name = "files" if kind == "compare_genomes" else "file"
         content_type = "text/tab-separated-values" if kind == "annotate_list" else "text/plain"
@@ -575,25 +644,36 @@ class Jobs(Resource):
             if value is not None:
                 form[name] = _form_value(value)
         query = {"release": release} if release else None
+        key = idempotency_key or new_idempotency_key()
         return self._created(
-            lambda: self._client._request(_SUBMIT, params=query, data=form, files=files).data
+            key,
+            lambda: self._client._request(
+                _SUBMIT, params=query, data=form, files=files, idempotency_key=key
+            ),
         )
 
-    def _created(self, send: Callable[[], Any]) -> Job:
+    def _created(self, key: str, send: Callable[[], APIResponse]) -> Job:
         try:
-            data = send()
-        except errors.APIConnectionError as exc:
-            raise type(exc)(
-                f"{exc} The submission may have reached the server: check client.jobs.list() "
-                "before submitting again."
-            ) from exc
-        return Job(self._client, JobInfo.model_validate(data))
+            response = send()
+        except (errors.APIConnectionError, errors.ServerError) as exc:
+            exc.args = (
+                f"{exc} The submission may have reached the server: submit it again with "
+                f"idempotency_key={key!r} (within 24 hours) to get that job back rather than "
+                "a duplicate.",
+            )
+            exc.message = str(exc.args[0])
+            raise
+        job = Job(self._client, JobInfo.model_validate(response.data), response=response)
+        if job.replayed:
+            log.info("PlasticDB: idempotency key %s returned the existing job %s", key, job.id)
+        return job
 
     def annotate_gene(
         self,
         fasta: Any,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
         blast_type: BlastType | None = None,
         organism_type: OrganismType | None = None,
         evalue: float | None = None,
@@ -612,15 +692,22 @@ class Jobs(Resource):
         ``min_qcov`` / ``min_scov`` (default 70) / ``min_bitscore`` set the
         default view of the results file and page (every hit is stored).
         ``organism_type`` turns on signal-peptide prediction (``gram-``,
-        ``gram+``, ``arch``, ``euk``).
+        ``gram+``, ``arch``, ``euk``). ``idempotency_key``: see :meth:`submit`.
         """
-        return self.submit("annotate_gene", fasta, release=release, **_given(locals()))
+        return self.submit(
+            "annotate_gene",
+            fasta,
+            release=release,
+            idempotency_key=idempotency_key,
+            **_given(locals()),
+        )
 
     def annotate_genome(
         self,
         fasta: Any,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
         blast_type: BlastType | None = None,
         organism_type: OrganismType | None = None,
         evalue: float | None = None,
@@ -634,7 +721,13 @@ class Jobs(Resource):
 
         Same inputs and parameters as :meth:`annotate_gene`.
         """
-        return self.submit("annotate_genome", fasta, release=release, **_given(locals()))
+        return self.submit(
+            "annotate_genome",
+            fasta,
+            release=release,
+            idempotency_key=idempotency_key,
+            **_given(locals()),
+        )
 
     def compare_genomes(
         self,
@@ -642,6 +735,7 @@ class Jobs(Resource):
         *,
         labels: Sequence[str] | None = None,
         release: str | None = None,
+        idempotency_key: str | None = None,
         blast_type: BlastType | None = None,
         organism_type: OrganismType | None = None,
         evalue: float | None = None,
@@ -660,13 +754,21 @@ class Jobs(Resource):
         """
         kwargs = _given(locals())
         kwargs.pop("labels", None)
-        return self.submit("compare_genomes", genomes, release=release, **kwargs, **_labels(labels))
+        return self.submit(
+            "compare_genomes",
+            genomes,
+            release=release,
+            idempotency_key=idempotency_key,
+            **kwargs,
+            **_labels(labels),
+        )
 
     def annotate_list(
         self,
         table: Any,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
         genus_column: int | None = None,
         species_column: int | None = None,
         field_separator: Literal["tab", "comma", "space"] | None = None,
@@ -674,18 +776,26 @@ class Jobs(Resource):
         """Match a table of taxa (genus, species) against PlasticDB's organisms.
 
         ``table`` is a path, text, bytes, or a list of rows (sent tab-separated).
-        ``genus_column`` / ``species_column`` are 1-based; omitted, the server
-        uses its own layout (columns 7 and 8, or a lineage column it finds), so
-        pass them for any other table. ``field_separator`` is ``tab`` (default),
-        ``comma`` or ``space``. Results: ``job.taxa()``.
+        ``genus_column`` / ``species_column`` are 1-based and default to 7 and 8
+        (the server's layout), so pass them for any other table.
+        ``field_separator`` is ``tab`` (default), ``comma`` or ``space``; the job
+        records all three. Results: ``job.taxa()``.
         """
-        return self.submit("annotate_list", table, release=release, **_given(locals()))
+        return self.submit(
+            "annotate_list",
+            table,
+            release=release,
+            idempotency_key=idempotency_key,
+            **_given(locals()),
+        )
 
     def pathway_analysis(
         self,
         fasta: Any,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
+        target_plastic: str | None = None,
         blast_type: BlastType | None = None,
         evalue: float | None = None,
         pident: int | None = None,
@@ -694,19 +804,28 @@ class Jobs(Resource):
         min_reference_coverage: float | None = None,
         min_query_coverage: float | None = None,
     ) -> Job:
-        """Map proteins onto the PET degradation pathway: which steps they cover.
+        """Map proteins onto a plastic's degradation pathway: which steps they cover.
 
-        The ``min_step_*`` / ``max_step_evalue`` / ``min_*_coverage`` thresholds
-        decide when a hit calls a step present (defaults 40 %, 1e-10, 70 %, 50 %).
-        Results: ``job.steps()``.
+        ``target_plastic`` names the plastic whose pathway is mapped (default
+        ``PET``; the job records it in ``result_metadata``). The ``min_step_*`` /
+        ``max_step_evalue`` / ``min_*_coverage`` thresholds decide when a hit
+        calls a step present (defaults 40 %, 1e-10, 70 %, 50 %). Results:
+        ``job.steps()``.
         """
-        return self.submit("pathway_analysis", fasta, release=release, **_given(locals()))
+        return self.submit(
+            "pathway_analysis",
+            fasta,
+            release=release,
+            idempotency_key=idempotency_key,
+            **_given(locals()),
+        )
 
     def hmm_screen(
         self,
         fasta: Any,
         *,
         release: str | None = None,
+        idempotency_key: str | None = None,
         target_polymers: Sequence[str] | None = None,
         threshold_mode: ThresholdMode | None = None,
         evalue: float | None = None,
@@ -721,13 +840,18 @@ class Jobs(Resource):
         kwargs = _given(locals())
         if target_polymers is not None:
             kwargs["target_polymers"] = list(target_polymers)
-        return self.submit("hmm_screen", fasta, release=release, **kwargs)
+        return self.submit(
+            "hmm_screen", fasta, release=release, idempotency_key=idempotency_key, **kwargs
+        )
 
-    def build_tree(self, *, release: str | None = None, **filters: Any) -> Job:
+    def build_tree(
+        self, *, release: str | None = None, idempotency_key: str | None = None, **filters: Any
+    ) -> Job:
         """A taxonomy tree (NCBI-taxonomy cladogram) of organisms, by filter or id list.
 
         Filters are ``/microorganisms``'s (``plastic="PET"``, ``genus=``,
-        ``class_=``, ``polarity=``, …) or ``microorganism_ids=[...]``. Results:
+        ``class_=``, ``polarity=``, …) or ``microorganism_ids=[...]``. A pinned
+        client (or ``release=``) builds it from that release. Results:
         ``job.tree()`` (Newick + organism x plastic matrix).
         """
         _check(filters, TREE_FILTERS, "jobs.build_tree")
@@ -741,8 +865,12 @@ class Jobs(Resource):
         if "microorganism_ids" in body:
             body["microorganism_ids"] = [int(i) for i in body["microorganism_ids"]]
         query = {"release": release} if release else None
+        key = idempotency_key or new_idempotency_key()
         return self._created(
-            lambda: self._client._request(_TREE_BUILD, params=query, json=body).data
+            key,
+            lambda: self._client._request(
+                _TREE_BUILD, params=query, json=body, idempotency_key=key
+            ),
         )
 
     def search_sequence(
@@ -758,7 +886,11 @@ class Jobs(Resource):
         """Search one sequence now (synchronous, no job): DIAMOND hits with provenance.
 
         ``sequence`` is residues, one-record FASTA text or a ``Bio.SeqRecord``.
-        The server gives it 15 seconds; for more sequences use :meth:`annotate_gene`.
+        The server gives it 15 seconds (past that,
+        :class:`~plasticdb.errors.ServerError` with ``reason == "timeout"``); for
+        more sequences use :meth:`annotate_gene`. While the reference database is
+        unavailable it raises :class:`~plasticdb.errors.ServiceUnavailableError`
+        (``retry_after``).
         """
         self._client.require_api_key("Sequence searches")
         params: dict[str, Any] = {"sequence": sequence_text(sequence), "release": release}
@@ -792,7 +924,7 @@ class Jobs(Resource):
 
 def _given(scope: dict[str, Any]) -> dict[str, Any]:
     """A helper's keyword arguments that were given (not ``None``), minus the input."""
-    skip = {"self", "release", "fasta", "genomes", "table", "kwargs"}
+    skip = {"self", "release", "idempotency_key", "fasta", "genomes", "table", "kwargs"}
     return {k: v for k, v in scope.items() if k not in skip and v is not None}
 
 

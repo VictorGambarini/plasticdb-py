@@ -57,7 +57,7 @@
     "t50": null,
     "half_life": 4.0,
     "half_life_temperature": 40.0,
-    "assay_notes": "Half-life of wild-type IsPETase at 40 °C, estimated from the residual-activity decay curve in Fig. 5f.",
+    "assay_notes": "Half-life of wild-type IsPETase at 40 \u00b0C, estimated from the residual-activity decay curve in Fig. 5f.",
     "paper": {
      "id": 8,
      "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
