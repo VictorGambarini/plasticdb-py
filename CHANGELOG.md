@@ -2,6 +2,33 @@
 
 ## Unreleased
 
+- The `plasticdb` command-line tool (`pip install 'plasticdb[cli]'`; also
+  `python -m plasticdb`). It is a thin layer over the SDK, with commands for
+  proteins, variants, microorganisms, plastics, papers, evidence, search,
+  pathways, stats, changes, releases, downloads, jobs, auth, cite, provenance
+  and version.
+  - Data goes to stdout as `--format tsv|csv|json|jsonl|fasta`, or to
+    `-o FILE`, where the extension picks the format. Messages go to stderr.
+  - There are no prompts unless `--interactive` is given.
+  - `--release`, `--api-key`, `--base-url`, `--cache-dir`, `-q` and `-v` are
+    accepted before or after the subcommand, with matching `PLASTICDB_*`
+    environment variables.
+  - Filter and keyword options are generated from the SDK's own filter types
+    and method signatures.
+  - `auth login|logout|status` keeps the key in a 0600 config file. The
+    environment variable wins over the file.
+  - `download dataset --release V -o DIR` fetches and verifies every artefact
+    the release published.
+  - `jobs submit TYPE INPUT --wait -o FILE` takes kebab-case job types.
+  - `cite --format bibtex`.
+  - Exit codes are documented and stable: 0 ok, 1 error, 2 usage, 3 not found,
+    4 auth, 5 rate limited, 6 release, 7 job failed, 8 timeout,
+    9 unavailable, 130 interrupted.
+- `releases.get()` on an unknown version raises `UnknownReleaseError`, which is
+  still a `NotFoundError`.
+- Downloaded files get the usual permissions (0666 less the umask) instead of
+  `mkstemp`'s 0600.
+
 - Jobs (`client.jobs`): `submit(job_type, input, **params)` and a typed helper
   per server job type: `annotate_gene`, `annotate_genome`, `compare_genomes`,
   `annotate_list`, `pathway_analysis`, `hmm_screen`, `build_tree`, plus the
