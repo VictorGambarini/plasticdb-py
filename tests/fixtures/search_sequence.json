@@ -1,0 +1,42 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
+ },
+ "body": {
+  "hits": [
+   {
+    "query_seq_id": "query",
+    "subject_seq_id": "protein|PBFCTW",
+    "pident": 100.0,
+    "length": 290,
+    "mismatch": 0,
+    "gapopen": 0,
+    "qstart": 1,
+    "qend": 290,
+    "sstart": 1,
+    "send": 290,
+    "evalue": 1.2e-180,
+    "bitscore": 590.1,
+    "plasticdb_id": "PlasticDB_17",
+    "protein_name": "PETase",
+    "entity_type": "protein",
+    "entity_id": 17,
+    "accession": "PBFCTW",
+    "detail_url": "/proteins/PBFCTW",
+    "variant_type": null
+   }
+  ],
+  "release": "2026.30",
+  "release_source": "snapshot",
+  "release_data_version": "2026-07-27T03:00:00+00:00",
+  "release_manifest_sha256": "abababababababababababababababababababababababababababababababab",
+  "release_tools": {
+   "diamond": "2.1.9"
+  },
+  "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571",
+  "diamond_version": "2.1.9"
+ }
+}

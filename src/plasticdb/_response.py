@@ -167,6 +167,7 @@ def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
         404: errors.NotFoundError,
         409: errors.ConflictError,
         410: errors.GoneError,
+        413: errors.PayloadTooLargeError,
         422: errors.ValidationError,
         503: errors.ServiceUnavailableError,
     }

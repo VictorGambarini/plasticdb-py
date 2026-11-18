@@ -8,7 +8,7 @@ import logging
 
 from . import errors, models
 from ._client import DEFAULT_BASE_URL, Citation, Client, Provenance
-from ._pagination import Collection
+from ._pagination import Collection, ResultTable
 from ._response import APIResponse
 from ._version import __version__
 from .errors import (
@@ -18,10 +18,14 @@ from .errors import (
     ChecksumError,
     EngineeredVariantError,
     GoneError,
+    JobError,
+    JobFailedError,
+    JobTimeoutError,
     LiveOnlyError,
     MergedError,
     MergedRecordWarning,
     NotFoundError,
+    PayloadTooLargeError,
     PermissionDenied,
     PlasticDBError,
     RateLimitError,
@@ -33,6 +37,7 @@ from .errors import (
     UnsupportedFilterError,
     ValidationError,
 )
+from .resources.jobs import Job, JobProvenance
 
 logging.getLogger("plasticdb").addHandler(logging.NullHandler())
 
@@ -48,10 +53,16 @@ __all__ = [
     "Collection",
     "EngineeredVariantError",
     "GoneError",
+    "Job",
+    "JobError",
+    "JobFailedError",
+    "JobProvenance",
+    "JobTimeoutError",
     "LiveOnlyError",
     "MergedError",
     "MergedRecordWarning",
     "NotFoundError",
+    "PayloadTooLargeError",
     "PermissionDenied",
     "PlasticDBError",
     "Provenance",
@@ -59,6 +70,7 @@ __all__ = [
     "ReleaseError",
     "ReleaseNotAvailableError",
     "ReleaseUnsupportedError",
+    "ResultTable",
     "ServerError",
     "ServiceUnavailableError",
     "UnsupportedFilterError",

@@ -7,7 +7,8 @@ import respx
 import plasticdb
 from plasticdb import errors
 from plasticdb._response import parse_retry_after
-from tests.conftest import JOBS_SUBMIT, PROTEINS
+from plasticdb.resources.jobs import _SUBMIT as JOBS_SUBMIT
+from tests.conftest import PROTEINS
 
 OK = {"total": 0, "items": []}
 

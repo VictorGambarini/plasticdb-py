@@ -17,7 +17,6 @@ BASE = "https://v2.plasticdb.org/api/v1"
 # Real contract paths, used to exercise pinnable reads before P2 wraps them.
 PROTEINS = Endpoint("GET", "/proteins")
 PROTEIN = Endpoint("GET", "/proteins/{accession}")
-JOBS_SUBMIT = Endpoint("POST", "/jobs", pinnable=True)
 
 
 @pytest.fixture(autouse=True)

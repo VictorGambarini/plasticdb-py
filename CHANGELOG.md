@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+- Jobs (`client.jobs`): `submit(job_type, input, **params)` and a typed helper
+  per server job type: `annotate_gene`, `annotate_genome`, `compare_genomes`,
+  `annotate_list`, `pathway_analysis`, `hmm_screen`, `build_tree`, plus the
+  synchronous `search_sequence`. Jobs need an API key (`AuthenticationError`
+  before any request otherwise); a pinned client, or `release=`, runs them
+  against that release's archived databases.
+- `Job`: `refresh()`, `wait(timeout=, poll_interval=)` with backoff and
+  `Retry-After`, `status`, `results()` (`hits()`, `steps()`, `taxa()`,
+  `tree()`, typed, with `to_pandas()` / `to_polars()`), `comparison()`,
+  streaming `download(path)` (TSV or the compare_genomes ZIP),
+  `share()` / `shares()` / `unshare()`, and `provenance` (release,
+  reference SHA-256, tool versions). `jobs.get(id)`, `jobs.list()`,
+  `jobs.shared(link)`.
+- Inputs: a path (plain or gzip), FASTA text, bytes, a file object,
+  `Bio.SeqRecord`s, or table rows; uploads are named after their contents.
+- Submissions are never resent once they may have reached the server; a 429 is
+  waited out within `max_retry_wait`.
+- New errors: `PayloadTooLargeError` (413), `JobError`, `JobFailedError`,
+  `JobTimeoutError`. `plasticdb.ResultTable` for in-memory typed results.
+- The contract test covers every job, share, tree and sequence-search operation.
+
 - Data namespaces on `Client`: `proteins`, `variants`, `microorganisms`,
   `plastics`, `papers`, `evidence` (interactions, kinetics, properties, binding
   assays, constructs, preparations), `search`, `pathways`, `stats`,
