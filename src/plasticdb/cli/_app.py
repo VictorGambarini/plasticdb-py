@@ -191,7 +191,7 @@ def proteins_fasta(
     ref: Annotated[str, typer.Argument(help="Accession or numeric id.")],
     output: OptionalOutput = None,
 ) -> Any:
-    """One protein's FASTA record with the server's annotated header (live only)."""
+    """One protein's FASTA record with the server's annotated header (pinnable)."""
     return Text(run.client.proteins.fasta(_ref(ref)))
 
 
@@ -275,7 +275,7 @@ def variants_fasta(
     ref: Annotated[str, typer.Argument(help="Accession or numeric id.")],
     output: OptionalOutput = None,
 ) -> Any:
-    """One variant's FASTA record (live only)."""
+    """One variant's FASTA record (pinnable)."""
     return Text(run.client.variants.fasta(_ref(ref)))
 
 

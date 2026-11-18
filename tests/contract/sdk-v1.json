@@ -18167,6 +18167,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -18762,6 +18789,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -19184,6 +19238,33 @@
               "X-PlasticDB-Source-SHA256": {
                 "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
                   "type": "string"
                 }
               }
@@ -19616,6 +19697,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -19885,6 +19993,33 @@
               "X-PlasticDB-Source-SHA256": {
                 "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
                   "type": "string"
                 }
               }
@@ -20164,6 +20299,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -20386,6 +20548,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -20603,6 +20792,33 @@
               "X-PlasticDB-Source-SHA256": {
                 "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
                   "type": "string"
                 }
               }
@@ -21249,6 +21465,33 @@
               "X-PlasticDB-Source-SHA256": {
                 "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
                   "type": "string"
                 }
               }
@@ -21902,6 +22145,33 @@
               }
             }
           },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "content": {
               "application/json": {
@@ -22543,6 +22813,33 @@
               "X-PlasticDB-Source-SHA256": {
                 "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "A past release's download whose `If-None-Match` matches its `ETag`: no body.",
+            "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
                   "type": "string"
                 }
               }
@@ -23565,8 +23862,17 @@
                 }
               }
             },
-            "description": "Successful Response",
+            "description": "Created.",
             "headers": {
+              "Idempotent-Replayed": {
+                "description": "`true` when an `Idempotency-Key` repeat returned the first request's result instead of creating a new one; absent otherwise.",
+                "schema": {
+                  "enum": [
+                    "true"
+                  ],
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -23686,7 +23992,63 @@
                 }
               }
             },
-            "description": "Successful Response"
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The share link is unknown or revoked."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The share link has expired."
           },
           "422": {
             "content": {
@@ -23927,6 +24289,54 @@
             },
             "description": "Successful Response"
           },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The share link is unknown or revoked."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "expired"
+                      ],
+                      "type": "string"
+                    },
+                    "results_expired_at": {
+                      "format": "date-time",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobResultsExpired",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The job's result files were deleted by the retention policy: `reason: expired` and `results_expired_at`."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -24012,7 +24422,63 @@
                 }
               }
             },
-            "description": "Successful Response"
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The share link is unknown or revoked."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The share link has expired."
           },
           "422": {
             "content": {
@@ -24071,7 +24537,63 @@
                 }
               }
             },
-            "description": "Successful Response"
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The job is private to its owner (`Access denied`)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No such job."
           },
           "422": {
             "content": {
@@ -24326,6 +24848,73 @@
             },
             "description": "Successful Response"
           },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The job is private to its owner (`Access denied`)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No such job."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "expired"
+                      ],
+                      "type": "string"
+                    },
+                    "results_expired_at": {
+                      "format": "date-time",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobResultsExpired",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The job's result files were deleted by the retention policy: `reason: expired` and `results_expired_at`."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -24417,7 +25006,63 @@
                 }
               }
             },
-            "description": "Successful Response"
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The job is private to its owner (`Access denied`)."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "JobError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "No such job."
           },
           "422": {
             "content": {
@@ -24550,7 +25195,34 @@
                 }
               }
             },
-            "description": "Successful Response"
+            "description": "Created.",
+            "headers": {
+              "Idempotent-Replayed": {
+                "description": "`true` when an `Idempotency-Key` repeat returned the first request's result instead of creating a new one; absent otherwise.",
+                "schema": {
+                  "enum": [
+                    "true"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              }
+            }
           },
           "422": {
             "content": {
@@ -31674,7 +32346,7 @@
             }
           },
           {
-            "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
             "in": "query",
             "name": "release",
             "required": false,
@@ -31687,7 +32359,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
               "title": "Release"
             }
           }
@@ -31714,6 +32386,12 @@
                     "snapshot",
                     "live"
                   ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
                   "type": "string"
                 }
               }
@@ -31763,9 +32441,29 @@
                 }
               }
             },
-            "description": "Unknown release."
+            "description": "Unknown release, or one without artefacts."
           },
-          "409": {
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
             "content": {
               "application/json": {
                 "schema": {
@@ -31799,27 +32497,7 @@
                 }
               }
             },
-            "description": "Computed live: a past release cannot answer it."
-          },
-          "410": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RecordGoneBody"
-                }
-              }
-            },
-            "description": "Withdrawn."
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
+            "description": "The release's artefacts are not readable here."
           }
         },
         "summary": "Get Protein Fasta",
@@ -33715,8 +34393,17 @@
                 }
               }
             },
-            "description": "Successful Response",
+            "description": "Created.",
             "headers": {
+              "Idempotent-Replayed": {
+                "description": "`true` when an `Idempotency-Key` repeat returned the first job instead of building another.",
+                "schema": {
+                  "enum": [
+                    "true"
+                  ],
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {

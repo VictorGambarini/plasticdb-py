@@ -39,7 +39,7 @@ _INTERACTIONS = Endpoint("GET", "/proteins/{accession}/interactions")
 _KINETICS = Endpoint("GET", "/proteins/{accession}/kinetics")
 _PROPERTIES = Endpoint("GET", "/proteins/{accession}/properties")
 _VARIANTS = Endpoint("GET", "/proteins/{accession}/variants")
-_FASTA = Endpoint("GET", "/proteins/{ref}/fasta", live_only=True)
+_FASTA = Endpoint("GET", "/proteins/{ref}/fasta")
 _STRUCTURE = Endpoint("GET", "/proteins/{ref}/structure", live_only=True)
 _LINEAGES = Endpoint("GET", "/engineering/proteins", live_only=True)
 _LINEAGE = Endpoint("GET", "/engineering/proteins/{accession}", live_only=True)
@@ -203,8 +203,10 @@ class Proteins(Resource):
         )
 
     def fasta(self, ref: str | int) -> str:
-        """One protein's FASTA record, with the server's annotated header (live only).
+        """One protein's FASTA record, with the server's annotated header (pinnable).
 
+        With a pinned release the record comes from that snapshot; a ref not in
+        it is a plain :class:`~plasticdb.errors.NotFoundError` (no merge redirect).
         A variant's accession gives the variant's record (:meth:`Variants.fasta`).
         """
         try:
