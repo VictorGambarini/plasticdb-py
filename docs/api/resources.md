@@ -16,6 +16,12 @@ Each is an attribute of [`Client`](client.md): `client.proteins`, `client.varian
 
 ::: plasticdb.resources.evidence.Evidence
 
+::: plasticdb.resources.evidence.InteractionRecords
+
+::: plasticdb.resources.evidence.ExperimentRecords
+
+::: plasticdb.resources.evidence.ObservationRecords
+
 ::: plasticdb.resources.evidence.Search
 
 ::: plasticdb.resources.evidence.Pathways

@@ -9,6 +9,7 @@ are plain strings, checked by the server (a 422 names the valid values).
 
 from __future__ import annotations
 
+import warnings
 from collections.abc import Mapping
 from datetime import datetime
 from typing import Any, Literal
@@ -20,7 +21,9 @@ SortOrder = Literal["asc", "desc"]
 ProteinKind = Literal["wild_type", "engineered", "both"]
 EvidenceScope = Literal["organism_or_enzyme", "whole_organism", "enzyme_only"]
 RowEvidenceScope = Literal["organism_or_enzyme", "whole_organism"]
-InteractionKind = Literal["all", "direct", "indirect"]
+EvidenceLevel = Literal["all", "direct", "indirect"]
+#: The pre-0.1.0 name of :data:`EvidenceLevel` (the argument was ``kind=``).
+InteractionKind = EvidenceLevel
 ActivityClass = Literal[
     "degrader", "negative_only", "inconclusive_only", "mixed_nonpositive", "untested", "tested"
 ]
@@ -62,6 +65,7 @@ class ProteinFilters(TypedDict, total=False):
 
 class ProteinListFilters(ProteinFilters, total=False):
     include_sequenceless: bool
+    include_sequence: bool
     sort_by: Literal["year", "name", "accession", "id", "plasticdb_id", "genbank_id"]
     sort_order: SortOrder
     updated_since: Timestamp
@@ -97,6 +101,7 @@ class VariantListFilters(TypedDict, total=False):
     origin_type: str
     origin_environment: str
     include_sequenceless: bool
+    include_sequence: bool
     sort_by: Literal["year", "name", "accession", "id"]
     sort_order: SortOrder
     updated_since: Timestamp
@@ -206,6 +211,57 @@ class BindingAssayFilters(MaterialFilters, total=False):
     plastic: str
     plastic_id: int
     include_subtypes: bool
+
+
+class EvidenceListFilters(TypedDict, total=False):
+    """Filters of ``evidence.interactions.list`` (and, below, experiments and observations).
+
+    ``evidence_level="direct"|"indirect"`` needs ``protein`` or ``microorganism``.
+    The interaction filters apply to a record's interaction; the experiment and
+    observation filters ask one of its experiments (observations) to match.
+    """
+
+    plastic: str
+    include_subtypes: bool
+    plastic_id: int
+    microorganism: str | int
+    protein: str
+    evidence_level: EvidenceLevel
+    paper_id: int
+    doi: str
+    polarity: Polarity
+    evidence_method: str
+    substrate_form: str
+    measurement_type: str
+    has_quantitative: bool
+
+
+class ExperimentListFilters(EvidenceListFilters, total=False):
+    interaction_id: int
+
+
+class ObservationListFilters(EvidenceListFilters, total=False):
+    interaction_id: int
+    experiment_id: int
+
+
+def resolve_evidence_level(
+    evidence_level: EvidenceLevel | None, kind: EvidenceLevel | None, where: str
+) -> EvidenceLevel:
+    """``evidence_level`` with the deprecated ``kind`` alias folded in (only one is sent)."""
+    if kind is None:
+        return evidence_level or "all"
+    warnings.warn(
+        f"{where}(kind=...) is deprecated; use evidence_level=...",
+        DeprecationWarning,
+        stacklevel=3,
+    )
+    if evidence_level is not None and evidence_level != kind:
+        raise ValueError(
+            f"{where}(): evidence_level={evidence_level!r} and kind={kind!r} disagree; "
+            "pass evidence_level only"
+        )
+    return evidence_level or kind
 
 
 _ALIASES = {"class_": "class"}

@@ -184,3 +184,42 @@ def test_the_unwrapped_job_routes_are_the_deprecated_ones() -> None:
 def test_only_known_endpoints_are_outside_the_contract() -> None:
     outside = {(e.method, e.path) for e in REGISTRY if not e.in_contract}
     assert outside == {("GET", "/health")}
+
+
+def test_tree_build_requires_a_key() -> None:
+    """2.88.0: every job needs an account; the anonymous security option is gone."""
+    security = _spec()["paths"]["/api/v1/tree/build"]["post"]["security"]
+    assert {} not in security and security == [{"PlasticDBKey": []}]
+
+
+@pytest.mark.parametrize(
+    ("path", "schema"),
+    [
+        ("/interactions", "EvidenceListFilters"),
+        ("/experiments", "ExperimentListFilters"),
+        ("/observations", "ObservationListFilters"),
+        ("/proteins", "ProteinListFilters"),
+    ],
+)
+def test_filters_match_the_contract_parameters(path: str, schema: str) -> None:
+    """Every SDK filter is a query parameter (and the evidence lists take no others)."""
+    from plasticdb.resources import _filters
+
+    operation = _spec()["paths"][PREFIX + path]["get"]
+    names = {p["name"] for p in operation["parameters"] if p["in"] == "query"}
+    keys = {k.rstrip("_") for k in _filters.keys_of(getattr(_filters, schema))}
+    assert keys <= names
+    if path != "/proteins":
+        assert names - keys == {"limit", "offset", "page", "release"}
+
+
+def test_protein_get_view_and_the_evidence_level_alias_are_in_the_contract() -> None:
+    spec = _spec()["paths"]
+    view = next(
+        p for p in spec["/api/v1/proteins/{accession}"]["get"]["parameters"] if p["name"] == "view"
+    )
+    assert view["schema"]["default"] == "summary"
+    params = {
+        p["name"]: p for p in spec["/api/v1/proteins/{accession}/interactions"]["get"]["parameters"]
+    }
+    assert "evidence_level" in params and params["kind"].get("deprecated") is True

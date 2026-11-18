@@ -354,11 +354,15 @@ def _polars_frame(pl: Any, rows: list[dict[str, Any]]) -> Any:
 
 
 class ProteinCollection(Collection[T]):
-    """``/proteins`` results. List items carry no sequence, so FASTA comes from the server.
+    """``/proteins`` results. Plain list items carry no sequence.
 
-    ``to_fasta()`` downloads ``/downloads/proteins.fasta`` once, with the same
-    filters (a pinned client: that release's whole FASTA, kept in the cache),
-    and keeps only the listed records, in list order.
+    ``to_fasta()`` and ``to_biopython()`` ask the server for the same list with
+    ``include_sequence=true`` (pinnable, so a pinned client gets that release's
+    sequences): one request series, no second download. A list created with
+    ``include_sequence=True`` already holds them. Against a server that ignores
+    ``include_sequence`` the sequences come from ``/downloads/proteins.fasta``
+    instead (same filters; a pinned client: that release's whole FASTA, kept in
+    the cache), keeping only the listed records, in list order.
     """
 
     def __init__(
@@ -372,10 +376,36 @@ class ProteinCollection(Collection[T]):
         self._fasta_endpoint = fasta_endpoint
         self._fasta_params = dict(fasta_params)
 
+    def _with_sequences(self) -> ProteinCollection[T]:
+        return ProteinCollection(
+            self._client,
+            self._endpoint,
+            self._model,
+            params={**self._params, "include_sequence": True},
+            page_size=self._page_size,
+            limit=self._limit,
+            fasta_endpoint=self._fasta_endpoint,
+            fasta_params=self._fasta_params,
+        )
+
     def _sequences(self) -> list[tuple[str, str | None, str]]:
-        items = self.all()
+        source = self if self._params.get("include_sequence") else self._with_sequences()
+        items = source.all()
         if not items:
             return []
+        if not any(getattr(item, "sequence", None) for item in items):
+            return self._sequences_from_download(items)
+        out = []
+        for item in items:
+            sequence = getattr(item, "sequence", None)
+            if sequence:
+                out.append((str(item.seq_id), _description(item), sequence))  # type: ignore[attr-defined]
+        missing = len(items) - len(out)
+        if missing:
+            log.info("PlasticDB: %d of %d records have no sequence", missing, len(items))
+        return out
+
+    def _sequences_from_download(self, items: list[T]) -> list[tuple[str, str | None, str]]:
         params = {} if self._client.release else self._fasta_params
         data = self._client._request(self._fasta_endpoint, params=params).data
         text = data.decode("utf-8") if isinstance(data, bytes) else str(data or "")

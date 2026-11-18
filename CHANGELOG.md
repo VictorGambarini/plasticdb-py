@@ -2,6 +2,38 @@
 
 ## Unreleased
 
+Server 2.88.0 and 2.89.0 (re-vendored SDK contract, fixtures captured live).
+Version 0.1.0 (not yet released).
+
+- **Behaviour change: `proteins.get()` defaults to `view="summary"`**, as the
+  server's `GET /proteins/{ref}` does since 2.89.0 (the SDK sent `full` before).
+  The summary leaves `interactions`, `indirect_interactions`, `variants`,
+  `kinetics` and `properties` empty and gives their sizes in `Protein.counts`
+  (`Protein.view` says which view you have); ask for `view="full"` to embed them
+  (up to 12.5 MB for a well-studied enzyme), or page them with
+  `proteins.interactions()`, `.variants()`, `.kinetics()`, `.properties()`.
+- New flat evidence lists across the whole database (all pinnable):
+  `client.evidence.interactions.list(**filters)` / `.get(id)`,
+  `client.evidence.experiments.list/get` and `client.evidence.observations.list/get`,
+  typed as `InteractionRecord`, `ExperimentRecord` and `ObservationRecord`, with
+  `to_pandas()` / `to_polars()`. Filters: `plastic` (+ `include_subtypes`),
+  `plastic_id`, `microorganism`, `protein`, `evidence_level`, `paper_id`, `doi`,
+  `polarity`, `evidence_method`, `substrate_form`, `measurement_type`,
+  `has_quantitative`; experiments also `interaction_id`, observations
+  `interaction_id` and `experiment_id`. The existing per-protein call
+  `client.evidence.interactions("PBFCTW")` keeps working unchanged (it is the same
+  object, now callable). CLI: `evidence interaction-records|experiments|observations`
+  and `evidence interaction|experiment|observation ID`.
+- `proteins.interactions(evidence_level=)` (`all`, `direct`, `indirect`) replaces
+  `kind=`, which still works but emits a `DeprecationWarning` and is never sent
+  together with `evidence_level`. CLI: `--evidence-level`; `--kind` is hidden and
+  deprecated.
+- `proteins.list(include_sequence=True)` (and `variants.list`) adds each item's
+  `sequence`. `to_fasta()` / `to_biopython()` of a protein list use it: one request
+  series instead of a second FASTA download, also on a pinned client (a server
+  that ignores the parameter falls back to the download).
+- `POST /tree/build` needs an API key (2.88.0): `jobs.build_tree()` always did;
+  the contract no longer lists an anonymous option, and a contract test pins it.
 - Zenodo DOI (10.5281/zenodo.24352328) in the README, docs and `CITATION.cff`.
 
 ## 0.0.1 (2026-11-19)

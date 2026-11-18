@@ -112,8 +112,11 @@ class Microorganism(MicroorganismSummary):
 class ProteinSummary(PlasticDBModel):
     """A ``/proteins`` list item (``ProteinListItem``): a wild type or an engineered variant.
 
-    List items carry no sequence: ``Collection.to_fasta()`` fetches them.
+    List items carry no ``sequence`` unless the list asked for
+    ``include_sequence=True`` (``to_fasta()`` does that itself).
     """
+
+    sequence: str | None = None
 
     id: int
     name: str
@@ -152,14 +155,27 @@ class ProteinSummary(PlasticDBModel):
         """The record's id in the server's FASTA downloads."""
         return protein_seq_id(self.accession, self.id, engineered=self.engineered)
 
+    def to_row(self) -> dict[str, Any]:
+        row = super().to_row()
+        if row.get("sequence") is None:
+            row.pop("sequence", None)  # no column unless the list asked for sequences
+        return row
+
     def _summary_columns(self) -> dict[str, Any]:
         return {**link_columns(self.degradation_links), **paper_columns(self.papers)}
 
 
 class Protein(ProteinSummary):
-    """One protein with its evidence (``GET /proteins/{accession}``)."""
+    """One protein (``GET /proteins/{accession}``), in the ``summary`` or ``full`` view.
 
-    sequence: str | None = None
+    ``view`` says which. The summary (the default) leaves ``interactions``,
+    ``indirect_interactions``, ``variants``, ``kinetics`` and ``properties``
+    empty and gives their sizes in ``counts``; ``view="full"`` fills the lists
+    (``counts`` is then empty).
+    """
+
+    view: str | None = None
+    counts: dict[str, int] = Field(default_factory=dict)
     gene: str | None = None
     database_name: str | None = None
     uniprot_protein_name: str | None = None

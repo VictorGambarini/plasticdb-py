@@ -1,0 +1,74 @@
+{
+  "status": 200,
+  "headers": {
+    "content-type": "application/json",
+    "x-plasticdb-release-source": "live"
+  },
+  "body": {
+    "total": 5171,
+    "items": [
+      {
+        "id": 6,
+        "paper_id": 1,
+        "plastic_id": 16,
+        "actor_type": "protein",
+        "result": "positive",
+        "strain_occurrence_id": null,
+        "microorganism_id": null,
+        "microorganism_accession": null,
+        "protein_id": 1,
+        "protein_accession": "PB24UZ",
+        "protein_variant_id": null,
+        "protein_variant_accession": null,
+        "credited_microorganism_id": 1,
+        "experimental_system": "cell_free_enzyme",
+        "enzyme_production_context": "heterologous",
+        "enzyme_preparation": "purified",
+        "strain_designation": null,
+        "genetic_background": null
+      },
+      {
+        "id": 8,
+        "paper_id": 1,
+        "plastic_id": 16,
+        "actor_type": "protein",
+        "result": "negative",
+        "strain_occurrence_id": null,
+        "microorganism_id": null,
+        "microorganism_accession": null,
+        "protein_id": 2,
+        "protein_accession": "PBNH5N",
+        "protein_variant_id": null,
+        "protein_variant_accession": null,
+        "credited_microorganism_id": 1,
+        "experimental_system": "cell_free_enzyme",
+        "enzyme_production_context": "heterologous",
+        "enzyme_preparation": "purified",
+        "strain_designation": null,
+        "genetic_background": null
+      },
+      {
+        "id": 9,
+        "paper_id": 2,
+        "plastic_id": 16,
+        "actor_type": "protein_variant",
+        "result": "positive",
+        "strain_occurrence_id": null,
+        "microorganism_id": null,
+        "microorganism_accession": null,
+        "protein_id": null,
+        "protein_accession": null,
+        "protein_variant_id": 1,
+        "protein_variant_accession": "PBVPYT",
+        "credited_microorganism_id": null,
+        "experimental_system": "cell_free_enzyme",
+        "enzyme_production_context": "heterologous",
+        "enzyme_preparation": "purified",
+        "strain_designation": null,
+        "genetic_background": null
+      }
+    ],
+    "offset": 0,
+    "limit": 3
+  }
+}

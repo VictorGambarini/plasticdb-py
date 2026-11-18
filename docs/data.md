@@ -39,8 +39,11 @@ client.releases.status()  # is a release being cut right now?
 
 ```python
 pet = client.proteins.list(plastic="PET", kind="wild_type")  # kind: wild_type | engineered | both
-p = client.proteins.get("PBFCTW", view="summary")  # summary omits the per-record evidence lists
-client.proteins.interactions("PBFCTW", kind="direct")  # direct | indirect | all
+p = client.proteins.get("PBFCTW")  # view="summary" (default): counts, no evidence lists
+full = client.proteins.get(
+    "PBFCTW", view="full"
+)  # embeds interactions, variants, kinetics, properties
+client.proteins.interactions("PBFCTW", evidence_level="direct")  # direct | indirect | all
 client.proteins.kinetics("PBFCTW")  # kcat, Km ... of the protein and its variants
 client.proteins.properties("PBFCTW")  # optimal pH/temperature, Tm, half-life
 client.proteins.variants("PBFCTW").to_fasta("variants.fasta")  # engineered variants, with sequences
@@ -49,6 +52,22 @@ client.proteins.structure("PBFCTW", "structures/")  # PDB (live only; pinned: do
 client.proteins.lineage("PBFCTW")  # parent plus every engineered variant (live only)
 client.proteins.engineered_parents()  # wild types that have variants (live only)
 ```
+
+`get()` returns the **summary** view unless you ask for `view="full"` (0.1.0; the
+server's own default since 2.89.0). The summary is the record without its
+evidence lists: `interactions`, `indirect_interactions`, `variants`, `kinetics`
+and `properties` are empty and their sizes are in `p.counts`
+(`p.counts["variants"]`); page them with `proteins.interactions()`,
+`.variants()`, `.kinetics()` and `.properties()`. `view="full"` embeds all of
+them in one response, which for a well-studied enzyme can be up to 12.5 MB.
+`p.view` says which you got.
+
+`proteins.interactions(accession, evidence_level=...)` takes `all`, `direct` or
+`indirect`; the old `kind=` still works but emits a `DeprecationWarning`.
+
+`proteins.list(include_sequence=True)` adds each item's `sequence`;
+`to_fasta()` and `to_biopython()` use it themselves (one request series, also on
+a pinned client) instead of downloading the FASTA separately.
 
 `get()` takes an accession or the numeric id, `follow_merges=True` to return a
 merge survivor instead of raising [`MergedError`](errors.md), and
@@ -114,9 +133,19 @@ client.papers.export(format="ris", path="papers.ris", plastic="PET")  # every ma
 
 ## `client.evidence`
 
-The evidence spine is interaction, then experiment, then observation.
+The evidence spine is interaction, then experiment, then observation. It is
+available per protein (nested) and, since 0.1.0, across the whole database as
+three flat tables that link by `interaction_id` and `experiment_id`:
 
 ```python
+# flat lists: every public record, ordered by id, pinnable
+client.evidence.interactions.list(plastic="PET", evidence_level="direct", protein="PBFCTW")
+client.evidence.interactions.get(7)  # InteractionRecord
+client.evidence.experiments.list(interaction_id=7)  # ExperimentRecord
+client.evidence.observations.list(plastic="PET", has_quantitative=True).to_pandas()
+client.evidence.observations.get(21)  # ObservationRecord
+
+# per protein, with experiments and observations nested
 ev = client.evidence.interactions("PBFCTW")
 ev.to_pandas(level="observation")  # level: interaction | experiment | observation
 client.evidence.kinetics("PBFCTW")
@@ -127,6 +156,20 @@ client.evidence.construct_structures(7)
 client.evidence.preparations(protein="PBFCTW")  # host, purification, tags; also preparation(id)
 client.evidence.experiment_preparations(123)
 ```
+
+The flat lists take `plastic` (+ `include_subtypes`), `plastic_id`,
+`microorganism`, `protein`, `evidence_level`, `paper_id`, `doi`, `polarity`,
+`evidence_method`, `substrate_form`, `measurement_type` and `has_quantitative`;
+experiments also take `interaction_id`, observations `interaction_id` and
+`experiment_id`. Interaction filters apply to a record's interaction; the
+experiment and observation filters ask one of its experiments to match them all.
+`evidence_level="direct"` or `"indirect"` needs `protein` or `microorganism`
+(the server answers 422 otherwise); `microorganism` matches the evidence that
+credits the organism, through its own assays or its enzymes'. The items are the
+release tables' columns, as `InteractionRecord`, `ExperimentRecord` and
+`ObservationRecord`; the per-protein call keeps its nested `Interaction`.
+The `{total, items, offset, limit}` envelope is handled by the usual
+[collection](api/collections.md) (500 per page, `page_size`, `limit`).
 
 Constructs and preparations take `protein`, `protein_id`, `protein_variant_id`,
 `paper_id` and `doi`; binding assays also `plastic`, `plastic_id` and

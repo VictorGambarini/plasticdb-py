@@ -435,6 +435,16 @@ FILTER_HELP = {
     "has_sequence": "Only records with (or without) a sequence.",
     "protein": "Protein accession.",
     "doi": "Paper DOI.",
+    "evidence_level": "all, direct (assayed on it) or indirect (via its organism or enzyme); "
+    "direct and indirect need --protein or --microorganism.",
+    "paper_id": "Paper id.",
+    "plastic_id": "Plastic id.",
+    "substrate_form": "Substrate form (film, powder, ...).",
+    "measurement_type": "What was measured (e.g. weight_loss).",
+    "has_quantitative": "Only records with (or without) a measured value.",
+    "interaction_id": "Only this interaction's records.",
+    "experiment_id": "Only this experiment's observations.",
+    "include_sequence": "Add each protein's sequence to the rows.",
 }
 
 
