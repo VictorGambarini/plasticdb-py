@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
 from collections.abc import Iterator
+from pathlib import Path
+from typing import Any
 
+import httpx
 import pytest
 import respx
 
@@ -39,3 +43,27 @@ def api(sleeps: list[float]) -> Iterator[respx.MockRouter]:
 def client(api: respx.MockRouter) -> Iterator[plasticdb.Client]:
     with plasticdb.Client() as c:
         yield c
+
+
+FIXTURES = Path(__file__).parent / "fixtures"
+
+
+def fixture(name: str) -> dict[str, Any]:
+    """A captured live response: ``{"status", "headers", "body"}`` (lists trimmed)."""
+    data: dict[str, Any] = json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))
+    return data
+
+
+def reply(name: str, **headers: str) -> httpx.Response:
+    """The captured response as an ``httpx.Response`` for a respx route."""
+    data = fixture(name)
+    merged = {k.lower(): v for k, v in {**data["headers"]}.items()}
+    merged.update({k.lower(): v for k, v in headers.items()})
+    body = data["body"]
+    if isinstance(body, str):
+        return httpx.Response(data["status"], text=body, headers=merged)
+    return httpx.Response(data["status"], json=body, headers=merged)
+
+
+def snapshot(release: str = "2026.30") -> dict[str, str]:
+    return {"X-PlasticDB-Release": release, "X-PlasticDB-Release-Source": "snapshot"}

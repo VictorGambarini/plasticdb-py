@@ -1,0 +1,89 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "items": [
+   {
+    "id": 357,
+    "protein_id": null,
+    "protein_variant_id": 1324,
+    "paper_id": 775,
+    "paper_ingestion_id": 2141,
+    "source_scope": "interactions[8]",
+    "local_key": "source_parent_reference",
+    "name": "Original deposited parent reference (6EQE)",
+    "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCSLEHHHHHH",
+    "sequence_role": "reference",
+    "sequence_frame": "pdb_chain",
+    "sequence_status": "reported",
+    "components": [],
+    "chains": [],
+    "coordinate_mappings": [],
+    "evidence_location": "Original approved extraction parent_protein/protein.accession_notes",
+    "evidence_text": "The paper cites no UniProt or GenBank accession for IsPETase. It identifies the enzyme only as IsPETase from Ideonella sakaiensis and cites PDB 6EQE (Austin et al. 2018, reference 24) for the wild-type structure, so sequence is the 6EQE SEQRES record verbatim (298 aa): the 290-residue IsPETase precursor followed by the crystallography construct's C-terminal LEHHHHHH tag.\nThe construct actually assayed in this paper is IsPETase residues 28-290 (signal peptide omitted, an initiator Met added) with a C-terminal His6 tag, codon-optimised for Escherichia coli and expressed from pET21a+; the full DNA sequences are printed in the Supplementary Methods of mmc1.pdf. The deposited record is stored here rather than the assayed construct, per the verbatim-sequence rule.\nResidue numbering throughout the paper (catalytic triad S160/D206/H237; mutations T116P, S121E, D186H, N233C, S238N, R280A, S282C, S290P) indexes this 6EQE frame from residue 1, verified residue by residue, so numbering_offset is 0 for every variant.",
+    "certainty": "high",
+    "provenance": {
+     "source_ingestion_id": 864,
+     "source_scope": "interactions[8]",
+     "source_parent_id": 890,
+     "source_parent_accession": "PB8V75",
+     "source_variant_id": 1330,
+     "source_variant_accession": "PB3GMY",
+     "original_actor": {
+      "parent_protein": {
+       "name": "IsPETase",
+       "gene": null,
+       "genbank_id": null,
+       "uniprot_accession": null,
+       "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCSLEHHHHHH",
+       "source_microorganism_name": "Pseudideonella sakaiensis",
+       "pdb_id": "6EQE",
+       "accession_notes": [
+        "The paper cites no UniProt or GenBank accession for IsPETase. It identifies the enzyme only as IsPETase from Ideonella sakaiensis and cites PDB 6EQE (Austin et al. 2018, reference 24) for the wild-type structure, so sequence is the 6EQE SEQRES record verbatim (298 aa): the 290-residue IsPETase precursor followed by the crystallography construct's C-terminal LEHHHHHH tag.",
+        "The construct actually assayed in this paper is IsPETase residues 28-290 (signal peptide omitted, an initiator Met added) with a C-terminal His6 tag, codon-optimised for Escherichia coli and expressed from pET21a+; the full DNA sequences are printed in the Supplementary Methods of mmc1.pdf. The deposited record is stored here rather than the assayed construct, per the verbatim-sequence rule."
+       ]
+      },
+      "variant_name": "TSP-Atto647N",
+      "variant_type": "fusion",
+      "sequence": null,
+      "pdb_id": null,
+      "engineering_method": "sortase A-mediated ligation of a fluorescent peptide onto a C-terminal LPETGG tag introduced by site-directed mutagenesis",
+      "numbering_scheme": "PDB 6EQE SEQRES precursor numbering",
+      "numbering_offset": 0,
+      "numbering_scheme_code": null,
+      "numbering_reference": null,
+      "synonyms": [],
+      "is_originating_paper": null,
+      "originating_doi": null,
+      "description": "TSP-PETase carrying a C-terminal LPETGG sortase recognition tag, onto which the fluorescent peptide GGGYK-C(Atto647N)-T(amide) was ligated by sortase A (about 98% tagged for the Atto647N conjugate). Built as a fluorescent tool for adsorption and single-molecule imaging on PET.",
+      "performance": "Degrades amorphous PET film; the paper cautions that the fluorescent tag may alter adsorption behaviour, and TSP-Atto647N showed the lowest adsorption of the active variants in solution-depletion experiments.",
+      "mutations": [
+       {
+        "wildtype_residue": "T",
+        "position": 116,
+        "mutant_residue": "P",
+        "raw": "T116P"
+       },
+       {
+        "wildtype_residue": "S",
+        "position": 121,
+        "mutant_residue": "E",
+        "raw": "S121E"
+       }
+      ],
+      "accession_notes": []
+     },
+     "migration_status": "proposed_not_applied",
+     "primary_source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10963241/"
+    },
+    "archived_reference": false
+   }
+  ],
+  "total": 1,
+  "offset": 0,
+  "limit": 1
+ }
+}

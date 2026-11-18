@@ -1,0 +1,36 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 2,
+  "items": [
+   {
+    "id": 1262,
+    "citation": "Shao, C., Shen, X., Long, J., Cui, Z., Chen, B., & Tan, T. (2027). Deep learning-driven synergistic engineering of PET hydrolase for post-consumer PET depolymerization. Synthetic and Systems Biotechnology, 15, 170-180. https://doi.org/10.1016/j.synbio.2026.06.003",
+    "title": "Deep Learning-driven synergistic engineering of PET hydrolase for post-consumer PET depolymerization.",
+    "doi": "10.1016/j.synbio.2026.06.003",
+    "year": 2027,
+    "authors": "Shao, C.; Shen, X.; Long, J.; Cui, Z.; Chen, B.; Tan, T.",
+    "journal": "Synthetic and Systems Biotechnology",
+    "corresponding_author_country": "China",
+    "updated_at": "2026-10-15T20:39:12.794792Z",
+    "pmid": "42433475"
+   },
+   {
+    "id": 1579,
+    "citation": "Xiao, R., Li, Y., Liu, P., & Chou, H. H. (2027). Synthetic microalgal–bacterial symbiotic system integrating oxidase-protease fusion enzyme for simultaneous removal of recalcitrant nitrogen-containing organic compounds and PET microplastics. Bioresource Technology, 463, 135685. https://doi.org/10.1016/j.biortech.2026.135685",
+    "title": "Synthetic microalgal-bacterial symbiotic system integrating oxidase-protease fusion enzyme for simultaneous removal of recalcitrant nitrogen-containing organic compounds and PET microplastics.",
+    "doi": "10.1016/j.biortech.2026.135685",
+    "year": 2027,
+    "authors": "Xiao, R.; Li, Y.; Liu, P.; Chou, H.H.",
+    "journal": "Bioresource Technology",
+    "corresponding_author_country": "China",
+    "updated_at": "2026-11-10T06:32:41.471985Z",
+    "pmid": "42628764"
+   }
+  ]
+ }
+}

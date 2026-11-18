@@ -1,0 +1,267 @@
+"""The evidence tables, and search, pathways and statistics."""
+
+from __future__ import annotations
+
+import builtins
+from typing import Any
+
+from typing_extensions import Unpack
+
+from .._endpoints import Endpoint
+from .._pagination import Collection, InteractionCollection
+from ..models import (
+    BindingAssay,
+    Construct,
+    GroupedSearch,
+    Interaction,
+    Kinetics,
+    Pathway,
+    PathwayGraph,
+    PathwaySummary,
+    Preparation,
+    Properties,
+    ProteinActivityStats,
+    SearchHit,
+    Stats,
+    StructureLink,
+)
+from ._base import Resource
+from ._filters import (
+    BindingAssayFilters,
+    InteractionKind,
+    MaterialFilters,
+    RowEvidenceScope,
+    check,
+)
+
+_BINDING_LIST = Endpoint("GET", "/binding-assays")
+_BINDING_GET = Endpoint("GET", "/binding-assays/{assay_id}")
+_CONSTRUCT_LIST = Endpoint("GET", "/constructs")
+_CONSTRUCT_GET = Endpoint("GET", "/constructs/{construct_id}")
+_CONSTRUCT_STRUCTURES = Endpoint("GET", "/constructs/{construct_id}/structures")
+_PREPARATION_LIST = Endpoint("GET", "/preparations")
+_PREPARATION_GET = Endpoint("GET", "/preparations/{preparation_id}")
+_EXPERIMENT_PREPARATIONS = Endpoint("GET", "/experiments/{experiment_id}/preparations")
+
+_SEARCH = Endpoint("GET", "/search", live_only=True)
+_SEARCH_GROUPED = Endpoint("GET", "/search/grouped", live_only=True)
+_AUTOCOMPLETE = Endpoint("GET", "/search/autocomplete", live_only=True)
+
+_PATHWAY_LIST = Endpoint("GET", "/pathways")
+_PATHWAY_GET = Endpoint("GET", "/pathways/{pathway_id}")
+_PATHWAYS_FOR_PLASTIC = Endpoint("GET", "/pathways/by-plastic/{plastic_id}")
+_PATHWAY_GRAPH = Endpoint("GET", "/pathways/by-plastic/{plastic_id}/graph")
+
+_STATS = Endpoint("GET", "/stats", live_only=True)
+_STATS_ACTIVITY = Endpoint("GET", "/stats/protein-activity", live_only=True)
+_STATS_CHARTS = Endpoint("GET", "/stats/charts", live_only=True)
+_STATS_COUNTRY = Endpoint("GET", "/stats/by-country", live_only=True)
+
+
+class Evidence(Resource):
+    """The evidence behind the catalogue.
+
+    Evidence is organised interaction -> experiment -> observation (see
+    :class:`~plasticdb.models.Interaction`). Interactions are listed per protein
+    (and embedded in every organism, plastic and paper record);
+    ``interactions(...).to_pandas(level="observation")`` gives one row per
+    measured value. The material tables describe what was assayed: constructs
+    (sequences as expressed), preparations (host, purification, tags) and
+    binding assays.
+    """
+
+    def interactions(
+        self,
+        protein: str,
+        *,
+        kind: InteractionKind = "all",
+        include_sequenceless: bool = False,
+        page_size: int | None = None,
+        limit: int | None = None,
+    ) -> InteractionCollection[Interaction]:
+        """A protein's interactions, each with its experiments and observations."""
+        return self._client.proteins.interactions(
+            protein,
+            kind=kind,
+            include_sequenceless=include_sequenceless,
+            page_size=page_size,
+            limit=limit,
+        )
+
+    def kinetics(
+        self, protein: str, *, page_size: int | None = None, limit: int | None = None
+    ) -> Collection[Kinetics]:
+        """Kinetic parameters of a protein and its variants."""
+        return self._client.proteins.kinetics(protein, page_size=page_size, limit=limit)
+
+    def properties(
+        self, protein: str, *, page_size: int | None = None, limit: int | None = None
+    ) -> Collection[Properties]:
+        """Stability and activity properties of a protein and its variants."""
+        return self._client.proteins.properties(protein, page_size=page_size, limit=limit)
+
+    def binding_assays(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[BindingAssayFilters],
+    ) -> Collection[BindingAssay]:
+        """Binding (adsorption) assays, filtered by protein, paper or plastic."""
+        params = check(filters, BindingAssayFilters, "evidence.binding_assays")
+        return Collection(
+            self._client,
+            _BINDING_LIST,
+            BindingAssay,
+            params=params,
+            page_size=page_size,
+            limit=limit,
+        )
+
+    def binding_assay(self, assay_id: int) -> BindingAssay:
+        data = self._client._request(_BINDING_GET, assay_id=assay_id).data
+        return BindingAssay.model_validate(data)
+
+    def constructs(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[MaterialFilters],
+    ) -> Collection[Construct]:
+        """Expressed constructs (they carry sequences: ``.to_fasta()`` works)."""
+        params = check(filters, MaterialFilters, "evidence.constructs")
+        return Collection(
+            self._client,
+            _CONSTRUCT_LIST,
+            Construct,
+            params=params,
+            page_size=page_size,
+            limit=limit,
+        )
+
+    def construct(self, construct_id: int) -> Construct:
+        data = self._client._request(_CONSTRUCT_GET, construct_id=construct_id).data
+        return Construct.model_validate(data)
+
+    def construct_structures(self, construct_id: int) -> builtins.list[StructureLink]:
+        """The structures linked to one construct."""
+        data = self._client._request(_CONSTRUCT_STRUCTURES, construct_id=construct_id).data
+        return [StructureLink.model_validate(item) for item in _items(data)]
+
+    def preparations(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[MaterialFilters],
+    ) -> Collection[Preparation]:
+        """Prepared materials (expression host, purification, tags, modifications)."""
+        params = check(filters, MaterialFilters, "evidence.preparations")
+        return Collection(
+            self._client,
+            _PREPARATION_LIST,
+            Preparation,
+            params=params,
+            page_size=page_size,
+            limit=limit,
+        )
+
+    def preparation(self, preparation_id: int) -> Preparation:
+        data = self._client._request(_PREPARATION_GET, preparation_id=preparation_id).data
+        return Preparation.model_validate(data)
+
+    def experiment_preparations(self, experiment_id: int) -> builtins.list[Preparation]:
+        """The preparations one experiment assayed."""
+        data = self._client._request(_EXPERIMENT_PREPARATIONS, experiment_id=experiment_id).data
+        return [Preparation.model_validate(item) for item in _items(data)]
+
+
+def _items(data: Any) -> builtins.list[Any]:
+    if isinstance(data, dict):
+        return list(data.get("items") or [])
+    return list(data or [])
+
+
+class Search(Resource):
+    """Full-text search across every record type (live only).
+
+    ``client.search("PETase")`` returns ranked hits. A past release cannot be
+    searched: a pinned client gets :class:`~plasticdb.errors.LiveOnlyError`.
+    """
+
+    def __call__(
+        self, q: str, *, page_size: int | None = None, limit: int | None = None
+    ) -> Collection[SearchHit]:
+        return Collection(
+            self._client,
+            _SEARCH,
+            SearchHit,
+            params={"q": q},
+            page_size=page_size or 20,
+            limit=limit,
+        )
+
+    def grouped(self, q: str, *, limit: int = 10) -> GroupedSearch:
+        """The top ``limit`` hits (at most 100) for each record type."""
+        data = self._client._request(_SEARCH_GROUPED, params={"q": q, "limit": limit}).data
+        return GroupedSearch.model_validate(data)
+
+    def autocomplete(self, q: str) -> dict[str, list[SearchHit]]:
+        """Name suggestions per record type, as the site's search box shows them."""
+        data = self._client._request(_AUTOCOMPLETE, params={"q": q}).data or {}
+        return {
+            kind: [SearchHit.model_validate({"entity_type": kind, **hit}) for hit in hits]
+            for kind, hits in data.items()
+            if isinstance(hits, list)
+        }
+
+
+class Pathways(Resource):
+    """Curated degradation pathways."""
+
+    def list(
+        self, *, page_size: int | None = None, limit: int | None = None
+    ) -> Collection[PathwaySummary]:
+        return Collection(
+            self._client, _PATHWAY_LIST, PathwaySummary, page_size=page_size, limit=limit
+        )
+
+    def get(self, pathway_id: int) -> Pathway:
+        """One pathway with its ordered reaction steps."""
+        data = self._client._request(_PATHWAY_GET, pathway_id=pathway_id).data
+        return Pathway.model_validate(data)
+
+    def for_plastic(self, plastic_id: int) -> builtins.list[Pathway]:
+        """Every pathway that degrades one plastic."""
+        data = self._client._request(_PATHWAYS_FOR_PLASTIC, plastic_id=plastic_id).data
+        return [Pathway.model_validate(item) for item in data or []]
+
+    def graph(self, plastic_id: int, *, pathway_id: int | None = None) -> PathwayGraph:
+        """A plastic's pathways as a graph of compounds and reactions."""
+        data = self._client._request(
+            _PATHWAY_GRAPH, params={"pathway_id": pathway_id}, plastic_id=plastic_id
+        ).data
+        return PathwayGraph.model_validate(data)
+
+
+class StatsResource(Resource):
+    """Summary statistics of the live database (live only)."""
+
+    def summary(self, *, evidence_scope: RowEvidenceScope = "organism_or_enzyme") -> Stats:
+        """Headline counts: proteins, microorganisms, plastics, papers, pathways."""
+        data = self._client._request(_STATS, params={"evidence_scope": evidence_scope}).data
+        return Stats.model_validate(data)
+
+    def protein_activity(self) -> ProteinActivityStats:
+        """How many proteins degrade, fail to degrade, or are untested."""
+        return ProteinActivityStats.model_validate(self._client._request(_STATS_ACTIVITY).data)
+
+    def charts(self, *, evidence_scope: RowEvidenceScope = "organism_or_enzyme") -> dict[str, Any]:
+        """The data behind the site's statistics charts."""
+        data = self._client._request(_STATS_CHARTS, params={"evidence_scope": evidence_scope})
+        return dict(data.data or {})
+
+    def by_country(self) -> dict[str, Any]:
+        """Record counts by the corresponding author's country."""
+        return dict(self._client._request(_STATS_COUNTRY).data or {})

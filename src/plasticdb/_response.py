@@ -90,6 +90,15 @@ def merge_target(response: httpx.Response) -> dict[str, Any] | None:
     return None
 
 
+def _requested(response: httpx.Response) -> str:
+    """The accession segment of a ``/proteins/{accession}[/...]`` request."""
+    parts = [p for p in response.request.url.path.split("/") if p]
+    try:
+        return parts[parts.index("proteins") + 1]
+    except (ValueError, IndexError):
+        return ""
+
+
 def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
     """Map a non-success response onto the exception hierarchy."""
     status = response.status_code
@@ -106,10 +115,18 @@ def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
     merged = merge_target(response)
     if merged is not None:
         target = merged["accession"]
+        location = merged.get("location") or response.headers.get("location")
+        if merged.get("kind") == "engineered" and _requested(response).upper() == target.upper():
+            return errors.EngineeredVariantError(
+                f"{target} is an engineered variant: use client.variants.get({target!r})",
+                accession=target,
+                location=location,
+                **common,
+            )
         return errors.MergedError(
             f"This accession was merged into {target}",
             merged_into=target,
-            location=merged.get("location") or response.headers.get("location"),
+            location=location,
             kind=merged.get("kind"),
             **common,
         )
@@ -153,6 +170,10 @@ def error_from_response(response: httpx.Response) -> errors.PlasticDBError:
         422: errors.ValidationError,
         503: errors.ServiceUnavailableError,
     }
+    if status == 503:
+        return errors.ServiceUnavailableError(
+            message, retry_after=parse_retry_after(response.headers.get("retry-after")), **common
+        )
     if status in simple:
         return simple[status](message, **common)
     if status >= 500:

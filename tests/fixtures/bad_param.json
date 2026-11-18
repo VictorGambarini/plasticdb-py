@@ -1,0 +1,23 @@
+{
+ "status": 422,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "detail": [
+   {
+    "type": "literal_error",
+    "loc": [
+     "query",
+     "sort_by"
+    ],
+    "msg": "Input should be 'year', 'name', 'accession', 'id', 'plasticdb_id' or 'genbank_id'",
+    "input": "nope",
+    "ctx": {
+     "expected": "'year', 'name', 'accession', 'id', 'plasticdb_id' or 'genbank_id'"
+    }
+   }
+  ]
+ }
+}

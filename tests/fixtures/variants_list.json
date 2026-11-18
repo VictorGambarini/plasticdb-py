@@ -1,0 +1,174 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 2,
+  "items": [
+   {
+    "activity_class": "degrader",
+    "id": 4271,
+    "kind": "engineered",
+    "variant_type": "fusion",
+    "parent_accession": "PB6JCU",
+    "plasticdb_id": null,
+    "accession": "PBDTZX",
+    "name": "Dm-TA-ΔLCC",
+    "genbank_id": null,
+    "has_signal_peptide": null,
+    "uniprot_accession": null,
+    "pdb_id": null,
+    "ec_number": null,
+    "source_microorganism": {
+     "id": 1384,
+     "name": "uncultured bacterium",
+     "tax_id": 77133,
+     "accession": "PB8E7A",
+     "taxonomy_status": "resolved",
+     "taxonomy_cause": null,
+     "taxonomy_note": null,
+     "growth_temp_opt": null,
+     "oxygen_requirement": null,
+     "degradation_links": [],
+     "paper": null,
+     "papers": [],
+     "assay_temp_min": null,
+     "assay_temp_max": null,
+     "environments": [],
+     "locations": [],
+     "strain_designations": [],
+     "updated_at": "2026-09-23T14:26:33.069399Z"
+    },
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 16,
+       "name": "PET",
+       "abbreviation": "PET"
+      },
+      "result": "positive",
+      "methods": [
+       "enzyme_assay",
+       "hplc"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     }
+    ],
+    "paper": {
+     "id": 1598,
+     "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+     "title": "Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity.",
+     "doi": "10.1016/j.ibmb.2026.104683",
+     "year": 2027,
+     "authors": "Pirillo, V.; Barca, F.; Bruno, D.; Caramella, S.; Fontana, C.; Battistolli, M.; Catelan-Carphio, E.; Roma, D.; Casartelli, M.; Caccia, S.; Grapputo, A.; Tettamanti, G.; Molla, G.; Sandrelli, F.",
+     "journal": "Insect Biochemistry and Molecular Biology",
+     "corresponding_author_country": "Italy"
+    },
+    "papers": [],
+    "year": 2027,
+    "best_kcat_km": null,
+    "best_kcat_km_unit": null,
+    "updated_at": "2026-11-13T14:19:53.370162Z"
+   },
+   {
+    "activity_class": "degrader",
+    "id": 4237,
+    "kind": "engineered",
+    "variant_type": "engineered",
+    "parent_accession": "PBHX9D",
+    "plasticdb_id": null,
+    "accession": "PBA6AU",
+    "name": "MoPE D153G",
+    "genbank_id": null,
+    "has_signal_peptide": null,
+    "uniprot_accession": null,
+    "pdb_id": null,
+    "ec_number": null,
+    "source_microorganism": {
+     "id": 2523,
+     "name": "Moraxella sp.",
+     "tax_id": 479,
+     "accession": "PB3MB4",
+     "taxonomy_status": "resolved",
+     "taxonomy_cause": null,
+     "taxonomy_note": null,
+     "growth_temp_opt": null,
+     "oxygen_requirement": null,
+     "degradation_links": [],
+     "paper": null,
+     "papers": [],
+     "assay_temp_min": null,
+     "assay_temp_max": null,
+     "environments": [],
+     "locations": [],
+     "strain_designations": [],
+     "updated_at": "2026-09-23T14:26:33.069399Z"
+    },
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 49,
+       "name": "PBAT",
+       "abbreviation": "PBAT"
+      },
+      "result": "positive",
+      "methods": [
+       "hplc"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     },
+     {
+      "plastic": {
+       "id": 19,
+       "name": "PCL",
+       "abbreviation": "PCL"
+      },
+      "result": "positive",
+      "methods": [
+       "hplc"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     }
+    ],
+    "paper": {
+     "id": 1589,
+     "citation": "Makryniotis, K., Karampa, P., Dimarogona, M., Nikolaivits, E., & Topakas, E. (2027). Rational mutagenesis reveals substrate-specific activity shifts in the Antarctic polyesterase MoPE. Enzyme and Microbial Technology, 202, 110971. https://doi.org/10.1016/j.enzmictec.2026.110971",
+     "title": "Rational mutagenesis reveals substrate-specific activity shifts in the Antarctic polyesterase MoPE.",
+     "doi": "10.1016/j.enzmictec.2026.110971",
+     "year": 2027,
+     "authors": "Makryniotis, K.; Karampa, P.; Dimarogona, M.; Nikolaivits, E.; Topakas, E.",
+     "journal": "Enzyme and Microbial Technology",
+     "corresponding_author_country": "Greece"
+    },
+    "papers": [],
+    "year": 2027,
+    "best_kcat_km": null,
+    "best_kcat_km_unit": null,
+    "updated_at": "2026-11-13T14:18:51.404231Z"
+   }
+  ]
+ }
+}

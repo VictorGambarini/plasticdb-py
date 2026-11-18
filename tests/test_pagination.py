@@ -37,9 +37,15 @@ def test_iterates_every_page(api: respx.MockRouter, client: plasticdb.Client) ->
 def test_limit_caps_items_and_requests(api: respx.MockRouter, client: plasticdb.Client) -> None:
     route = api.get("/releases").mock(side_effect=_pager)
     releases = client.releases.list(page_size=2, limit=3)
-    assert [r.promoted_proteins for r in releases.all()] == [0, 1, 2]
+    assert [r.promoted_proteins for r in releases] == [0, 1, 2]
     assert len(releases) == 3
     assert [c.request.url.params["limit"] for c in route.calls] == ["2", "1"]
+
+
+def test_all_uses_the_largest_page(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    route = api.get("/releases").mock(side_effect=_pager)
+    assert len(client.releases.list(page_size=2, limit=3).all()) == 3
+    assert [c.request.url.params["limit"] for c in route.calls] == ["3"]
 
 
 def test_first(api: respx.MockRouter, client: plasticdb.Client) -> None:
@@ -91,7 +97,7 @@ def test_release_change_mid_iteration_warns(
         return response
 
     api.get("/releases").mock(side_effect=handler)
-    client.releases.list(page_size=2).all()
+    list(client.releases.list(page_size=2))
     assert "release changed from 2026.35 to 2026.36" in caplog.text
 
 
@@ -104,6 +110,8 @@ def test_to_pandas(api: respx.MockRouter, client: plasticdb.Client) -> None:
 
 
 def _block(monkeypatch: pytest.MonkeyPatch, name: str) -> None:
+    import sys
+
     real_import = builtins.__import__
 
     def fake_import(module: str, *args: Any, **kwargs: Any) -> Any:
@@ -112,7 +120,8 @@ def _block(monkeypatch: pytest.MonkeyPatch, name: str) -> None:
         return real_import(module, *args, **kwargs)
 
     monkeypatch.setattr(builtins, "__import__", fake_import)
-    monkeypatch.delitem(__import__("sys").modules, name, raising=False)
+    # A None entry makes importlib.import_module raise ImportError too.
+    monkeypatch.setitem(sys.modules, name, None)
 
 
 @pytest.mark.parametrize(

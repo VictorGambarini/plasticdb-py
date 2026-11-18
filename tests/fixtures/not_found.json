@@ -1,0 +1,10 @@
+{
+ "status": 404,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "detail": "Protein not found"
+ }
+}

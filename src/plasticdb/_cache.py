@@ -83,11 +83,76 @@ class ResponseCache:
         except OSError:
             return
 
+    def get_file(self, release: str, key: str) -> tuple[int, httpx.Headers, Path] | None:
+        """A cached download: its status, headers and the path of its verified body."""
+        meta_path, body_path = self._paths(release, key)
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            size = body_path.stat().st_size
+        except (OSError, ValueError):
+            return None
+        if meta.get("format") != _FORMAT or meta.get("size") != size:
+            return None
+        try:
+            digest = sha256_file(body_path)
+        except OSError:
+            return None
+        if digest != meta.get("sha256"):
+            return None
+        return int(meta["status"]), httpx.Headers(meta.get("headers") or {}), body_path
+
+    def put_file(
+        self,
+        release: str,
+        key: str,
+        *,
+        source: Path,
+        status: int,
+        headers: httpx.Headers,
+        url: str,
+        sha256: str,
+    ) -> None:
+        """Keep a copy of a downloaded file (already hashed as ``sha256``)."""
+        import shutil
+
+        meta_path, body_path = self._paths(release, key)
+        kept = {name: headers[name] for name in _KEPT_HEADERS if name in headers}
+        meta = {
+            "format": _FORMAT,
+            "status": status,
+            "url": url,
+            "headers": kept,
+            "size": source.stat().st_size,
+            "sha256": sha256,
+        }
+        try:
+            meta_path.parent.mkdir(parents=True, exist_ok=True)
+            fd, tmp = tempfile.mkstemp(dir=body_path.parent, prefix=".tmp-")
+            os.close(fd)
+            try:
+                shutil.copyfile(source, tmp)
+                os.replace(tmp, body_path)
+            except BaseException:
+                with contextlib.suppress(OSError):
+                    os.unlink(tmp)
+                raise
+            _atomic_write(meta_path, json.dumps(meta, indent=1).encode())
+        except OSError:
+            return
+
     def clear(self, release: str | None = None) -> None:
         import shutil
 
         target = self.directory / _SAFE.sub("_", release) if release else self.directory
         shutil.rmtree(target, ignore_errors=True)
+
+
+def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for block in iter(lambda: fh.read(chunk), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def _atomic_write(path: Path, data: bytes) -> None:

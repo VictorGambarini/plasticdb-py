@@ -1,0 +1,21 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": [
+  {
+   "id": 143,
+   "name": "(PCL)2-b-PEG-b-(PCL)2"
+  },
+  {
+   "id": 126,
+   "name": "ABS"
+  },
+  {
+   "id": 127,
+   "name": "ABS/SAN blend"
+  }
+ ]
+}

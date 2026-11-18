@@ -1,0 +1,12 @@
+{
+ "status": 404,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "detail": "No release 2026.99",
+  "release": "2026.99",
+  "reason": "unknown"
+ }
+}
