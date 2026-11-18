@@ -78,6 +78,7 @@ PINNED_READS: list[tuple[str, str, Callable[[plasticdb.Client], Any]]] = [
     ("/preparations", "preparations", lambda c: c.evidence.preparations().all()),
     ("/variants/PBDTZX", "variant", lambda c: c.variants.get("PBDTZX")),
     ("/variants/PBDTZX/fasta", "fasta_one", lambda c: c.variants.fasta("PBDTZX")),
+    ("/proteins/PBFCTW/fasta", "fasta_one", lambda c: c.proteins.fasta("PBFCTW")),
 ]
 
 
@@ -106,7 +107,6 @@ LIVE_ONLY_CALLS: list[tuple[str, Callable[[plasticdb.Client], Any]]] = [
     ("/stats/protein-activity", lambda c: c.stats.protein_activity()),
     ("/changes", lambda c: c.changes("2026-01-01").all()),
     ("/variants/PBDTZX/structure", lambda c: c.variants.structure("PBDTZX")),
-    ("/proteins/PBFCTW/fasta", lambda c: c.proteins.fasta("PBFCTW")),
     ("/proteins/PBFCTW/structure", lambda c: c.proteins.structure("PBFCTW")),
     ("/plastics/names", lambda c: c.plastics.names()),
     ("/microorganisms/names", lambda c: c.microorganisms.names()),

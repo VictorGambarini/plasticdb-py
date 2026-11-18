@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Server 2.87.1: `proteins.fasta()` is pinnable (served from the release snapshot;
+  a ref not in the pinned release is a plain `NotFoundError`, no merge
+  redirect). Contract re-vendored; a job download 410 with `reason: "expired"`
+  is `ResultsExpiredError`, one without (an expired share link) is `GoneError`.
 - Server 2.86.0 and 2.87.0 (re-vendored SDK contract, fixtures re-captured live):
   - Job submissions, tree builds and share links send an `Idempotency-Key` (a
     new UUID per call, or `idempotency_key=` / `--idempotency-key`), the same on
