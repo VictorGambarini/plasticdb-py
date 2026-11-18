@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.0.1 (2026-11-19)
 
 - Server 2.87.1: `proteins.fasta()` is pinnable (served from the release snapshot;
   a ref not in the pinned release is a plain `NotFoundError`, no merge
@@ -133,7 +133,7 @@
   contract's 409s; the contract test also fails on an operation the SDK
   neither wraps nor lists as deliberately unwrapped.
 
-## 0.0.1 (unreleased)
+### Foundation
 
 - First release: `Client` with API-key auth, release pinning (`?release=`),
   retries honouring `Retry-After`, a typed exception hierarchy, provenance,
