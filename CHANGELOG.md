@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Zenodo DOI (10.5281/zenodo.24352328) in the README, docs and `CITATION.cff`.
+
 ## 0.0.1 (2026-11-19)
 
 - Server 2.87.1: `proteins.fasta()` is pinnable (served from the release snapshot;

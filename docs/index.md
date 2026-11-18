@@ -1,5 +1,8 @@
 # plasticdb
 
+[![PyPI](https://img.shields.io/pypi/v/plasticdb.svg)](https://pypi.org/project/plasticdb/)
+[![DOI](https://zenodo.org/badge/1461059795.svg)](https://doi.org/10.5281/zenodo.24352328)
+
 Python client and command-line tool for [PlasticDB](https://v2.plasticdb.org): a
 curated database of microorganisms and proteins linked to plastic
 biodegradation, and the evidence behind each link (paper, experiment,
@@ -56,6 +59,11 @@ print(plasticdb.Client(release="2026.50").cite())  # dataset release (with its D
 ```
 
 On the command line: `plasticdb cite --release 2026.50 --format bibtex`.
+
+To cite this software itself (e.g. in a methods section), use its Zenodo DOI
+[10.5281/zenodo.24352328](https://doi.org/10.5281/zenodo.24352328) (all versions;
+each release also has its own DOI on Zenodo) or GitHub's "Cite this repository",
+which reads `CITATION.cff`.
 
 To cite the software itself, use the repository's
 [`CITATION.cff`](https://github.com/VictorGambarini/plasticdb-py/blob/main/CITATION.cff)
