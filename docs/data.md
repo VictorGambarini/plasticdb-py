@@ -154,8 +154,8 @@ client.pathways.graph(16).to_networkx()  # compounds and reactions as a graph
 ## `client.stats` (live only)
 
 ```python
-client.stats.summary()  # headline counts; evidence_scope="enzyme_only" counts organisms
-                        # credited only through an enzyme
+client.stats.summary()  # headline counts
+client.stats.summary(evidence_scope="enzyme_only")  # organisms credited only via an enzyme
 client.stats.protein_activity()  # degrade / do not degrade / untested
 client.stats.charts()  # the data behind the website's charts
 client.stats.by_country()
