@@ -334,6 +334,7 @@ def test_submit_pathway_target_plastic_and_idempotency_key(
     assert request.headers["idempotency-key"] == "run-7"
     assert b'name="target_plastic"\r\n\r\nPLA' in request.content
     assert "already submitted" in result.stderr
+    assert "Submitted" not in result.stderr
 
 
 def test_submit_annotate_list_field_separator(api: respx.MockRouter, keyed: None) -> None:

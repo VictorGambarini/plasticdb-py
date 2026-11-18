@@ -35,6 +35,7 @@ Version 0.1.0 (not yet released).
 - `POST /tree/build` needs an API key (2.88.0): `jobs.build_tree()` always did;
   the contract no longer lists an anonymous option, and a contract test pins it.
 - Zenodo DOI (10.5281/zenodo.24352328) in the README, docs and `CITATION.cff`.
+- Fixed: `jobs submit --idempotency-key` on a replay prints only the "already submitted" line, no longer also "Submitted ... job".
 
 ## 0.0.1 (2026-11-19)
 
