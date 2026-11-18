@@ -57,3 +57,16 @@ jobs:
           python -m venv /tmp/wheel-env
           /tmp/wheel-env/bin/pip install dist/*.whl
           /tmp/wheel-env/bin/python -c "import plasticdb; print(plasticdb.__version__)"
+      - name: Without the cli extra, the script says which extra to install
+        run: |
+          set +e
+          /tmp/wheel-env/bin/plasticdb --help 2> err.txt
+          code=$?
+          set -e
+          test "$code" -eq 1
+          grep -F "plasticdb[cli]" err.txt
+      - name: With the cli extra, the script runs
+        run: |
+          /tmp/wheel-env/bin/pip install "$(ls dist/*.whl)[cli]"
+          /tmp/wheel-env/bin/plasticdb --version
+          /tmp/wheel-env/bin/python -m plasticdb --help

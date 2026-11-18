@@ -39,12 +39,22 @@ def resolve_target(dest: str | os.PathLike[str], headers: httpx.Headers, default
     return path
 
 
+def default_mode(path: str | os.PathLike[str]) -> None:
+    """Give a ``mkstemp`` file (0600) the mode a new file gets: 0666 less the umask."""
+    if os.name != "posix":
+        return
+    mask = os.umask(0)
+    os.umask(mask)
+    os.chmod(path, 0o666 & ~mask)
+
+
 def _place(source: Path, target: Path) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     fd, tmp = tempfile.mkstemp(dir=target.parent, prefix=f".{target.name}.")
     os.close(fd)
     try:
         shutil.copyfile(source, tmp)
+        default_mode(tmp)
         os.replace(tmp, target)
     except BaseException:
         with contextlib.suppress(OSError):
@@ -101,6 +111,7 @@ def stream_to_file(
                     status_code=response.status_code,
                     response=response,
                 )
+            default_mode(tmp)
             os.replace(tmp, target)
         except httpx.TransportError as exc:
             with contextlib.suppress(OSError):

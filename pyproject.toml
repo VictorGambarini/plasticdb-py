@@ -38,6 +38,11 @@ bio = ["biopython>=1.81"]
 cli = ["typer>=0.12"]
 all = ["plasticdb[pandas,polars,bio,cli]"]
 
+[project.scripts]
+# The script is always installed (entry points cannot depend on an extra); without
+# plasticdb[cli] it says which extra to install.
+plasticdb = "plasticdb.cli:main"
+
 [project.urls]
 Homepage = "https://v2.plasticdb.org"
 Source = "https://github.com/VictorGambarini/plasticdb-py"
@@ -53,6 +58,7 @@ dev = [
     "mypy>=1.10",
     "build>=1.2",
     "twine>=5",
+    "typer>=0.12",
 ]
 
 [tool.hatch.version]
