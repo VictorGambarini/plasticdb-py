@@ -50,24 +50,35 @@ client.proteins.lineage("PBFCTW")  # parent plus every engineered variant (live 
 client.proteins.engineered_parents()  # wild types that have variants (live only)
 ```
 
-`get()` takes `follow_merges=True` to return a merge survivor instead of raising
-[`MergedError`](errors.md), and `include_sequenceless=True` for records without
-a sequence. An engineered variant's accession returns a `Variant`.
+`get()` takes an accession or the numeric id, `follow_merges=True` to return a
+merge survivor instead of raising [`MergedError`](errors.md), and
+`include_sequenceless=True` for records without a sequence. An engineered
+variant's accession returns a `Variant` (and `fasta()` / `structure()` the
+variant's); the per-protein collections raise `EngineeredVariantError` for one.
+A withdrawn record raises `GoneError` (`.reason == "withdrawn"`).
 
 ## `client.variants`
 
 ```python
 client.variants.list(plastic="PET")  # the protein filters; kind is fixed to engineered
-client.variants.get("PBXXXX")  # (live only)
+client.variants.get("PBXXXX")  # accession or numeric id
 client.variants.of("PBFCTW")  # same as proteins.variants()
-client.variants.fasta("PBXXXX")  # (live only)
+client.variants.fasta("PBXXXX")
+client.variants.structure("PBXXXX")  # (live only)
 ```
+
+A pinned client reads a variant (and its FASTA) from the release's snapshot: a
+variant the release did not contain is a `NotFoundError` (no merge redirect
+there), `include_sequenceless=True` is an `UnsupportedFilterError`, and the
+fields the snapshot cannot fill are served empty and named in
+`client.last_response.unavailable_fields`.
 
 ## `client.microorganisms`
 
 ```python
 client.microorganisms.list(genus="Pseudomonas", plastic="PET").to_polars()
 client.microorganisms.get(1547922)  # NCBI tax-id, or a PB... accession
+client.microorganisms.get(1547922, evidence_scope="enzyme_only")  # only its enzymes' evidence
 client.microorganisms.get(1547922, evidence_scope="whole_organism")
 client.microorganisms.names()  # every {id, name} (live only)
 client.microorganisms.lineage_levels(domain="Bacteria")  # taxon names per rank (live only)
@@ -144,6 +155,7 @@ client.pathways.graph(16).to_networkx()  # compounds and reactions as a graph
 
 ```python
 client.stats.summary()  # headline counts
+client.stats.summary(evidence_scope="enzyme_only")  # organisms credited only via an enzyme
 client.stats.protein_activity()  # degrade / do not degrade / untested
 client.stats.charts()  # the data behind the website's charts
 client.stats.by_country()

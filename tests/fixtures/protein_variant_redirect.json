@@ -7,7 +7,8 @@
  },
  "body": {
   "accession": "PBDTZX",
+  "location": "/api/v1/variants/PBDTZX",
   "kind": "engineered",
-  "location": "/api/v1/variants/PBDTZX"
+  "reason": "engineered_variant"
  }
 }

@@ -28,6 +28,10 @@ class Endpoint:
     still listed, so the contract test can see them).
     ``raw_params`` are path parameters that may contain ``/``.
     ``root`` resolves the path against the server root instead of ``/api/v1``.
+    ``idempotency`` marks a create operation that honours an ``Idempotency-Key``
+    header: the client sends one with every attempt, so a ``POST`` there is
+    retried like a ``GET``. ``retry_safe`` marks a ``POST`` that creates nothing
+    (a synchronous search), so it is retried like a ``GET`` too.
     """
 
     method: str
@@ -37,6 +41,8 @@ class Endpoint:
     in_contract: bool = True
     raw_params: tuple[str, ...] = ()
     root: bool = False
+    idempotency: bool = False
+    retry_safe: bool = False
 
     def __post_init__(self) -> None:
         if self.live_only and not self.pinnable:

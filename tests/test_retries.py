@@ -70,13 +70,39 @@ def test_retries_exhausted(api: respx.MockRouter, sleeps: list[float]) -> None:
     assert len(sleeps) == 2
 
 
-def test_post_not_retried_on_5xx(
+def test_anonymous_post_not_retried_on_5xx(
     api: respx.MockRouter, client: plasticdb.Client, sleeps: list[float]
 ) -> None:
+    """Without a credential the server ignores Idempotency-Key, so a 5xx is final."""
     route = api.post("/jobs").respond(500)
     with pytest.raises(errors.ServerError):
         client._request(JOBS_SUBMIT, json={})
     assert route.call_count == 1
+
+
+def test_keyed_post_retried_on_5xx_with_one_idempotency_key(
+    api: respx.MockRouter, sleeps: list[float]
+) -> None:
+    route = api.post("/jobs")
+    route.side_effect = [httpx.Response(503), httpx.Response(500), httpx.Response(201, json={})]
+    with plasticdb.Client(api_key="k") as c:
+        c._request(JOBS_SUBMIT, json={}, idempotency_key="abc")
+    assert [r.request.headers["idempotency-key"] for r in route.calls] == ["abc"] * 3
+
+
+def test_keyed_post_read_timeout_is_retried(api: respx.MockRouter, sleeps: list[float]) -> None:
+    route = api.post("/jobs")
+    route.side_effect = [httpx.ReadTimeout("slow"), httpx.Response(201, json={"id": 3})]
+    with plasticdb.Client(api_key="k") as c:
+        assert c._request(JOBS_SUBMIT, json={}).data == {"id": 3}
+    keys = {r.request.headers["idempotency-key"] for r in route.calls}
+    assert len(keys) == 1
+
+
+def test_get_sends_no_idempotency_key(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    route = api.get("/proteins").respond(json=OK)
+    client._request(PROTEINS)
+    assert "idempotency-key" not in route.calls.last.request.headers
 
 
 def test_not_mounted_is_not_retried(api: respx.MockRouter, sleeps: list[float]) -> None:

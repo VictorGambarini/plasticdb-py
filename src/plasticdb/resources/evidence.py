@@ -28,6 +28,7 @@ from ..models import (
 from ._base import Resource
 from ._filters import (
     BindingAssayFilters,
+    EvidenceScope,
     InteractionKind,
     MaterialFilters,
     RowEvidenceScope,
@@ -248,8 +249,12 @@ class Pathways(Resource):
 class StatsResource(Resource):
     """Summary statistics of the live database (live only)."""
 
-    def summary(self, *, evidence_scope: RowEvidenceScope = "organism_or_enzyme") -> Stats:
-        """Headline counts: proteins, microorganisms, plastics, papers, pathways."""
+    def summary(self, *, evidence_scope: EvidenceScope = "organism_or_enzyme") -> Stats:
+        """Headline counts: proteins, microorganisms, plastics, papers, pathways.
+
+        ``evidence_scope`` decides which organisms count (``enzyme_only``: those
+        credited only through an enzyme).
+        """
         data = self._client._request(_STATS, params={"evidence_scope": evidence_scope}).data
         return Stats.model_validate(data)
 
@@ -258,7 +263,7 @@ class StatsResource(Resource):
         return ProteinActivityStats.model_validate(self._client._request(_STATS_ACTIVITY).data)
 
     def charts(self, *, evidence_scope: RowEvidenceScope = "organism_or_enzyme") -> dict[str, Any]:
-        """The data behind the site's statistics charts."""
+        """The data behind the site's statistics charts (no ``enzyme_only``: see the API docs)."""
         data = self._client._request(_STATS_CHARTS, params={"evidence_scope": evidence_scope})
         return dict(data.data or {})
 

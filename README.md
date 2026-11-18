@@ -104,15 +104,17 @@ server's own files. Single records have `.to_fasta()` too.
 ### Merged and withdrawn records
 
 Records are sometimes merged (two accessions for one molecule). `get()` on a
-merged accession raises `plasticdb.MergedError` with `.merged_into`, the
-survivor. Pass `follow_merges=True` to get the survivor instead, with a
-`plasticdb.MergedRecordWarning`. A withdrawn record raises `GoneError`
-(`MergedError` is a subclass, so `except GoneError` catches both). An engineered
-variant's accession given to `proteins.get()` returns the `Variant`; the
-per-protein collections (`interactions`, `kinetics`, …) raise
-`EngineeredVariantError` for it. A past release never contains merged records,
-so a pinned `get()` answers `NotFoundError` for them. `client.changes()` lists
-merges with their survivors.
+merged protein, variant or microorganism raises `plasticdb.MergedError` with
+`.merged_into`, the survivor, and `.kind` (`wild_type`, `engineered` or
+`microorganism`). Pass `follow_merges=True` to get the survivor instead, with a
+`plasticdb.MergedRecordWarning`. A withdrawn record (also a variant whose parent
+protein was withdrawn) raises `GoneError` with `.accession` and
+`.reason == "withdrawn"` (`MergedError` is a subclass, so `except GoneError`
+catches both). An engineered variant's accession given to `proteins.get()`
+returns the `Variant`; the per-protein collections (`interactions`, `kinetics`,
+…) raise `EngineeredVariantError` (a `NotFoundError`) for it. A past release
+never contains merged records, so a pinned `get()` answers `NotFoundError` for
+them. `client.changes()` lists merges with their survivors.
 
 ### Jobs
 
@@ -126,7 +128,7 @@ client = plasticdb.Client(release="2026.30")  # jobs run against that release's 
 
 job = client.jobs.annotate_genome("genome.faa.gz", evalue=1e-10)
 job.wait()  # polls with backoff; JobFailedError if the job fails
-hits = job.results()  # every hit, typed (JobHit); .to_pandas() / .to_polars()
+hits = job.results()  # every hit, typed (JobHit), paged from the server; .to_pandas()
 job.download("results/")  # the server's TSV, with its provenance header
 job.provenance  # release, reference_sha256, tool_versions, full record
 
@@ -135,8 +137,8 @@ genomes.wait().comparison().to_pandas()  # genome x plastic matrix
 genomes.download("compare.zip")  # per-genome hits, matrix, provenance.json
 
 client.jobs.hmm_screen(records, target_polymers=["PET", "PLA"])  # Bio.SeqRecord list
-client.jobs.pathway_analysis("proteins.faa").wait().steps()  # PET pathway steps
-client.jobs.annotate_list("taxa.tsv", genus_column=1, species_column=2).wait().taxa()
+client.jobs.pathway_analysis("proteins.faa", target_plastic="PET").wait().steps()
+client.jobs.annotate_list("taxa.csv", genus_column=1, species_column=2, field_separator="comma")
 client.jobs.build_tree(plastic="PET", genus="Pseudomonas").wait().tree().newick
 client.jobs.annotate_gene(">q\nMNFPRASRLMQAAVLGG...")  # FASTA text, bytes, a file object
 client.jobs.search_sequence("MNFPRASRLMQ...")  # synchronous DIAMOND search, no job
@@ -152,9 +154,9 @@ client.jobs.list().to_pandas()  # your jobs; client.jobs.get(id) to resume one
 |---|---|---|---|
 | `annotate_gene`, `annotate_genome` | `annotate_gene()`, `annotate_genome()` | protein (or with `blast_type="blastx"` nucleotide) FASTA | `hits()` |
 | `compare_genomes` | `compare_genomes()` | 2-20 genomes: a list or `{label: genome}` | `hits()`, `comparison()`, ZIP download |
-| `pathway_analysis` | `pathway_analysis()` | protein FASTA | `steps()` |
+| `pathway_analysis` | `pathway_analysis()` | protein FASTA (`target_plastic`, default `PET`) | `steps()` |
 | `hmm_screen` | `hmm_screen()` | protein FASTA | `hits()` (profiles), `info.result_metadata["polymer_hits"]` |
-| `annotate_list` | `annotate_list()` | a taxa table (path, text or rows) | `taxa()` |
+| `annotate_list` | `annotate_list()` | a taxa table (path, text or rows); genus/species columns 7 and 8 unless given | `taxa()` |
 | `build_tree` | `build_tree(**filters)` | organism filters or `microorganism_ids` | `tree()` (Newick + matrix) |
 
 Each helper takes the server's own parameter names (`evalue`, `pident`,
@@ -162,7 +164,9 @@ Each helper takes the server's own parameter names (`evalue`, `pident`,
 unknown one is a `TypeError`. A FASTA input is a path (plain or gzip), FASTA
 text, bytes, a file object, or `Bio.SeqRecord`s. Uploads are named after their
 contents (`.gz` exactly when the bytes are gzip), and a genome's label is the
-name its rows carry in the results. `results()` returns every stored hit; the
+name its rows carry in the results. Polling asks for the job without its hits;
+`results()` pages every stored hit from the server (`job.iter_hits()` is the
+lazy version); the
 website and `download()` start from the job's default view (hits covering at
 least 70 % of the reference), which `download(scov=0)` or `all_hits=True` turns off.
 
@@ -172,9 +176,16 @@ raises `UnsupportedFilterError` (422) and an unknown release
 `UnknownReleaseError`. `job.wait(timeout=)` raises `JobTimeoutError` but leaves
 the job running; call `wait()` again or `client.jobs.get(id)` later.
 Submissions are rate-limited (30 an hour): a 429 is retried after `Retry-After`
-when that is within `max_retry_wait`, otherwise it raises `RateLimitError`. A
-submission is never resent after it may have reached the server (a 5xx or a
-dropped connection); the error says to check `client.jobs.list()` first.
+when that is within `max_retry_wait`, otherwise it raises `RateLimitError`.
+
+Every submission (a job, a tree, a share link) is sent with an
+`Idempotency-Key`, a new UUID per call unless you pass `idempotency_key=`, and
+every retry of it reuses that key. So a submission is retried like a read on a
+timeout, a dropped connection or a 5xx: if an attempt did reach the server, the
+server returns the job it already created (`job.replayed` is `True`) instead of
+running a duplicate. When the retries run out the error names the key; submit
+again with `idempotency_key=` that key within 24 hours to recover the job. The
+same key with a different request raises `IdempotencyKeyReusedError`.
 
 ### Configuration
 
@@ -187,19 +198,33 @@ dropped connection); the error says to check `client.jobs.list()` first.
 | `timeout`, `max_retries`, `max_retry_wait` | | 30 s, 3, 60 s |
 | `max_concurrency` | | 4 (parallel page requests in a bulk pull) |
 
-Rate-limited requests (429) are retried after `Retry-After`, and idempotent
-requests are retried with backoff on 5xx and connection errors.
+Rate-limited requests (429) are retried after `Retry-After`; reads, sequence
+searches and submissions (which carry an `Idempotency-Key`) are retried with
+backoff on 5xx, timeouts and connection errors. A 503 `not_mounted` and a
+sequence search's 504 `timeout` are not retried.
 
 ### Errors
 
-Every exception subclasses `plasticdb.PlasticDBError`. Examples are
-`NotFoundError`, `GoneError`, `MergedError` (with `.merged_into`),
-`EngineeredVariantError`, `AuthenticationError`, `PermissionDenied`,
-`PayloadTooLargeError`, `JobFailedError` and `JobTimeoutError` (with `.job`),
-`RateLimitError` and `ServiceUnavailableError` (with `.retry_after`),
-`ValidationError`, `ServerError`, `ChecksumError`, and the release errors
-`UnknownReleaseError`, `LiveOnlyError`, `UnsupportedFilterError` and
-`ReleaseNotMountedError` (see `plasticdb.errors`).
+Every exception subclasses `plasticdb.PlasticDBError` and carries the server's
+`.reason` when it sent one; all are importable from `plasticdb`:
+
+- connection: `APIConnectionError`, `APITimeoutError`, `UnexpectedResponseError`
+- requests: `BadRequestError` (400), `AuthenticationError` (401),
+  `PermissionDenied` (403), `NotFoundError` (404), `ConflictError` (409),
+  `PayloadTooLargeError` (413), `ValidationError` (422, `.errors`),
+  `IdempotencyKeyReusedError` (422), `RateLimitError` (429, `.retry_after`),
+  `ServerError` (5xx), `ServiceUnavailableError` (503, `.retry_after`)
+- records: `GoneError` (410, `.accession`), `MergedError` (301, `.merged_into`),
+  `EngineeredVariantError`, `ResultsExpiredError` (410, a job's files);
+  `MergedRecordWarning`
+- releases: `ReleaseError`, `ReleaseNotAvailableError`, `UnknownReleaseError`,
+  `ReleaseNoArtefactsError`, `ReleaseNotMountedError`, `ReleaseUnsupportedError`,
+  `LiveOnlyError`, `UnsupportedFilterError`
+- jobs and files: `JobError`, `JobFailedError`, `JobTimeoutError` (with `.job`),
+  `ChecksumError`
+
+[Errors](https://victorgambarini.github.io/plasticdb-py/errors/) has the full
+hierarchy and the HTTP status of each.
 
 ## Command line
 

@@ -612,14 +612,18 @@ def pathways_graph(
     single=True,
     choices={
         "view": ("summary", "protein-activity", "charts", "by-country"),
-        "evidence_scope": typing.get_args(F.RowEvidenceScope),
+        "evidence_scope": typing.get_args(F.EvidenceScope),
     },
 )
 def stats(
     run: State,
     view: Annotated[str, typer.Option(help="Which statistics.")] = "summary",
     evidence_scope: Annotated[
-        str | None, typer.Option(help="Count organism assays, or organism and enzyme assays.")
+        str | None,
+        typer.Option(
+            help="Which organisms count: credited by an organism or an enzyme assay (default), "
+            "by an organism assay, or only through an enzyme (enzyme_only: summary only)."
+        ),
     ] = None,
 ) -> Any:
     """Summary statistics of the live database."""
@@ -842,7 +846,7 @@ def _job_param_hints() -> dict[str, Any]:
     for helper in _HELPERS:
         hints = typing.get_type_hints(helper)
         for name, p in inspect.signature(helper).parameters.items():
-            if p.kind is KW and name != "release":
+            if p.kind is KW and name not in {"release", "idempotency_key"}:
                 out.setdefault(name, hints[name])
     return out
 
@@ -947,6 +951,14 @@ def jobs_submit(
         ),
     ] = None,
     output: OptionalOutput = None,
+    idempotency_key: Annotated[
+        str | None,
+        typer.Option(
+            help="Name this submission (1-255 printable ASCII characters). Resubmitting with "
+            "the same key within 24 hours returns the first job instead of a duplicate "
+            "(default: a new UUID, reused on the client's own retries).",
+        ),
+    ] = None,
 ) -> Any:
     """Submit a job. Prints its id; with --wait, its results (or -o saves the results file).
 
@@ -974,20 +986,25 @@ def jobs_submit(
         raise typer.BadParameter("-o and --format need --wait", param_hint="--wait")
 
     client = run.client
+    key = idempotency_key
     if kind == "build_tree":
-        job = client.jobs.submit("build_tree", None, **tree_given)
+        job = client.jobs.submit("build_tree", None, idempotency_key=key, **tree_given)
     elif kind == "compare_genomes":
         if len(files) < 2:
             raise typer.BadParameter(
                 "compare-genomes needs at least two genomes", param_hint="INPUTS"
             )
-        job = client.jobs.submit(kind, [_read_input(f) for f in files], **params)
+        job = client.jobs.submit(
+            kind, [_read_input(f) for f in files], idempotency_key=key, **params
+        )
     else:
         if len(files) != 1:
             raise typer.BadParameter(f"{job_type} takes exactly one input", param_hint="INPUTS")
-        job = client.jobs.submit(kind, _read_input(files[0]), **params)
+        job = client.jobs.submit(kind, _read_input(files[0]), idempotency_key=key, **params)
 
     release = f" against release {job.release}" if job.release else ""
+    if job.replayed:
+        run.say(f"Idempotency key {key} already submitted job {job.id}: not submitted again.")
     if not wait:
         run.say(
             f"Submitted {job.job_type} job {job.id}{release}. "

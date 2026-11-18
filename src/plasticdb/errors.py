@@ -1,14 +1,16 @@
 """Exceptions raised by the PlasticDB client.
 
-Every error is a :class:`PlasticDBError`. HTTP errors carry the status code, the
-server's ``detail`` and the parsed body; errors about a ``release`` also carry
-the server's machine-readable ``reason``. Some classes inherit from two parents
-so that ``except NotFoundError`` also catches an unknown release, and
+Every error is a :class:`PlasticDBError`. HTTP errors carry the status code,
+the server's ``detail``, the parsed body and its machine-readable ``reason``
+when it sent one (``withdrawn``, ``expired``, ``archive_unavailable``,
+``timeout``…). Some classes inherit from two parents so that
+``except NotFoundError`` also catches an unknown release, and
 ``except ValidationError`` also catches a filter a release cannot answer.
 """
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 import httpx
@@ -22,6 +24,7 @@ __all__ = [
     "ConflictError",
     "EngineeredVariantError",
     "GoneError",
+    "IdempotencyKeyReusedError",
     "JobError",
     "JobFailedError",
     "JobTimeoutError",
@@ -38,6 +41,7 @@ __all__ = [
     "ReleaseNotAvailableError",
     "ReleaseNotMountedError",
     "ReleaseUnsupportedError",
+    "ResultsExpiredError",
     "ServerError",
     "ServiceUnavailableError",
     "UnexpectedResponseError",
@@ -65,6 +69,9 @@ class PlasticDBError(Exception):
         self.detail = detail
         self.body = body
         self.response = response
+        reason = body.get("reason") if isinstance(body, dict) else None
+        #: The server's machine-readable reason, when the error body carried one.
+        self.reason: str | None = reason if isinstance(reason, str) else None
 
     @property
     def url(self) -> str | None:
@@ -102,14 +109,37 @@ class NotFoundError(PlasticDBError):
 
 
 class GoneError(PlasticDBError):
-    """410: the record was withdrawn (tombstoned), or a share link expired."""
+    """410: the record was withdrawn, a job's result files expired, or a share link did.
+
+    A withdrawn protein, variant or organism has ``reason == "withdrawn"`` and
+    ``accession`` set (a variant is withdrawn with its parent protein, too).
+    """
+
+    @property
+    def accession(self) -> str | None:
+        value = self.body.get("accession") if isinstance(self.body, dict) else None
+        return value if isinstance(value, str) else None
+
+
+class ResultsExpiredError(GoneError):
+    """410 ``expired``: the job's result files were deleted under the retention policy.
+
+    ``results_expired_at`` is when (the job record, its hits and its summary remain).
+    """
+
+    def __init__(
+        self, message: str, *, results_expired_at: datetime | None = None, **kwargs: Any
+    ) -> None:
+        super().__init__(message, **kwargs)
+        self.results_expired_at = results_expired_at
 
 
 class MergedError(GoneError):
     """The accession was merged into another record (the server answers 301).
 
     ``merged_into`` is the surviving accession and ``location`` the API path
-    that serves it. ``kind`` is ``"engineered"`` when the survivor is a variant.
+    that serves it. ``kind`` is what the survivor is: ``"wild_type"``,
+    ``"engineered"`` (a variant) or ``"microorganism"``.
     """
 
     def __init__(
@@ -127,21 +157,31 @@ class MergedError(GoneError):
         self.kind = kind
 
 
-class EngineeredVariantError(PlasticDBError):
+class EngineeredVariantError(NotFoundError):
     """The accession names an engineered variant, not a wild-type protein.
 
-    The server answers ``/proteins/{accession}`` for a variant with a 301 to
-    ``/variants/{accession}``. :meth:`Proteins.get` follows it and returns the
-    :class:`~plasticdb.models.Variant`; the per-protein sub-collections raise this,
-    because variants have none. ``accession`` is the variant, ``location`` its path.
+    The server answers ``/proteins/{accession}`` for a variant with a 301
+    (``reason: engineered_variant``) to ``/variants/{accession}``;
+    :meth:`Proteins.get` follows it and returns the :class:`~plasticdb.models.Variant`.
+    The per-protein sub-collections (interactions, kinetics, properties, variants)
+    answer a 404 with the same reason, raised as this error, because variants
+    have none. ``accession`` is the variant, ``location`` its path and
+    ``merged_into`` the surviving variant when the accession was also merged.
     """
 
     def __init__(
-        self, message: str, *, accession: str, location: str | None = None, **kwargs: Any
+        self,
+        message: str,
+        *,
+        accession: str,
+        location: str | None = None,
+        merged_into: str | None = None,
+        **kwargs: Any,
     ) -> None:
         super().__init__(message, **kwargs)
         self.accession = accession
         self.location = location
+        self.merged_into = merged_into
 
 
 class MergedRecordWarning(UserWarning):
@@ -166,6 +206,15 @@ class ValidationError(PlasticDBError):
         return []
 
 
+class IdempotencyKeyReusedError(ValidationError):
+    """422 ``idempotency_key_reused``: the key was already used for a different request.
+
+    A job, tree or share-link submission sent with the ``Idempotency-Key`` of an
+    earlier one (within 24 hours) must repeat that request exactly; use a new key
+    for a new submission.
+    """
+
+
 class RateLimitError(PlasticDBError):
     """429: too many requests. ``retry_after`` is in seconds, when the server said."""
 
@@ -175,14 +224,21 @@ class RateLimitError(PlasticDBError):
 
 
 class ServerError(PlasticDBError):
-    """5xx: the server failed."""
+    """5xx: the server failed.
+
+    A synchronous sequence search past the server's 15 seconds is a 504 with
+    ``reason == "timeout"`` (submit an ``annotate_gene`` job instead); a DIAMOND
+    failure is a 502.
+    """
 
 
 class ServiceUnavailableError(ServerError):
     """503: the server, or a service it depends on, is temporarily unavailable.
 
-    ``retry_after`` is the server's ``Retry-After`` in seconds, when it sent one
-    (``dataset.zip`` answers 120 while the archive is being built).
+    ``retry_after`` is the server's ``Retry-After`` in seconds, when it sent one,
+    and ``reason`` what is unavailable: ``archive_unavailable`` (``dataset.zip``
+    is being built), ``index_unavailable`` / ``binary_unavailable`` (the sequence
+    search's reference database or DIAMOND).
     """
 
     def __init__(self, message: str, *, retry_after: float | None = None, **kwargs: Any) -> None:

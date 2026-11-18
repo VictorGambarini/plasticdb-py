@@ -222,7 +222,7 @@
       "t50": null,
       "half_life": 48.0,
       "half_life_temperature": 55.0,
-      "assay_notes": "Half-life of FAST-PETase at 55 °C, estimated from the residual-activity decay curve in Fig. 5f.",
+      "assay_notes": "Half-life of FAST-PETase at 55 \u00b0C, estimated from the residual-activity decay curve in Fig. 5f.",
       "paper": {
        "id": 8,
        "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
@@ -258,10 +258,10 @@
       "t50": null,
       "half_life": null,
       "half_life_temperature": null,
-      "assay_notes": "Bioconjugate showed no significant activity loss over 12 days at 4 °C; no fitted half-life was reported.",
+      "assay_notes": "Bioconjugate showed no significant activity loss over 12 days at 4 \u00b0C; no fitted half-life was reported.",
       "paper": {
        "id": 538,
-       "citation": "Kotnis, S., Gulati, S., & Sun, Q. (2025). High-efficiency PET degradation with a duo-enzyme system immobilized on magnetic nanoparticles. Biotechnology and Bioengineering, 122(6), 1397–1401. https://doi.org/10.1002/bit.28963",
+       "citation": "Kotnis, S., Gulati, S., & Sun, Q. (2025). High-efficiency PET degradation with a duo-enzyme system immobilized on magnetic nanoparticles. Biotechnology and Bioengineering, 122(6), 1397\u20131401. https://doi.org/10.1002/bit.28963",
        "title": "High-Efficiency PET Degradation With a Duo-Enzyme System Immobilized on Magnetic Nanoparticles.",
        "doi": "10.1002/bit.28963",
        "year": 2025,

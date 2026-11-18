@@ -12,10 +12,10 @@
      "query",
      "sort_by"
     ],
-    "msg": "Input should be 'year', 'name', 'accession', 'id', 'plasticdb_id' or 'genbank_id'",
+    "msg": "Input should be 'year', 'citation', 'doi', 'title', 'journal' or 'id'",
     "input": "nope",
     "ctx": {
-     "expected": "'year', 'name', 'accession', 'id', 'plasticdb_id' or 'genbank_id'"
+     "expected": "'year', 'citation', 'doi', 'title', 'journal' or 'id'"
     }
    }
   ]

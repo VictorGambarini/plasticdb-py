@@ -17,7 +17,7 @@
   "originating_paper": null,
   "id": 4271,
   "accession": "PBDTZX",
-  "variant_name": "Dm-TA-ΔLCC",
+  "variant_name": "Dm-TA-\u0394LCC",
   "variant_type": "fusion",
   "description": "Native N-terminal signal peptide omitted. Drosophila chymotrypsin-like 17-residue secretory signal fused to the enzyme; C-terminal His6 tag.",
   "sequence": "MKQFAVIFALALASVSAQSNPYQRGPNPTRSALTADGPFSVATYTVSRLSVSGFGGGVIYYPTGTSLTFGGIAMSPGYTADASSLAWLGRRLASHGFVVLVINTNSRFDYPDSRASQLSAALNYLRTSSPSAVRARLDANRLAVAGHSMGGGGTLRIAEQNPSLKAAVPLTPWHTDKTFNTSVPVLIVGAEADTVAPVSQHAIPFYQNLPSTTPKVYVELDNASHTAPNSNNAAISVYTISWMKLWVDNDTRYRQFLCNVNDPALSDFRTNNRHAQHHHHHH",
@@ -262,7 +262,7 @@
         "measurement_type": "activity_detected",
         "value": 0.43,
         "unit": "U/mL",
-        "text_description": "Approximately 0.43 U/mL culture medium on pNPA, digitised from Supplementary Fig. 10. Mock-supernatant activity subtracted. Error bars approximately ±0.015 U/mL."
+        "text_description": "Approximately 0.43 U/mL culture medium on pNPA, digitised from Supplementary Fig. 10. Mock-supernatant activity subtracted. Error bars approximately \u00b10.015 U/mL."
        }
       ]
      },
@@ -290,7 +290,7 @@
       "quantitation_ceiling": null,
       "quantitation_ceiling_unit": null,
       "initial_mass": 240.0,
-      "initial_mass_unit": "µg",
+      "initial_mass_unit": "\u00b5g",
       "observations": [
        {
         "time_point": 41.0,
@@ -300,8 +300,8 @@
         "control_value": null,
         "measurement_type": "monomer_released",
         "value": 387.0,
-        "unit": "µM",
-        "text_description": "387 ± 32 µM soluble PET degradation products after 41 h (Section 3.2; Supplementary Fig. 11B); UV measurement is a combined aromatic-product concentration."
+        "unit": "\u00b5M",
+        "text_description": "387 \u00b1 32 \u00b5M soluble PET degradation products after 41 h (Section 3.2; Supplementary Fig. 11B); UV measurement is a combined aromatic-product concentration."
        }
       ]
      }
@@ -415,8 +415,7 @@
         "name": "Terephthalic acid"
        },
        "measurement_types": [
-        "monomer_released",
-        "product_identified"
+        "monomer_released"
        ],
        "papers": [
         {
@@ -455,7 +454,7 @@
         {
          "observation_id": 130552,
          "value": 387.0,
-         "unit": "µM",
+         "unit": "\u00b5M",
          "paper_id": 1598
         }
        ]
@@ -486,13 +485,7 @@
         {
          "observation_id": 130557,
          "value": 11.0,
-         "unit": "µM",
-         "paper_id": 1598
-        },
-        {
-         "observation_id": 130558,
-         "value": 43.0,
-         "unit": "µM",
+         "unit": "\u00b5M",
          "paper_id": 1598
         }
        ]

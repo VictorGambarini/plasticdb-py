@@ -1,7 +1,9 @@
 {
  "status": 200,
  "headers": {
-  "content-type": "application/json"
+  "content-type": "application/json",
+  "x-plasticdb-release": "2026.30",
+  "x-plasticdb-release-source": "snapshot"
  },
  "body": {
   "id": "3f2c9a1e-7b4d-4e8a-9c0f-1a2b3c4d5e6f",
@@ -19,7 +21,7 @@
   "release_source": "snapshot",
   "reference_sha256": null,
   "tool_versions": null,
-  "result_newick": null,
+  "result_newick": "((Ideonella_sakaiensis,Pseudomonas_putida)Pseudomonadota);",
   "result_metadata": {
    "columns": [
     "PE",

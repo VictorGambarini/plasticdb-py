@@ -4,6 +4,11 @@ Jobs cannot be run against the live server without an API key, so these are
 built from the server's own schemas and worker code (``JobRead`` / ``JobDetail``
 in ``app/schemas``, ``app/api/v1/jobs.py``'s serialisers, the result metadata
 ``app/workers/pipelines.py`` and ``tree_builder.py`` write), not captured.
+
+Shapes as of server 2.87.0: job reads are ``GET /jobs/{id}?include=none`` (no
+embedded hits, the job's release in ``X-PlasticDB-Release``), the hits come from
+``GET /jobs/{id}/results`` (``*_results`` fixtures), and a tree job's detail
+carries ``result_newick``.
 """
 
 from __future__ import annotations
@@ -35,7 +40,7 @@ PROVENANCE = {
     "release_manifest_sha256": "ab" * 32,
     "release_tools": {"diamond": "2.1.9"},
     "input_filename": "genome.faa.gz",
-    "app_version": "2.85.0",
+    "app_version": "2.87.0",
     "recorded_at": "2026-11-18T01:02:03+00:00",
     "diamond_version": "2.1.9",
     "reference_db": {"name": "PlasticDB.dmnd", "sha256": SHA, "records": 4211},
@@ -159,15 +164,23 @@ def write(name: str, status: int, body: Any, headers: dict[str, str] | None = No
     (OUT / f"{name}.json").write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
 
 
+def write_read(name: str, body: dict[str, Any]) -> None:
+    """A job read (``include=none``) and, when it has hits, its ``/results`` page."""
+    hits = body.get("results") or []
+    write(name, 200, {**body, "results": []})
+    if hits:
+        write(f"{name}_results", 200, {"total": len(hits), "items": hits})
+
+
 def main() -> None:
     submitted = copy.deepcopy(BASE)
     write("job_submitted", 201, submitted)
 
     running = copy.deepcopy(BASE)
     running.update(status="running", results=[], comparison=None)
-    write("job_running", 200, running, JSON)
+    write_read("job_running", running)
 
-    write("job_done", 200, _done("annotate_genome", [_hit(0), _hit(1)]), JSON)
+    write_read("job_done", _done("annotate_genome", [_hit(0), _hit(1)]))
 
     failed = copy.deepcopy(BASE)
     failed.update(
@@ -177,7 +190,7 @@ def main() -> None:
         comparison=None,
         error_message="Input looks like nucleotide sequence; use blast_type=blastx",
     )
-    write("job_error", 200, failed, JSON)
+    write_read("job_error", failed)
 
     compare_hits = [
         _hit(0, source_label="E_coli_K12", query_seq_id="b0001"),
@@ -223,7 +236,7 @@ def main() -> None:
         "E_coli_K12": {"sequences": 4300, "residues": 1324000},
         "I_sakaiensis": {"sequences": 3200, "residues": 980000},
     }
-    write("job_compare", 200, compare, JSON)
+    write_read("job_compare", compare)
 
     hmm_hits = [
         _hit(
@@ -257,10 +270,11 @@ def main() -> None:
         threshold_fallback=None,
         profile_ga={"PET_hydrolase": 25.0},
     )
-    write("job_hmm", 200, hmm, JSON)
+    write_read("job_hmm", hmm)
 
     pathway = _done("pathway_analysis", [], view_defaults=None)
     pathway["result_metadata"].update(
+        target_plastic="PET",
         pathway_id=1,
         plastic_id=16,
         pathway_name="PET degradation",
@@ -317,15 +331,15 @@ def main() -> None:
         steps_total=2,
         steps_present=1,
     )
-    write("job_pathway", 200, pathway, JSON)
+    write_read("job_pathway", pathway)
 
     taxa = _done(
         "annotate_list",
         [],
         evalue=None,
         pident=None,
-        genus_column=1,
-        species_column=2,
+        genus_column=7,
+        species_column=8,
         field_separator="tab",
         view_defaults=None,
         reference_sha256=None,
@@ -342,7 +356,7 @@ def main() -> None:
         "layout": "columns",
         "genera": [],
     }
-    write("job_annotate_list", 200, taxa, JSON)
+    write_read("job_annotate_list", taxa)
 
     tree = {
         k: v
@@ -392,8 +406,8 @@ def main() -> None:
         },
     )
     write("tree_done", 200, tree)
-    tree_detail = {**tree, "result_newick": None, "results": [], "comparison": None}
-    write("tree_detail", 200, tree_detail, JSON)
+    tree_detail = {**tree, "results": [], "comparison": None}
+    write_read("tree_detail", tree_detail)
 
     listed = [copy.deepcopy(BASE), _done("annotate_genome", [])]
     listed[1].pop("results")

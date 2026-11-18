@@ -112,7 +112,7 @@
        "diamond": "2.1.9"
       },
       "input_filename": "genome.faa.gz",
-      "app_version": "2.85.0",
+      "app_version": "2.87.0",
       "recorded_at": "2026-11-18T01:02:03+00:00",
       "diamond_version": "2.1.9",
       "reference_db": {

@@ -18,12 +18,21 @@ from pathlib import Path
 
 import httpx
 
-from ._response import RELEASE_HEADER, RELEASE_SOURCE_HEADER, UNAVAILABLE_HEADER
+from ._response import (
+    RELEASE_HEADER,
+    RELEASE_SOURCE_HEADER,
+    SHA256_HEADER,
+    SOURCE_SHA256_HEADER,
+    UNAVAILABLE_HEADER,
+)
 
 _KEPT_HEADERS = (
     RELEASE_HEADER,
     RELEASE_SOURCE_HEADER,
     UNAVAILABLE_HEADER,
+    SHA256_HEADER,
+    SOURCE_SHA256_HEADER,
+    "etag",
     "content-type",
     "content-disposition",
     "link",

@@ -1,10 +1,12 @@
 {
- "status": 404,
+ "status": 410,
  "headers": {
   "content-type": "application/json",
   "x-plasticdb-release-source": "live"
  },
  "body": {
-  "detail": "Variant not found"
+  "detail": "This accession has been deleted",
+  "accession": "PB8B8P",
+  "reason": "withdrawn"
  }
 }

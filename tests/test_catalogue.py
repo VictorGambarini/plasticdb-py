@@ -91,11 +91,52 @@ def test_protein_get_on_a_variant_returns_the_variant(
 def test_sub_collection_on_a_variant_raises(
     api: respx.MockRouter, client: plasticdb.Client
 ) -> None:
-    api.get("/proteins/PBDTZX/interactions").mock(return_value=reply("protein_variant_redirect"))
+    api.get("/proteins/PBDTZX/interactions").mock(return_value=reply("protein_variant_subresource"))
     with pytest.raises(errors.EngineeredVariantError) as info:
         client.proteins.interactions("PBDTZX").all()
     assert info.value.accession == "PBDTZX"
     assert info.value.location == "/api/v1/variants/PBDTZX"
+    assert info.value.status_code == 404 and info.value.reason == "engineered_variant"
+    assert isinstance(info.value, errors.NotFoundError)
+    assert info.value.merged_into is None
+
+
+def test_variant_redirect_is_told_apart_by_reason_not_accession(
+    api: respx.MockRouter, client: plasticdb.Client
+) -> None:
+    """A protein merged into a variant is a merge, even though kind is ``engineered``."""
+    body = {
+        "accession": "PBTNBA",
+        "location": "/api/v1/variants/PBTNBA",
+        "kind": "engineered",
+        "reason": "merged",
+        "merged_into": "PBTNBA",
+    }
+    api.get("/proteins/PBTNBA").respond(301, json=body, headers={"location": body["location"]})
+    with pytest.raises(errors.MergedError) as info:
+        client.proteins.get("PBTNBA")
+    assert info.value.kind == "engineered"
+
+
+def test_protein_fasta_of_a_variant_is_the_variants(
+    api: respx.MockRouter, client: plasticdb.Client
+) -> None:
+    api.get("/proteins/PBDTZX/fasta").respond(
+        301,
+        json={
+            **fixture("protein_variant_redirect")["body"],
+            "location": "/api/v1/variants/PBDTZX/fasta",
+        },
+        headers={"location": "/api/v1/variants/PBDTZX/fasta"},
+    )
+    api.get("/variants/PBDTZX/fasta").respond(text=">PBDTZX\nMKV\n")
+    assert client.proteins.fasta("PBDTZX").startswith(">PBDTZX")
+
+
+def test_protein_by_numeric_id(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    route = api.get("/proteins/3").mock(return_value=reply("protein"))
+    assert client.proteins.get(3).accession == "PBFCTW"
+    assert route.called
 
 
 def test_merged_protein_raises_by_default(api: respx.MockRouter, client: plasticdb.Client) -> None:
@@ -131,25 +172,44 @@ def test_follow_merges_into_a_variant(api: respx.MockRouter, client: plasticdb.C
     assert isinstance(record, Variant)
 
 
+def _merged(accession: str, kind: str = "wild_type") -> dict[str, str]:
+    path = "microorganisms" if kind == "microorganism" else "proteins"
+    return {
+        "accession": accession,
+        "location": f"/api/v1/{path}/{accession}",
+        "kind": kind,
+        "reason": "merged",
+        "merged_into": accession,
+    }
+
+
 def test_merge_chain_is_followed(api: respx.MockRouter, client: plasticdb.Client) -> None:
-    api.get("/proteins/PBAAAA").respond(301, json={"accession": "PBBBBB"})
-    api.get("/proteins/PBBBBB").respond(301, json={"accession": "PBCCCC"})
+    api.get("/proteins/PBAAAA").respond(301, json=_merged("PBBBBB"))
+    api.get("/proteins/PBBBBB").respond(301, json=_merged("PBCCCC"))
     api.get("/proteins/PBCCCC").respond(json={**fixture("protein")["body"], "accession": "PBCCCC"})
     with pytest.warns(errors.MergedRecordWarning):
         assert client.proteins.get("PBAAAA", follow_merges=True).accession == "PBCCCC"
 
 
 def test_merge_loop_stops(api: respx.MockRouter, client: plasticdb.Client) -> None:
-    api.get("/proteins/PBAAAA").respond(301, json={"accession": "PBAAAA"})
+    api.get("/proteins/PBAAAA").respond(301, json=_merged("PBAAAA"))
     with pytest.warns(errors.MergedRecordWarning), pytest.raises(errors.UnexpectedResponseError):
         client.proteins.get("PBAAAA", follow_merges=True)
 
 
 def test_withdrawn_protein_is_gone(api: respx.MockRouter, client: plasticdb.Client) -> None:
-    api.get("/proteins/PBDEAD").respond(410, json={"detail": "This accession has been deleted"})
+    api.get("/proteins/PBDEAD").respond(
+        410,
+        json={
+            "detail": "This accession has been deleted",
+            "accession": "PBDEAD",
+            "reason": "withdrawn",
+        },
+    )
     with pytest.raises(errors.GoneError) as info:
         client.proteins.get("PBDEAD", follow_merges=True)
     assert not isinstance(info.value, errors.MergedError)
+    assert info.value.accession == "PBDEAD" and info.value.reason == "withdrawn"
 
 
 def test_missing_protein(api: respx.MockRouter, client: plasticdb.Client) -> None:
@@ -169,10 +229,13 @@ def test_variant_get_and_merge(api: respx.MockRouter, client: plasticdb.Client) 
     assert variant.parent_protein is not None and variant.parent_protein.accession == "PB6JCU"
 
 
-def test_removed_variant_is_not_found(api: respx.MockRouter, client: plasticdb.Client) -> None:
+def test_removed_variant_is_gone(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    """A variant whose parent protein was withdrawn (the change feed's ``removed``)."""
     api.get("/variants/PB8B8P").mock(return_value=reply("variant_removed"))
-    with pytest.raises(errors.NotFoundError):
+    with pytest.raises(errors.GoneError) as info:
         client.variants.get("PB8B8P")
+    assert not isinstance(info.value, errors.NotFoundError)
+    assert info.value.accession == "PB8B8P" and info.value.reason == "withdrawn"
 
 
 def test_variants_list_is_engineered_proteins(
@@ -232,6 +295,8 @@ def test_microorganisms(api: respx.MockRouter, client: plasticdb.Client) -> None
     api.get("/microorganisms/PBCZU2").mock(return_value=reply("microorganism"))
     organism = client.microorganisms.get("PBCZU2", evidence_scope="whole_organism")
     assert isinstance(organism, Microorganism)
+    client.microorganisms.get("PBCZU2", evidence_scope="enzyme_only")
+    assert api.calls.last.request.url.params["evidence_scope"] == "enzyme_only"
     assert organism.lineage_ranks()["kingdom"] == "Fungi"
     assert organism.lineage_ranks()["clade"] == "Opisthokonta"
 
@@ -370,3 +435,36 @@ def test_connection_error(api: respx.MockRouter, client: plasticdb.Client) -> No
     api.get("/plastics/1").mock(side_effect=httpx.ConnectError("down"))
     with pytest.raises(errors.APIConnectionError):
         client.plastics.get(1)
+
+
+def test_merged_microorganism(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    body = _merged("PBSURV", "microorganism")
+    api.get("/microorganisms/PBOLD1").respond(
+        301, json=body, headers={"location": body["location"]}
+    )
+    survivor = {**fixture("microorganism")["body"], "accession": "PBSURV"}
+    route = api.get("/microorganisms/PBSURV").respond(json=survivor)
+    with pytest.raises(errors.MergedError) as info:
+        client.microorganisms.get("PBOLD1")
+    assert info.value.kind == "microorganism" and info.value.merged_into == "PBSURV"
+    with pytest.warns(errors.MergedRecordWarning):
+        organism = client.microorganisms.get(
+            "PBOLD1", evidence_scope="enzyme_only", follow_merges=True
+        )
+    assert organism.accession == "PBSURV"
+    assert route.calls.last.request.url.params["evidence_scope"] == "enzyme_only"
+
+
+def test_withdrawn_microorganism(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    api.get("/microorganisms/PBGONE").respond(
+        410, json={"detail": "withdrawn", "accession": "PBGONE", "reason": "withdrawn"}
+    )
+    with pytest.raises(errors.GoneError) as info:
+        client.microorganisms.get("PBGONE", follow_merges=True)
+    assert info.value.accession == "PBGONE"
+
+
+def test_stats_enzyme_only(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    route = api.get("/stats").mock(return_value=reply("stats"))
+    client.stats.summary(evidence_scope="enzyme_only")
+    assert route.calls.last.request.url.params["evidence_scope"] == "enzyme_only"

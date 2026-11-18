@@ -12,6 +12,86 @@
         "title": "Aerobicity",
         "type": "string"
       },
+      "AutocompleteItem": {
+        "properties": {
+          "detail_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail Url"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "route_key": {
+            "title": "Route Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "route_key"
+        ],
+        "title": "AutocompleteItem",
+        "type": "object"
+      },
+      "AutocompleteResult": {
+        "properties": {
+          "microorganisms": {
+            "items": {
+              "$ref": "#/components/schemas/AutocompleteItem"
+            },
+            "title": "Microorganisms",
+            "type": "array"
+          },
+          "papers": {
+            "items": {
+              "$ref": "#/components/schemas/AutocompleteItem"
+            },
+            "title": "Papers",
+            "type": "array"
+          },
+          "plastics": {
+            "items": {
+              "$ref": "#/components/schemas/AutocompleteItem"
+            },
+            "title": "Plastics",
+            "type": "array"
+          },
+          "proteins": {
+            "items": {
+              "$ref": "#/components/schemas/AutocompleteItem"
+            },
+            "title": "Proteins",
+            "type": "array"
+          }
+        },
+        "required": [
+          "microorganisms",
+          "proteins",
+          "plastics",
+          "papers"
+        ],
+        "title": "AutocompleteResult",
+        "type": "object"
+      },
       "BindingAssayList": {
         "properties": {
           "items": {
@@ -265,12 +345,18 @@
           "field_separator": {
             "anyOf": [
               {
+                "enum": [
+                  "tab",
+                  "comma",
+                  "space"
+                ],
                 "type": "string"
               },
               {
                 "type": "null"
               }
             ],
+            "description": "annotate_list: the table's separator (default `tab`).",
             "title": "Field Separator"
           },
           "file": {
@@ -303,12 +389,14 @@
           "genus_column": {
             "anyOf": [
               {
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
+            "description": "annotate_list: 1-based column holding the genus (default 7).",
             "title": "Genus Column"
           },
           "include_variants": {
@@ -431,13 +519,27 @@
           "species_column": {
             "anyOf": [
               {
+                "minimum": 1.0,
                 "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
+            "description": "annotate_list: 1-based column holding the species (default 8).",
             "title": "Species Column"
+          },
+          "target_plastic": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "pathway_analysis: the plastic whose degradation pathway to map against (default PET). An unsupported value is a 422 that lists the supported ones.",
+            "title": "Target Plastic"
           },
           "target_polymers": {
             "anyOf": [
@@ -676,6 +778,35 @@
         "title": "ChemicalReferenceRead",
         "type": "object"
       },
+      "CodedCount": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          }
+        },
+        "required": [
+          "code",
+          "count"
+        ],
+        "title": "CodedCount",
+        "type": "object"
+      },
       "CompoundDetail": {
         "description": "Full compound detail including all entity associations.",
         "properties": {
@@ -859,6 +990,153 @@
           "name"
         ],
         "title": "CompoundRef",
+        "type": "object"
+      },
+      "ConstructPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProteinConstructRow"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "offset",
+          "limit"
+        ],
+        "title": "ConstructPage",
+        "type": "object"
+      },
+      "ConstructStructureLink": {
+        "properties": {
+          "certainty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "chain_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chain Id"
+          },
+          "construct_id": {
+            "title": "Construct Id",
+            "type": "integer"
+          },
+          "coordinate_mapping": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Mapping"
+          },
+          "evidence_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Location"
+          },
+          "evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Text"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "structure_id": {
+            "title": "Structure Id",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "structure_id",
+          "construct_id"
+        ],
+        "title": "ConstructStructureLink",
+        "type": "object"
+      },
+      "ConstructStructureList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ConstructStructureLink"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ConstructStructureList",
+        "type": "object"
+      },
+      "CountryCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "country": {
+            "title": "Country",
+            "type": "string"
+          }
+        },
+        "required": [
+          "country",
+          "count"
+        ],
+        "title": "CountryCount",
         "type": "object"
       },
       "CuratedReactionStep": {
@@ -1283,6 +1561,24 @@
         "title": "EngineeringLineage",
         "type": "object"
       },
+      "EnvironmentCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "environment": {
+            "title": "Environment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "environment",
+          "count"
+        ],
+        "title": "EnvironmentCount",
+        "type": "object"
+      },
       "EnvironmentType": {
         "enum": [
           "activated_sludge",
@@ -1671,6 +1967,486 @@
         "title": "EnzymeKineticsRead",
         "type": "object"
       },
+      "EnzymePreparationDetail": {
+        "properties": {
+          "certainty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "construct_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Construct Id"
+          },
+          "evidence_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Location"
+          },
+          "evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Text"
+          },
+          "experiments": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ExperimentPreparationLink"
+            },
+            "title": "Experiments",
+            "type": "array"
+          },
+          "expression_host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expression Host"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "local_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Key"
+          },
+          "lot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lot"
+          },
+          "modifications": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modifications"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "paper_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Id"
+          },
+          "paper_ingestion_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Ingestion Id"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product"
+          },
+          "protein_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Id"
+          },
+          "protein_variant_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Id"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          },
+          "purification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Purification"
+          },
+          "source_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Scope"
+          },
+          "supplier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier"
+          },
+          "tag_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tag Status"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "EnzymePreparationDetail",
+        "type": "object"
+      },
+      "EnzymePreparationRow": {
+        "properties": {
+          "certainty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "construct_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Construct Id"
+          },
+          "evidence_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Location"
+          },
+          "evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Text"
+          },
+          "expression_host": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expression Host"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "local_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Key"
+          },
+          "lot": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lot"
+          },
+          "modifications": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Modifications"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "paper_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Id"
+          },
+          "paper_ingestion_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Ingestion Id"
+          },
+          "product": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Product"
+          },
+          "protein_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Id"
+          },
+          "protein_variant_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Id"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          },
+          "purification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Purification"
+          },
+          "source_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Scope"
+          },
+          "supplier": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier"
+          },
+          "tag_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tag Status"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "EnzymePreparationRow",
+        "type": "object"
+      },
       "EnzymePropertiesRead": {
         "properties": {
           "assay_notes": {
@@ -1960,6 +2736,7 @@
         "type": "string"
       },
       "EvidenceScope": {
+        "description": "``evidence_scope`` where it selects entities (or a single record's rows).",
         "enum": [
           "organism_or_enzyme",
           "whole_organism",
@@ -2134,6 +2911,73 @@
           "id"
         ],
         "title": "ExperimentConditionsRef",
+        "type": "object"
+      },
+      "ExperimentPreparationLink": {
+        "properties": {
+          "amount": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount"
+          },
+          "experiment_id": {
+            "title": "Experiment Id",
+            "type": "integer"
+          },
+          "preparation_id": {
+            "title": "Preparation Id",
+            "type": "integer"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          }
+        },
+        "required": [
+          "experiment_id",
+          "preparation_id"
+        ],
+        "title": "ExperimentPreparationLink",
+        "type": "object"
+      },
+      "ExperimentPreparationList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ExperimentPreparationLink"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ExperimentPreparationList",
         "type": "object"
       },
       "ExperimentRead": {
@@ -4096,6 +4940,128 @@
         "title": "GenomeComparisonUnit",
         "type": "object"
       },
+      "GlobalSearchResult": {
+        "properties": {
+          "detail_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail Url"
+          },
+          "entity_type": {
+            "title": "Entity Type",
+            "type": "string"
+          },
+          "extra": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extra"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "match": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "number"
+          },
+          "route_key": {
+            "title": "Route Key",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "route_key",
+          "entity_type",
+          "rank"
+        ],
+        "title": "GlobalSearchResult",
+        "type": "object"
+      },
+      "GroupedSearch": {
+        "properties": {
+          "groups": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SearchGroup"
+            },
+            "title": "Groups",
+            "type": "object"
+          },
+          "plastic_matches": {
+            "items": {
+              "$ref": "#/components/schemas/PlasticShortcut"
+            },
+            "title": "Plastic Matches",
+            "type": "array"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          },
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SearchSuggestion"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "groups",
+          "plastic_matches"
+        ],
+        "title": "GroupedSearch",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -5480,6 +6446,95 @@
         "title": "JobVariantItem",
         "type": "object"
       },
+      "LabelCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          }
+        },
+        "required": [
+          "count"
+        ],
+        "title": "LabelCount",
+        "type": "object"
+      },
+      "LineageLevels": {
+        "description": "The distinct names at each rank among the (filtered) lineages.",
+        "properties": {
+          "class": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Class",
+            "type": "array"
+          },
+          "domain": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Domain",
+            "type": "array"
+          },
+          "family": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Family",
+            "type": "array"
+          },
+          "genus": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Genus",
+            "type": "array"
+          },
+          "kingdom": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Kingdom",
+            "type": "array"
+          },
+          "order": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Order",
+            "type": "array"
+          },
+          "phylum": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Phylum",
+            "type": "array"
+          }
+        },
+        "required": [
+          "domain",
+          "kingdom",
+          "phylum",
+          "class",
+          "order",
+          "family",
+          "genus"
+        ],
+        "title": "LineageLevels",
+        "type": "object"
+      },
       "MicroorganismDetail": {
         "properties": {
           "accession": {
@@ -6184,6 +7239,30 @@
         "title": "MutationRead",
         "type": "object"
       },
+      "NamedCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "count"
+        ],
+        "title": "NamedCount",
+        "type": "object"
+      },
       "ObservationRead": {
         "properties": {
           "control_value": {
@@ -6482,6 +7561,27 @@
           "items"
         ],
         "title": "PaginatedResponse[JobRead]",
+        "type": "object"
+      },
+      "PaginatedResponse_JobResultItem_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/JobResultItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ],
+        "title": "PaginatedResponse[JobResultItem]",
         "type": "object"
       },
       "PaginatedResponse_MicroorganismListItem_": {
@@ -8090,6 +9190,88 @@
         "title": "PlasticRead",
         "type": "object"
       },
+      "PlasticShortcut": {
+        "properties": {
+          "full_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Full Name"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "match": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Match"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "title": "PlasticShortcut",
+        "type": "object"
+      },
+      "PreparationPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EnzymePreparationRow"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "offset",
+          "limit"
+        ],
+        "title": "PreparationPage",
+        "type": "object"
+      },
       "ProductPaperRef": {
         "properties": {
           "citation": {
@@ -8165,6 +9347,35 @@
         "title": "ProductPlasticRef",
         "type": "object"
       },
+      "ProteinAccessionLookup": {
+        "properties": {
+          "accession": {
+            "title": "Accession",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          }
+        },
+        "required": [
+          "id",
+          "accession"
+        ],
+        "title": "ProteinAccessionLookup",
+        "type": "object"
+      },
       "ProteinActivityCounts": {
         "properties": {
           "degrader": {
@@ -8221,6 +9432,464 @@
           "both"
         ],
         "title": "ProteinActivityStats",
+        "type": "object"
+      },
+      "ProteinConstructDetail": {
+        "properties": {
+          "archived_reference": {
+            "default": false,
+            "title": "Archived Reference",
+            "type": "boolean"
+          },
+          "certainty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "chains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chains"
+          },
+          "components": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Components"
+          },
+          "coordinate_mappings": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Mappings"
+          },
+          "evidence_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Location"
+          },
+          "evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Text"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "local_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Key"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "paper_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Id"
+          },
+          "paper_ingestion_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Ingestion Id"
+          },
+          "protein_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Id"
+          },
+          "protein_variant_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Id"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          },
+          "sequence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence"
+          },
+          "sequence_frame": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Frame"
+          },
+          "sequence_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Role"
+          },
+          "sequence_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Status"
+          },
+          "source_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Scope"
+          },
+          "structures": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/ConstructStructureLink"
+            },
+            "title": "Structures",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "ProteinConstructDetail",
+        "type": "object"
+      },
+      "ProteinConstructRow": {
+        "properties": {
+          "archived_reference": {
+            "default": false,
+            "title": "Archived Reference",
+            "type": "boolean"
+          },
+          "certainty": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certainty"
+          },
+          "chains": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chains"
+          },
+          "components": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Components"
+          },
+          "coordinate_mappings": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Mappings"
+          },
+          "evidence_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Location"
+          },
+          "evidence_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evidence Text"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "local_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Local Key"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "paper_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Id"
+          },
+          "paper_ingestion_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Paper Ingestion Id"
+          },
+          "protein_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Id"
+          },
+          "protein_variant_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Id"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provenance"
+          },
+          "sequence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence"
+          },
+          "sequence_frame": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Frame"
+          },
+          "sequence_role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Role"
+          },
+          "sequence_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sequence Status"
+          },
+          "source_scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Scope"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "ProteinConstructRow",
         "type": "object"
       },
       "ProteinDetail": {
@@ -9631,6 +11300,88 @@
         "title": "ReactionStepRead",
         "type": "object"
       },
+      "RecordGoneBody": {
+        "description": "Body of every record 410.",
+        "properties": {
+          "accession": {
+            "title": "Accession",
+            "type": "string"
+          },
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "reason": {
+            "const": "withdrawn",
+            "default": "withdrawn",
+            "enum": [
+              "withdrawn"
+            ],
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detail",
+          "accession"
+        ],
+        "title": "RecordGoneBody",
+        "type": "object"
+      },
+      "RecordRedirect": {
+        "description": "Body of every record 301; ``Location`` carries the same ``location``.",
+        "properties": {
+          "accession": {
+            "description": "The record the redirect points at.",
+            "title": "Accession",
+            "type": "string"
+          },
+          "kind": {
+            "description": "What `accession` is: a wild-type protein, an engineered variant, or a microorganism.",
+            "enum": [
+              "wild_type",
+              "engineered",
+              "microorganism"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "location": {
+            "description": "Its API path, with the original suffix and query.",
+            "title": "Location",
+            "type": "string"
+          },
+          "merged_into": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "On a merge: the surviving accession (= `accession`).",
+            "title": "Merged Into"
+          },
+          "reason": {
+            "description": "`merged`: the requested accession was merged into `merged_into`. `engineered_variant`: it is a live engineered variant, whose record lives under `/variants`.",
+            "enum": [
+              "merged",
+              "engineered_variant"
+            ],
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "accession",
+          "location",
+          "kind",
+          "reason"
+        ],
+        "title": "RecordRedirect",
+        "type": "object"
+      },
       "ReferenceMonomerRead": {
         "description": "A monomer of a plastic, per the reviewed chemistry reference.",
         "properties": {
@@ -10315,6 +12066,122 @@
         "title": "SampleSourceRead",
         "type": "object"
       },
+      "SearchGroup": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/GlobalSearchResult"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "more_query": {
+            "title": "More Query",
+            "type": "string"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "more_query",
+          "items"
+        ],
+        "title": "SearchGroup",
+        "type": "object"
+      },
+      "SearchPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/GlobalSearchResult"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ],
+        "title": "SearchPage",
+        "type": "object"
+      },
+      "SearchSuggestion": {
+        "properties": {
+          "full_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Full Name"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Query"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "title": "SearchSuggestion",
+        "type": "object"
+      },
+      "SearchUnavailable": {
+        "properties": {
+          "detail": {
+            "title": "Detail",
+            "type": "string"
+          },
+          "reason": {
+            "enum": [
+              "index_unavailable",
+              "binary_unavailable",
+              "timeout"
+            ],
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detail",
+          "reason"
+        ],
+        "title": "SearchUnavailable",
+        "type": "object"
+      },
       "SequenceSearchResponse": {
         "properties": {
           "diamond_version": {
@@ -10742,6 +12609,91 @@
         "title": "SoleCarbonSource",
         "type": "string"
       },
+      "StatsByCountry": {
+        "properties": {
+          "microorganisms": {
+            "items": {
+              "$ref": "#/components/schemas/CountryCount"
+            },
+            "title": "Microorganisms",
+            "type": "array"
+          },
+          "papers": {
+            "items": {
+              "$ref": "#/components/schemas/CountryCount"
+            },
+            "title": "Papers",
+            "type": "array"
+          },
+          "plastics": {
+            "items": {
+              "$ref": "#/components/schemas/CountryCount"
+            },
+            "title": "Plastics",
+            "type": "array"
+          },
+          "proteins": {
+            "items": {
+              "$ref": "#/components/schemas/CountryCount"
+            },
+            "title": "Proteins",
+            "type": "array"
+          }
+        },
+        "required": [
+          "microorganisms",
+          "proteins",
+          "plastics",
+          "papers"
+        ],
+        "title": "StatsByCountry",
+        "type": "object"
+      },
+      "StatsCharts": {
+        "properties": {
+          "current_year": {
+            "title": "Current Year",
+            "type": "integer"
+          },
+          "environments": {
+            "items": {
+              "$ref": "#/components/schemas/CodedCount"
+            },
+            "title": "Environments",
+            "type": "array"
+          },
+          "enzyme_origins": {
+            "items": {
+              "$ref": "#/components/schemas/CodedCount"
+            },
+            "title": "Enzyme Origins",
+            "type": "array"
+          },
+          "publications_per_year": {
+            "items": {
+              "$ref": "#/components/schemas/YearCount"
+            },
+            "title": "Publications Per Year",
+            "type": "array"
+          },
+          "top_plastics": {
+            "items": {
+              "$ref": "#/components/schemas/LabelCount"
+            },
+            "title": "Top Plastics",
+            "type": "array"
+          }
+        },
+        "required": [
+          "environments",
+          "enzyme_origins",
+          "publications_per_year",
+          "top_plastics",
+          "current_year"
+        ],
+        "title": "StatsCharts",
+        "type": "object"
+      },
       "StrainOccurrenceRead": {
         "description": "A microorganism's occurrence in a specific paper (for the organism page).",
         "properties": {
@@ -11043,6 +12995,127 @@
         "title": "SubstrateForm",
         "type": "string"
       },
+      "TaxonomyGroupStats": {
+        "properties": {
+          "evidenced_microbe_total": {
+            "title": "Evidenced Microbe Total",
+            "type": "integer"
+          },
+          "microbe_total": {
+            "title": "Microbe Total",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "paper_total": {
+            "title": "Paper Total",
+            "type": "integer"
+          },
+          "plastic_total": {
+            "title": "Plastic Total",
+            "type": "integer"
+          },
+          "protein_total": {
+            "title": "Protein Total",
+            "type": "integer"
+          },
+          "rank": {
+            "title": "Rank",
+            "type": "string"
+          },
+          "temperature_class": {
+            "$ref": "#/components/schemas/TemperatureClassCounts"
+          },
+          "top_environments": {
+            "items": {
+              "$ref": "#/components/schemas/EnvironmentCount"
+            },
+            "title": "Top Environments",
+            "type": "array"
+          },
+          "top_microorganisms": {
+            "items": {
+              "$ref": "#/components/schemas/TaxonomyTopMicroorganism"
+            },
+            "title": "Top Microorganisms",
+            "type": "array"
+          },
+          "top_plastics": {
+            "items": {
+              "$ref": "#/components/schemas/NamedCount"
+            },
+            "title": "Top Plastics",
+            "type": "array"
+          }
+        },
+        "required": [
+          "rank",
+          "name",
+          "microbe_total",
+          "evidenced_microbe_total",
+          "protein_total",
+          "plastic_total",
+          "paper_total",
+          "top_plastics",
+          "top_environments",
+          "temperature_class",
+          "top_microorganisms"
+        ],
+        "title": "TaxonomyGroupStats",
+        "type": "object"
+      },
+      "TaxonomyTopMicroorganism": {
+        "properties": {
+          "accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accession"
+          },
+          "evidence_count": {
+            "title": "Evidence Count",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "protein_count": {
+            "title": "Protein Count",
+            "type": "integer"
+          },
+          "tax_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Id"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "protein_count",
+          "evidence_count"
+        ],
+        "title": "TaxonomyTopMicroorganism",
+        "type": "object"
+      },
       "TempClass": {
         "description": "Growth-temperature class, bucketed from the organism's recorded optimum growth temperature\n(``growth_temp_opt``) — not from any assay temperature.",
         "enum": [
@@ -11052,6 +13125,34 @@
         ],
         "title": "TempClass",
         "type": "string"
+      },
+      "TemperatureClassCounts": {
+        "properties": {
+          "mesophile": {
+            "title": "Mesophile",
+            "type": "integer"
+          },
+          "psychrophile": {
+            "title": "Psychrophile",
+            "type": "integer"
+          },
+          "thermophile": {
+            "title": "Thermophile",
+            "type": "integer"
+          },
+          "unknown": {
+            "title": "Unknown",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "psychrophile",
+          "mesophile",
+          "thermophile",
+          "unknown"
+        ],
+        "title": "TemperatureClassCounts",
+        "type": "object"
       },
       "TotalReading": {
         "description": "One summed observation's value: the total of the set, not per compound.",
@@ -11977,6 +14078,24 @@
         "title": "VariantParentRef",
         "type": "object"
       },
+      "YearCount": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "year": {
+            "title": "Year",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "year",
+          "count"
+        ],
+        "title": "YearCount",
+        "type": "object"
+      },
       "app__schemas__compounds__PlasticRef": {
         "description": "Minimal plastic reference for compound detail — avoids circular import.",
         "properties": {
@@ -12358,7 +14477,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -12514,7 +14633,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -12561,7 +14680,8 @@
     },
     "/api/v1/bioinformatics/annotate-gene": {
       "post": {
-        "description": "Submit an annotate-gene job via API. Provide FASTA content as base64.",
+        "deprecated": true,
+        "description": "Submit a annotate_gene job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=annotate_gene`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_annotate_gene_api_v1_bioinformatics_annotate_gene_post",
         "parameters": [
           {
@@ -12648,6 +14768,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -12715,6 +14853,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -12723,7 +14864,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -12731,7 +14872,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Annotate Gene",
+        "summary": "Submit a annotate_gene job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -12739,7 +14880,8 @@
     },
     "/api/v1/bioinformatics/annotate-genome": {
       "post": {
-        "description": "Submit an annotate-genome job via API.",
+        "deprecated": true,
+        "description": "Submit a annotate_genome job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=annotate_genome`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_annotate_genome_api_v1_bioinformatics_annotate_genome_post",
         "parameters": [
           {
@@ -12826,6 +14968,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -12893,6 +15053,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -12901,7 +15064,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -12909,7 +15072,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Annotate Genome",
+        "summary": "Submit a annotate_genome job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -12917,7 +15080,8 @@
     },
     "/api/v1/bioinformatics/annotate-list": {
       "post": {
-        "description": "Submit an annotate-list job via API. Provide TSV content as base64.",
+        "deprecated": true,
+        "description": "Submit a annotate_list job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=annotate_list`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_annotate_list_api_v1_bioinformatics_annotate_list_post",
         "parameters": [
           {
@@ -12930,31 +15094,44 @@
             }
           },
           {
+            "description": "1-based column holding the genus.",
             "in": "query",
             "name": "genus_column",
             "required": false,
             "schema": {
-              "default": 1,
+              "default": 7,
+              "description": "1-based column holding the genus.",
+              "minimum": 1,
               "title": "Genus Column",
               "type": "integer"
             }
           },
           {
+            "description": "1-based column holding the species.",
             "in": "query",
             "name": "species_column",
             "required": false,
             "schema": {
-              "default": 2,
+              "default": 8,
+              "description": "1-based column holding the species.",
+              "minimum": 1,
               "title": "Species Column",
               "type": "integer"
             }
           },
           {
+            "description": "The table's separator.",
             "in": "query",
             "name": "field_separator",
             "required": false,
             "schema": {
-              "default": "\t",
+              "default": "tab",
+              "description": "The table's separator.",
+              "enum": [
+                "tab",
+                "comma",
+                "space"
+              ],
               "title": "Field Separator",
               "type": "string"
             }
@@ -13004,6 +15181,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -13071,6 +15266,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -13079,7 +15277,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -13087,7 +15285,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Annotate List",
+        "summary": "Submit a annotate_list job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -13095,7 +15293,8 @@
     },
     "/api/v1/bioinformatics/compare-genomes": {
       "post": {
-        "description": "Submit a compare-genomes job via API: one ``fasta_b64`` per genome.",
+        "deprecated": true,
+        "description": "Submit a compare_genomes job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=compare_genomes`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_compare_genomes_api_v1_bioinformatics_compare_genomes_post",
         "parameters": [
           {
@@ -13208,6 +15407,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -13275,6 +15492,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -13283,7 +15503,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -13291,7 +15511,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Compare Genomes",
+        "summary": "Submit a compare_genomes job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -13299,7 +15519,8 @@
     },
     "/api/v1/bioinformatics/hmm-screen": {
       "post": {
-        "description": "Submit an HMM screen job against polymer-specific HMM profiles.",
+        "deprecated": true,
+        "description": "Submit a hmm_screen job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=hmm_screen`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_hmm_screen_api_v1_bioinformatics_hmm_screen_post",
         "parameters": [
           {
@@ -13374,6 +15595,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -13441,6 +15680,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -13449,7 +15691,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -13457,7 +15699,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Hmm Screen",
+        "summary": "Submit a hmm_screen job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -13465,7 +15707,8 @@
     },
     "/api/v1/bioinformatics/pathway-analysis": {
       "post": {
-        "description": "Submit a PET degradation pathway-analysis job via API.",
+        "deprecated": true,
+        "description": "Submit a pathway_analysis job with its input base64-encoded in the query string.\n\n**Deprecated**: use multipart `POST /jobs` with `job_type=pathway_analysis`. This route runs the same code path (validation, size limits, stored file names, response) with the input as base64 in the query string.",
         "operationId": "api_pathway_analysis_api_v1_bioinformatics_pathway_analysis_post",
         "parameters": [
           {
@@ -13478,13 +15721,13 @@
             }
           },
           {
-            "description": "Plastic whose degradation pathway to map against. Currently supported: ['PET']. Additional pathways will be added in future releases.",
+            "description": "Plastic whose degradation pathway to map against. Currently supported: ['PET'].",
             "in": "query",
             "name": "target_plastic",
             "required": false,
             "schema": {
               "default": "PET",
-              "description": "Plastic whose degradation pathway to map against. Currently supported: ['PET']. Additional pathways will be added in future releases.",
+              "description": "Plastic whose degradation pathway to map against. Currently supported: ['PET'].",
               "title": "Target Plastic",
               "type": "string"
             }
@@ -13614,6 +15857,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "responses": {
@@ -13681,6 +15942,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "The input exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -13689,7 +15953,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -13697,7 +15961,7 @@
             "PlasticDBKey": []
           }
         ],
-        "summary": "Api Pathway Analysis",
+        "summary": "Submit a pathway_analysis job (base64 input; deprecated)",
         "tags": [
           "bioinformatics"
         ]
@@ -13858,43 +16122,30 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "502": {
+            "description": "DIAMOND failed."
           },
           "503": {
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "current_release": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "reason": {
-                      "enum": [
-                        "unknown",
-                        "no_artefacts",
-                        "live_only",
-                        "not_mounted"
-                      ],
-                      "type": "string"
-                    },
-                    "release": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "detail",
-                    "reason"
-                  ],
-                  "title": "ReleaseError",
-                  "type": "object"
+                  "$ref": "#/components/schemas/SearchUnavailable"
                 }
               }
             },
-            "description": "The release's artefacts are not readable here."
+            "description": "The reference index or the DIAMOND binary is missing (`reason`); retry later."
+          },
+          "504": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchUnavailable"
+                }
+              }
+            },
+            "description": "The search took longer than 15 s (`reason: timeout`)."
           }
         },
         "security": [
@@ -14664,7 +16915,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ConstructPage"
+                }
               }
             },
             "description": "Successful Response",
@@ -14737,7 +16990,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -14818,7 +17071,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ProteinConstructDetail"
+                }
               }
             },
             "description": "Successful Response",
@@ -14891,7 +17146,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -14972,7 +17227,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ConstructStructureList"
+                }
               }
             },
             "description": "Successful Response",
@@ -15045,7 +17302,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -15362,6 +17619,40 @@
               }
             },
             "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "archive_unavailable"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ArchiveUnavailable",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The archive is being built or its store is unreachable. Retry after `Retry-After` seconds, or use `/downloads/dataset.json`.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
           }
         },
         "summary": "Dataset Zip",
@@ -15840,6 +18131,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -15858,6 +18155,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -15908,7 +18211,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -16423,6 +18726,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -16441,6 +18750,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -16491,7 +18806,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -16838,6 +19153,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -16856,6 +19177,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -16906,7 +19233,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -17253,6 +19580,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -17271,6 +19604,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -17321,7 +19660,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -17515,6 +19854,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -17533,6 +19878,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -17583,7 +19934,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -17777,6 +20128,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -17795,6 +20152,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -17845,7 +20208,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -17987,6 +20350,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -18005,6 +20374,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -18055,7 +20430,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -18197,6 +20572,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -18215,6 +20596,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -18265,7 +20652,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -18831,6 +21218,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -18849,6 +21242,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -18899,7 +21298,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -19467,6 +21866,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -19485,6 +21890,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -19535,7 +21946,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -20101,6 +22512,12 @@
             },
             "description": "Successful Response",
             "headers": {
+              "ETag": {
+                "description": "On a past-release download: a weak validator, the same for every download of that release and format (`If-None-Match` answers 304).",
+                "schema": {
+                  "type": "string"
+                }
+              },
               "X-PlasticDB-Release": {
                 "description": "The dataset release that answered (the current one for a live answer).",
                 "schema": {
@@ -20119,6 +22536,12 @@
               },
               "X-PlasticDB-Snapshot-Unavailable": {
                 "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Source-SHA256": {
+                "description": "On a past-release download: the SHA-256 of the release Parquet artefact(s) the file is rendered from, as listed in its MANIFEST.json (FASTA: proteins then protein_variants, comma-separated).",
                 "schema": {
                   "type": "string"
                 }
@@ -20169,7 +22592,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -20902,7 +23325,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentPreparationList"
+                }
               }
             },
             "description": "Successful Response",
@@ -20975,7 +23400,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -21101,6 +23526,24 @@
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
             }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
+            }
           }
         ],
         "requestBody": {
@@ -21178,6 +23621,9 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "413": {
+            "description": "An upload exceeds a size or count limit."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -21186,7 +23632,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -21211,6 +23657,22 @@
             "required": true,
             "schema": {
               "title": "Token",
+              "type": "string"
+            }
+          },
+          {
+            "description": "`results` (default): every hit in `results`. `none`: no hits (`results` is empty, `result_count` still counts them) — for polling; page the hits with `GET /jobs/{id}/results`.",
+            "in": "query",
+            "name": "include",
+            "required": false,
+            "schema": {
+              "default": "results",
+              "description": "`results` (default): every hit in `results`. `none`: no hits (`results` is empty, `result_count` still counts them) — for polling; page the hits with `GET /jobs/{id}/results`.",
+              "enum": [
+                "results",
+                "none"
+              ],
+              "title": "Include",
               "type": "string"
             }
           }
@@ -21482,8 +23944,96 @@
         ]
       }
     },
+    "/api/v1/jobs/shared/{token}/results": {
+      "get": {
+        "description": "``GET /jobs/{id}/results`` for a share link.",
+        "operationId": "list_shared_job_results_api_v1_jobs_shared__token__results_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "title": "Token",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Hits per page.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "description": "Hits per page.",
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+              "title": "Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_JobResultItem_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "A shared job's hits, one page at a time",
+        "tags": [
+          "jobs"
+        ]
+      }
+    },
     "/api/v1/jobs/{job_id}": {
       "get": {
+        "description": "A job, with its hits unless ``include=none`` (then page them through\n``GET /jobs/{id}/results``). Carries the job's own release in ``X-PlasticDB-Release``.",
         "operationId": "get_job_api_v1_jobs__job_id__get",
         "parameters": [
           {
@@ -21492,6 +24042,22 @@
             "required": true,
             "schema": {
               "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "`results` (default): every hit in `results`. `none`: no hits (`results` is empty, `result_count` still counts them) — for polling; page the hits with `GET /jobs/{id}/results`.",
+            "in": "query",
+            "name": "include",
+            "required": false,
+            "schema": {
+              "default": "results",
+              "description": "`results` (default): every hit in `results`. `none`: no hits (`results` is empty, `result_count` still counts them) — for polling; page the hits with `GET /jobs/{id}/results`.",
+              "enum": [
+                "results",
+                "none"
+              ],
+              "title": "Include",
               "type": "string"
             }
           }
@@ -21783,6 +24349,99 @@
         ]
       }
     },
+    "/api/v1/jobs/{job_id}/results": {
+      "get": {
+        "description": "The hits of ``GET /jobs/{id}``, in the same order, as ``{total, items}``.",
+        "operationId": "list_job_results_api_v1_jobs__job_id__results_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Hits per page.",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "description": "Hits per page.",
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+              "title": "Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedResponse_JobResultItem_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {},
+          {
+            "PlasticDBKey": []
+          }
+        ],
+        "summary": "A job's hits, one page at a time",
+        "tags": [
+          "jobs"
+        ]
+      }
+    },
     "/api/v1/jobs/{job_id}/shares": {
       "get": {
         "operationId": "list_job_shares_api_v1_jobs__job_id__shares_get",
@@ -21834,7 +24493,7 @@
         ]
       },
       "post": {
-        "description": "Mint a link that shows this job's results page and downloads to anyone who has it, without\nsigning in. The token is returned **once**; only its hash is stored. Owner only.",
+        "description": "Mint a link that shows this job's results page and downloads to anyone who has it, without\nsigning in. The token is returned **once**; only its hash is stored. Owner only. With an\n``Idempotency-Key``, a repeat within 24 hours returns the same link and token.",
         "operationId": "create_job_share_api_v1_jobs__job_id__shares_post",
         "parameters": [
           {
@@ -21844,6 +24503,24 @@
             "schema": {
               "title": "Job Id",
               "type": "string"
+            }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
             }
           }
         ],
@@ -22577,7 +25254,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -22637,14 +25314,14 @@
             }
           },
           {
-            "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it) or 'whole_organism' (its own assays only). Any other value is a 422.",
+            "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it), 'whole_organism' (its own assays only) or 'enzyme_only' (only its enzymes' assays). The last two partition the first. Any other value is a 422.",
             "in": "query",
             "name": "evidence_scope",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RowEvidenceScope",
+              "$ref": "#/components/schemas/EvidenceScope",
               "default": "organism_or_enzyme",
-              "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it) or 'whole_organism' (its own assays only). Any other value is a 422."
+              "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it), 'whole_organism' (its own assays only) or 'enzyme_only' (only its enzymes' assays). The last two partition the first. Any other value is a 422."
             }
           },
           {
@@ -22701,6 +25378,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -22737,6 +25424,16 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -22745,7 +25442,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -22913,7 +25610,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/LineageLevels"
+                }
               }
             },
             "description": "Successful Response",
@@ -23374,7 +26073,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/TaxonomyGroupStats"
+                }
               }
             },
             "description": "Successful Response",
@@ -23396,6 +26097,9 @@
                 }
               }
             }
+          },
+          "302": {
+            "description": "A renamed taxon: redirect to its successor."
           },
           "404": {
             "content": {
@@ -23501,14 +26205,14 @@
             }
           },
           {
-            "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it) or 'whole_organism' (its own assays only). Any other value is a 422.",
+            "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it), 'whole_organism' (its own assays only) or 'enzyme_only' (only its enzymes' assays). The last two partition the first. Any other value is a 422.",
             "in": "query",
             "name": "evidence_scope",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RowEvidenceScope",
+              "$ref": "#/components/schemas/EvidenceScope",
               "default": "organism_or_enzyme",
-              "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it) or 'whole_organism' (its own assays only). Any other value is a 422."
+              "description": "Which evidence credits the organism on this record: 'organism_or_enzyme' (default — its own whole-organism assays plus those of enzymes purified from it), 'whole_organism' (its own assays only) or 'enzyme_only' (only its enzymes' assays). The last two partition the first. Any other value is a 422."
             }
           },
           {
@@ -23565,6 +26269,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -23601,6 +26315,16 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -23609,7 +26333,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -24121,7 +26845,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -24720,7 +27444,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -25231,7 +27955,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -25392,7 +28116,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -25567,7 +28291,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -25723,7 +28447,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -26092,7 +28816,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -26532,7 +29256,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -26730,7 +29454,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/PreparationPage"
+                }
               }
             },
             "description": "Successful Response",
@@ -26803,7 +29529,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -26884,7 +29610,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/EnzymePreparationDetail"
+                }
               }
             },
             "description": "Successful Response",
@@ -26957,7 +29685,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -27701,7 +30429,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -27783,7 +30511,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ProteinAccessionLookup"
+                }
               }
             },
             "description": "Successful Response",
@@ -27805,6 +30535,16 @@
                 }
               }
             }
+          },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
           },
           "404": {
             "content": {
@@ -27878,6 +30618,16 @@
             },
             "description": "Computed live: a past release cannot answer it."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -27897,7 +30647,7 @@
     },
     "/api/v1/proteins/{accession}": {
       "get": {
-        "description": "Look up a protein by PB#### accession (case-insensitive).",
+        "description": "Look up a protein by PB#### accession (case-insensitive) or numeric id,\nas `/fasta` and `/structure` do.",
         "operationId": "get_protein_api_v1_proteins__accession__get",
         "parameters": [
           {
@@ -27991,6 +30741,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -28027,6 +30787,16 @@
             },
             "description": "Unknown release, or one without artefacts."
           },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -28035,7 +30805,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -28219,41 +30989,28 @@
               }
             }
           },
-          "404": {
+          "301": {
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "current_release": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "reason": {
-                      "enum": [
-                        "unknown",
-                        "no_artefacts",
-                        "live_only",
-                        "not_mounted"
-                      ],
-                      "type": "string"
-                    },
-                    "release": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "detail",
-                    "reason"
-                  ],
-                  "title": "ReleaseError",
-                  "type": "object"
+                  "$ref": "#/components/schemas/RecordRedirect"
                 }
               }
             },
-            "description": "Unknown release, or one without artefacts."
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
+          "404": {
+            "description": "No such protein; or an engineered variant (`reason: engineered_variant`, `location`: its record), which has none of these sub-resources; or an unknown release (`reason`)."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -28263,7 +31020,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -28430,41 +31187,28 @@
               }
             }
           },
-          "404": {
+          "301": {
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "current_release": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "reason": {
-                      "enum": [
-                        "unknown",
-                        "no_artefacts",
-                        "live_only",
-                        "not_mounted"
-                      ],
-                      "type": "string"
-                    },
-                    "release": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "detail",
-                    "reason"
-                  ],
-                  "title": "ReleaseError",
-                  "type": "object"
+                  "$ref": "#/components/schemas/RecordRedirect"
                 }
               }
             },
-            "description": "Unknown release, or one without artefacts."
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
+          "404": {
+            "description": "No such protein; or an engineered variant (`reason: engineered_variant`, `location`: its record), which has none of these sub-resources; or an unknown release (`reason`)."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -28474,7 +31218,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -28641,41 +31385,28 @@
               }
             }
           },
-          "404": {
+          "301": {
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "current_release": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "reason": {
-                      "enum": [
-                        "unknown",
-                        "no_artefacts",
-                        "live_only",
-                        "not_mounted"
-                      ],
-                      "type": "string"
-                    },
-                    "release": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "detail",
-                    "reason"
-                  ],
-                  "title": "ReleaseError",
-                  "type": "object"
+                  "$ref": "#/components/schemas/RecordRedirect"
                 }
               }
             },
-            "description": "Unknown release, or one without artefacts."
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
+          "404": {
+            "description": "No such protein; or an engineered variant (`reason: engineered_variant`, `location`: its record), which has none of these sub-resources; or an unknown release (`reason`)."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -28685,7 +31416,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -28852,41 +31583,28 @@
               }
             }
           },
-          "404": {
+          "301": {
             "content": {
               "application/json": {
                 "schema": {
-                  "properties": {
-                    "current_release": {
-                      "nullable": true,
-                      "type": "string"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "reason": {
-                      "enum": [
-                        "unknown",
-                        "no_artefacts",
-                        "live_only",
-                        "not_mounted"
-                      ],
-                      "type": "string"
-                    },
-                    "release": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "detail",
-                    "reason"
-                  ],
-                  "title": "ReleaseError",
-                  "type": "object"
+                  "$ref": "#/components/schemas/RecordRedirect"
                 }
               }
             },
-            "description": "Unknown release, or one without artefacts."
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
+          "404": {
+            "description": "No such protein; or an engineered variant (`reason: engineered_variant`, `location`: its record), which has none of these sub-resources; or an unknown release (`reason`)."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -28896,7 +31614,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           },
           "503": {
             "content": {
@@ -29001,6 +31719,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -29072,6 +31800,16 @@
               }
             },
             "description": "Computed live: a past release cannot answer it."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -29150,6 +31888,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -29221,6 +31969,16 @@
               }
             },
             "description": "Computed live: a past release cannot answer it."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {
@@ -29385,6 +32143,42 @@
             },
             "description": "Successful Response"
           },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release (`reason: unknown`)."
+          },
           "422": {
             "content": {
               "application/json": {
@@ -29433,7 +32227,56 @@
                 "schema": {}
               }
             },
-            "description": "Successful Response"
+            "description": "The file.",
+            "headers": {
+              "ETag": {
+                "description": "The same digest, quoted.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-SHA256": {
+                "description": "The file's SHA-256, as listed in MANIFEST.json (absent for MANIFEST.json itself).",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "ReleaseFileError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release (`reason: unknown`), or no such file in it (`detail` only)."
           },
           "422": {
             "content": {
@@ -29444,6 +32287,42 @@
               }
             },
             "description": "Validation Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Recorded, but not readable here (`reason: not_mounted`)."
           }
         },
         "summary": "Download Release Artefact",
@@ -29484,6 +32363,41 @@
               }
             },
             "description": "Redirect to the coordinate file."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail"
+                  ],
+                  "title": "ReleaseFileError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release (`reason: unknown`), or no such file in it (`detail` only)."
           },
           "422": {
             "content": {
@@ -29583,7 +32497,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPage"
+                }
               }
             },
             "description": "Successful Response",
@@ -29734,7 +32650,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/AutocompleteResult"
+                }
               }
             },
             "description": "Successful Response",
@@ -29897,7 +32815,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/GroupedSearch"
+                }
               }
             },
             "description": "Successful Response",
@@ -30154,12 +33074,14 @@
         "operationId": "public_stats_api_v1_stats_get",
         "parameters": [
           {
+            "description": "Which organisms `microorganisms` counts, with `/microorganisms?evidence_scope=`'s meaning (an entity count).",
             "in": "query",
             "name": "evidence_scope",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/RowEvidenceScope",
-              "default": "organism_or_enzyme"
+              "$ref": "#/components/schemas/EvidenceScope",
+              "default": "organism_or_enzyme",
+              "description": "Which organisms `microorganisms` counts, with `/microorganisms?evidence_scope=`'s meaning (an entity count)."
             }
           },
           {
@@ -30326,7 +33248,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/StatsByCountry"
+                }
               }
             },
             "description": "Successful Response",
@@ -30474,7 +33398,9 @@
           "200": {
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/StatsCharts"
+                }
               }
             },
             "description": "Successful Response",
@@ -30730,7 +33656,7 @@
     },
     "/api/v1/tree/build": {
       "post": {
-        "description": "Submit a Taxonomy Tree job.",
+        "description": "Submit a Taxonomy Tree job. With an ``Idempotency-Key`` (signed-in callers), a repeat\nwithin 24 hours returns the first job instead of building another.",
         "operationId": "build_tree_api_v1_tree_build_post",
         "parameters": [
           {
@@ -30749,6 +33675,24 @@
               ],
               "description": "Run against a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live reference databases. A past release: its archived DIAMOND databases (homology and pathway) / HMM library / tables, and every record a hit names is described as that release published it. A job type or option the release cannot answer is a 422 (`release_unsupported`); an unknown release, or one without artefacts, a 404. The job records the release in `release`.",
               "title": "Release"
+            }
+          },
+          {
+            "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional. Repeat a request with the same key (any 1-255 printable ASCII characters, e.g. a UUID) within 24 hours to get back what the first one created, with the `Idempotent-Replayed: true` header, instead of a duplicate. Scoped to the caller; ignored without a credential. The same key with a different request is a 422 (`idempotency_key_reused`).",
+              "title": "Idempotency-Key"
             }
           }
         ],
@@ -30835,7 +33779,7 @@
                 }
               }
             },
-            "description": "Validation Error"
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
           }
         },
         "security": [
@@ -30852,7 +33796,7 @@
     },
     "/api/v1/tree/{job_id}": {
       "get": {
-        "description": "Poll a tree job for status and results.",
+        "description": "Poll a tree job for status and results. A tree job answers with the release it was\nbuilt against (its `release` field and the `X-PlasticDB-Release` header); pin it when\nsubmitting, with `POST /tree/build?release=`. A signed-in user's tree is private to\nthem, as on `GET /jobs/{id}`; share it with `POST /jobs/{id}/shares`.",
         "operationId": "get_tree_job_api_v1_tree__job_id__get",
         "parameters": [
           {
@@ -30862,25 +33806,6 @@
             "schema": {
               "title": "Job Id",
               "type": "string"
-            }
-          },
-          {
-            "deprecated": true,
-            "description": "Ignored. A tree job answers with the release it was built against (its `release` field and the `X-PlasticDB-Release` header); pin it when submitting, with `POST /tree/build?release=`.",
-            "in": "query",
-            "name": "release",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "Ignored. A tree job answers with the release it was built against (its `release` field and the `X-PlasticDB-Release` header); pin it when submitting, with `POST /tree/build?release=`.",
-              "title": "Release"
             }
           }
         ],
@@ -30906,6 +33831,12 @@
             "description": "Validation Error"
           }
         },
+        "security": [
+          {},
+          {
+            "PlasticDBKey": []
+          }
+        ],
         "summary": "Get a Taxonomy Tree job (Newick + plastic matrix)",
         "tags": [
           "tree"
@@ -30939,7 +33870,7 @@
             }
           },
           {
-            "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
             "in": "query",
             "name": "release",
             "required": false,
@@ -30952,7 +33883,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
               "title": "Release"
             }
           }
@@ -30983,8 +33914,24 @@
                   ],
                   "type": "string"
                 }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
               }
             }
+          },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
           },
           "404": {
             "content": {
@@ -31020,9 +33967,29 @@
                 }
               }
             },
-            "description": "Unknown release."
+            "description": "Unknown release, or one without artefacts."
           },
-          "409": {
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
             "content": {
               "application/json": {
                 "schema": {
@@ -31056,17 +34023,7 @@
                 }
               }
             },
-            "description": "Computed live: a past release cannot answer it."
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
+            "description": "The release's artefacts are not readable here."
           }
         },
         "summary": "Get Variant",
@@ -31090,7 +34047,7 @@
             }
           },
           {
-            "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
             "in": "query",
             "name": "release",
             "required": false,
@@ -31103,7 +34060,7 @@
                   "type": "null"
                 }
               ],
-              "description": "Only the current release can answer this endpoint (it is computed live). A past release is a 409 that names the current one.",
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
               "title": "Release"
             }
           }
@@ -31132,8 +34089,24 @@
                   ],
                   "type": "string"
                 }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
               }
             }
+          },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
           },
           "404": {
             "content": {
@@ -31169,9 +34142,29 @@
                 }
               }
             },
-            "description": "Unknown release."
+            "description": "Unknown release, or one without artefacts."
           },
-          "409": {
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
             "content": {
               "application/json": {
                 "schema": {
@@ -31205,17 +34198,7 @@
                 }
               }
             },
-            "description": "Computed live: a past release cannot answer it."
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
+            "description": "The release's artefacts are not readable here."
           }
         },
         "summary": "Get Variant Fasta",
@@ -31284,6 +34267,16 @@
               }
             }
           },
+          "301": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRedirect"
+                }
+              }
+            },
+            "description": "Merged into another record, or an engineered variant asked for at /proteins; follow `Location`."
+          },
           "404": {
             "content": {
               "application/json": {
@@ -31355,6 +34348,16 @@
               }
             },
             "description": "Computed live: a past release cannot answer it."
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordGoneBody"
+                }
+              }
+            },
+            "description": "Withdrawn."
           },
           "422": {
             "content": {

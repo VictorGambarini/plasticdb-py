@@ -312,8 +312,69 @@ def test_submit_rejects_a_parameter_the_job_type_does_not_take(keyed: None) -> N
     assert "--genus-column" in result.stderr
 
 
+def test_submit_pathway_target_plastic_and_idempotency_key(
+    api: respx.MockRouter, keyed: None
+) -> None:
+    route = api.post("/jobs").mock(
+        return_value=reply("job_submitted", **{"Idempotent-Replayed": "true"})
+    )
+    result = cli(
+        "jobs",
+        "submit",
+        "pathway-analysis",
+        "-",
+        "--target-plastic",
+        "PLA",
+        "--idempotency-key",
+        "run-7",
+        input=">a\nMKK\n",
+    )
+    assert result.exit_code == 0, result.stderr
+    request = route.calls.last.request
+    assert request.headers["idempotency-key"] == "run-7"
+    assert b'name="target_plastic"\r\n\r\nPLA' in request.content
+    assert "already submitted" in result.stderr
+
+
+def test_submit_annotate_list_field_separator(api: respx.MockRouter, keyed: None) -> None:
+    route = api.post("/jobs").mock(return_value=reply("job_submitted"))
+    result = cli(
+        "jobs", "submit", "annotate-list", "-", "--field-separator", "comma", input="a,b\n"
+    )
+    assert result.exit_code == 0, result.stderr
+    assert b'name="field_separator"\r\n\r\ncomma' in route.calls.last.request.content
+    bad = cli("jobs", "submit", "annotate-list", "-", "--field-separator", "pipe", input="x")
+    assert bad.exit_code == ExitCode.USAGE
+
+
+def test_variant_on_a_protein_sub_resource_is_usage(api: respx.MockRouter) -> None:
+    api.get("/proteins/PBDTZX/interactions").mock(return_value=reply("protein_variant_subresource"))
+    result = cli("evidence", "interactions", "PBDTZX")
+    assert result.exit_code == ExitCode.USAGE
+    assert "plasticdb variants get PBDTZX" in result.stderr
+
+
+def test_expired_job_files_are_not_found(
+    api: respx.MockRouter, keyed: None, tmp_path: Path
+) -> None:
+    api.get(f"/jobs/{JOB_ID}").mock(return_value=reply("job_done"))
+    api.get(f"/jobs/{JOB_ID}/download").respond(
+        410, json={"detail": "deleted", "reason": "expired", "results_expired_at": None}
+    )
+    result = cli("jobs", "download", JOB_ID, "-o", str(tmp_path))
+    assert result.exit_code == ExitCode.NOT_FOUND
+
+
+def test_sequence_search_timeout_is_a_timeout(api: respx.MockRouter, keyed: None) -> None:
+    api.post("/bioinformatics/search-sequence").respond(
+        504, json={"detail": "timed out after 15 seconds", "reason": "timeout"}
+    )
+    assert cli("jobs", "search-sequence", "MKVLA").exit_code == ExitCode.TIMEOUT
+
+
 def test_job_results_as_a_table(api: respx.MockRouter, keyed: None) -> None:
     api.get(f"/jobs/{JOB_ID}").mock(return_value=reply("job_done"))
+    api.get(f"/jobs/{JOB_ID}/results").mock(return_value=reply("job_done_results"))
     result = cli("jobs", "results", JOB_ID)
     assert result.exit_code == 0, result.stderr
     header = result.stdout.splitlines()[0].split("\t")

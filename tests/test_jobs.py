@@ -3,6 +3,7 @@ from __future__ import annotations
 import gzip
 import json
 import time
+import uuid
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
@@ -223,6 +224,52 @@ def test_pathway_analysis_thresholds(api: respx.MockRouter, keyed: plasticdb.Cli
     }
 
 
+def test_pathway_analysis_target_plastic(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
+    route = api.post("/jobs").mock(return_value=job_reply("job_submitted"))
+    keyed.jobs.pathway_analysis(FASTA, target_plastic="PLA")
+    assert fields(route.calls.last.request)["target_plastic"] == ["PLA"]
+    with pytest.raises(TypeError, match="target_plastic"):
+        keyed.jobs.submit("annotate_gene", FASTA, target_plastic="PLA")
+
+
+def test_idempotency_key_reused_is_a_typed_error(
+    api: respx.MockRouter, keyed: plasticdb.Client
+) -> None:
+    detail = [
+        {
+            "type": "idempotency_key_reused",
+            "loc": ["header", "Idempotency-Key"],
+            "msg": "This Idempotency-Key was used for a different request.",
+        }
+    ]
+    api.post("/jobs").mock(return_value=httpx.Response(422, json={"detail": detail}))
+    with pytest.raises(errors.IdempotencyKeyReusedError) as info:
+        keyed.jobs.annotate_gene(FASTA, idempotency_key="k1")
+    assert isinstance(info.value, errors.ValidationError)
+    assert info.value.errors[0]["loc"] == ["header", "Idempotency-Key"]
+
+
+def test_compare_genomes_over_the_limit_is_413(
+    api: respx.MockRouter, keyed: plasticdb.Client
+) -> None:
+    api.post("/jobs").mock(
+        return_value=httpx.Response(
+            413,
+            json={
+                "detail": [
+                    {
+                        "type": "too_many_files",
+                        "loc": ["body", "files"],
+                        "msg": "At most 20 genomes per job",
+                    }
+                ]
+            },
+        )
+    )
+    with pytest.raises(plasticdb.PayloadTooLargeError, match=r"body\.files: At most 20"):
+        keyed.jobs.compare_genomes([FASTA, FASTA])
+
+
 def test_submit_rejects_unknown_types_and_parameters(keyed: plasticdb.Client) -> None:
     with pytest.raises(ValueError, match="Unknown job type"):
         keyed.jobs.submit("blast_everything", FASTA)
@@ -260,26 +307,79 @@ def test_upload_too_large(api: respx.MockRouter, keyed: plasticdb.Client) -> Non
         keyed.jobs.annotate_genome(FASTA)
 
 
-# ── retries: a submission is never resent once it may have been processed ────
+# ── retries: every attempt of a submission carries the same Idempotency-Key ──
 
 
-def test_submission_is_not_retried_on_5xx(
+def _keys(route: respx.Route) -> list[str]:
+    return [c.request.headers["idempotency-key"] for c in route.calls]
+
+
+def test_submission_is_retried_on_5xx_with_one_key(
     api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float]
 ) -> None:
-    route = api.post("/jobs").mock(return_value=httpx.Response(502, text="Bad Gateway"))
-    with pytest.raises(plasticdb.ServerError):
-        keyed.jobs.annotate_genome(FASTA)
-    assert route.call_count == 1
-    assert sleeps == []
+    route = api.post("/jobs")
+    route.side_effect = [httpx.Response(502, text="Bad Gateway"), job_reply("job_submitted")]
+    job = keyed.jobs.annotate_genome(FASTA)
+    assert route.call_count == 2 and len(sleeps) == 1
+    first, second = _keys(route)
+    assert first == second and uuid.UUID(first)
+    assert not job.replayed
 
 
-def test_submission_read_timeout_is_not_retried_and_says_so(
+def test_each_submission_gets_its_own_key(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
+    route = api.post("/jobs").mock(return_value=job_reply("job_submitted"))
+    keyed.jobs.annotate_gene(FASTA)
+    keyed.jobs.annotate_gene(FASTA)
+    first, second = _keys(route)
+    assert first != second
+
+
+def test_a_given_key_is_sent_and_a_replay_is_reported(
     api: respx.MockRouter, keyed: plasticdb.Client
 ) -> None:
+    route = api.post("/jobs").mock(
+        return_value=reply("job_submitted", **{"Idempotent-Replayed": "true"})
+    )
+    job = keyed.jobs.submit("annotate_gene", FASTA, idempotency_key="my-run-42")
+    assert _keys(route) == ["my-run-42"]
+    assert job.replayed
+
+
+def test_submission_read_timeout_is_retried_then_names_the_key(
+    api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float]
+) -> None:
     route = api.post("/jobs").mock(side_effect=httpx.ReadTimeout("slow"))
-    with pytest.raises(plasticdb.APITimeoutError, match=r"check client\.jobs\.list\(\)"):
+    with pytest.raises(plasticdb.APITimeoutError, match="idempotency_key=") as info:
         keyed.jobs.annotate_genome(FASTA)
-    assert route.call_count == 1
+    assert route.call_count == 1 + keyed.max_retries
+    [key] = set(_keys(route))
+    assert repr(key) in str(info.value)
+    assert info.value.message == str(info.value)
+
+
+def test_submission_5xx_after_retries_names_the_key(
+    api: respx.MockRouter, sleeps: list[float]
+) -> None:
+    route = api.post("/jobs").mock(return_value=httpx.Response(500, json={"detail": "boom"}))
+    with (
+        plasticdb.Client(api_key="k", max_retries=1) as c,
+        pytest.raises(plasticdb.ServerError, match="idempotency_key="),
+    ):
+        c.jobs.annotate_gene(FASTA, idempotency_key="abc")
+    assert _keys(route) == ["abc", "abc"]
+
+
+def test_tree_and_share_creation_carry_a_key(
+    api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float]
+) -> None:
+    tree = api.post("/tree/build")
+    tree.side_effect = [httpx.Response(503), job_reply("tree_done")]
+    keyed.jobs.build_tree(plastic="PET")
+    assert len(set(_keys(tree))) == 1 and tree.call_count == 2
+    job = _done(api, keyed, "job_done")
+    share = api.post(f"/jobs/{JOB_ID}/shares").mock(return_value=job_reply("share_created"))
+    job.share(idempotency_key="share-1")
+    assert _keys(share) == ["share-1"]
 
 
 def test_submission_rate_limit_waits_and_resends_the_whole_upload(
@@ -337,6 +437,11 @@ def clock(monkeypatch: pytest.MonkeyPatch, sleeps: list[float]) -> list[float]:
     return now
 
 
+def _results(api: respx.MockRouter, name: str, *, token: str | None = None) -> respx.Route:
+    path = f"/jobs/shared/{token}/results" if token else f"/jobs/{JOB_ID}/results"
+    return api.get(path).mock(return_value=job_reply(f"{name}_results"))
+
+
 def _submitted(api: respx.MockRouter, client: plasticdb.Client) -> plasticdb.Job:
     api.post("/jobs").mock(return_value=job_reply("job_submitted"))
     return client.jobs.annotate_genome(FASTA)
@@ -354,8 +459,11 @@ def test_wait_backs_off_until_done(
     assert job.done and job.finished
     assert sleeps == [2.0, 3.0, 4.5]
     assert route.call_count == 4
+    assert all(c.request.url.params["include"] == "none" for c in route.calls)
+    results = _results(api, "job_done")
     assert len(job.hits()) == 2
-    assert route.call_count == 4  # the final poll already carried the hits
+    assert route.call_count == 4  # hits are paged, not re-polled
+    assert results.calls.last.request.url.params["limit"] == "500"
 
 
 def test_wait_caps_the_interval(
@@ -419,6 +527,8 @@ def test_results_before_done_say_to_wait(api: respx.MockRouter, keyed: plasticdb
 
 def _done(api: respx.MockRouter, client: plasticdb.Client, name: str) -> plasticdb.Job:
     api.get(f"/jobs/{JOB_ID}").mock(return_value=job_reply(name))
+    if (Path(__file__).parent / "fixtures" / f"{name}_results.json").exists():
+        _results(api, name)
     return client.jobs.get(JOB_ID)
 
 
@@ -453,15 +563,50 @@ def test_hits_to_polars(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
     assert df["source_label"].to_list() == ["E_coli_K12", "I_sakaiensis"]
 
 
+def test_hits_page_through_the_results_route(
+    api: respx.MockRouter, keyed: plasticdb.Client
+) -> None:
+    job = _done(api, keyed, "job_done")
+    page = fixture("job_done_results")["body"]
+    route = api.get(f"/jobs/{JOB_ID}/results")
+    route.side_effect = [
+        httpx.Response(200, json={"total": 2, "items": page["items"][:1]}),
+        httpx.Response(200, json={"total": 2, "items": page["items"][1:]}),
+    ]
+    hits = job.iter_hits(page_size=1)
+    assert [h.id for h in hits] == [100, 101]
+    assert [c.request.url.params["offset"] for c in route.calls] == ["0", "1"]
+
+
+def test_hits_limit(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
+    job = _done(api, keyed, "job_done")
+    route = _results(api, "job_done")
+    assert len(job.hits(limit=1)) == 1
+    assert route.calls.last.request.url.params["limit"] == "1"
+
+
 def test_provenance(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
     prov = _done(api, keyed, "job_done").provenance
     assert prov.release == "2026.30"
     assert prov.release_source == "snapshot"
     assert prov.reference_sha256 == "9d5ed678fe57bcca610140957afab571" * 2
     assert prov.tool_versions == {"diamond": "2.1.9"}
-    assert prov.app_version == "2.85.0"
+    assert prov.app_version == "2.87.0"
     assert prov.record["input_filename"] == "genome.faa.gz"
     assert prov.to_dict()["job_type"] == "annotate_genome"
+
+
+def test_provenance_falls_back_to_the_release_headers(
+    api: respx.MockRouter, keyed: plasticdb.Client
+) -> None:
+    body = {**fixture("job_done")["body"], "release": None, "release_source": None}
+    api.get(f"/jobs/{JOB_ID}").respond(
+        json=body,
+        headers={"X-PlasticDB-Release": "2026.30", "X-PlasticDB-Release-Source": "snapshot"},
+    )
+    job = keyed.jobs.get(JOB_ID)
+    assert (job.provenance.release, job.provenance.release_source) == ("2026.30", "snapshot")
+    assert job.release == "2026.30"
 
 
 def test_hmm_screen_hits(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
@@ -512,24 +657,22 @@ def test_annotate_list_taxa_from_the_results_file(
     assert taxa.rows()[1]["PlasticDB match"] == "No match"
 
 
-def test_tree_reads_the_tree_route(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
+def test_tree_comes_from_the_job_detail(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
     detail = api.get(f"/jobs/{JOB_ID}").mock(return_value=job_reply("tree_detail"))
-    tree_route = api.get(f"/tree/{JOB_ID}").mock(return_value=job_reply("tree_done"))
     job = keyed.jobs.get(JOB_ID)
-    assert detail.call_count == 1 and tree_route.call_count == 1
+    assert detail.call_count == 1
+    assert "authorization" in detail.calls.last.request.headers
     tree = job.results()
     assert isinstance(tree, plasticdb.models.TaxonomyTree)
     assert tree.newick is not None and tree.newick.endswith("Pseudomonadota);")
     assert tree.columns == ["PE", "PET"]
     assert tree.rows()[0] == {"organism": "Ideonella sakaiensis", "PE": False, "PET": True}
     assert job.release == "2026.30"
-    job.refresh()
-    assert tree_route.call_count == 2
+    assert detail.call_count == 1
 
 
 def test_tree_to_pandas_and_biopython(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
     api.get(f"/jobs/{JOB_ID}").mock(return_value=job_reply("tree_detail"))
-    api.get(f"/tree/{JOB_ID}").mock(return_value=job_reply("tree_done"))
     tree = keyed.jobs.get(JOB_ID).tree()
     pytest.importorskip("pandas")
     assert list(tree.to_pandas().columns) == ["organism", "PE", "PET"]
@@ -641,8 +784,30 @@ def test_download_of_expired_results(
     body["results_expired_at"] = "2027-02-16T01:00:00Z"
     api.get(f"/jobs/{JOB_ID}").mock(return_value=httpx.Response(200, json=body))
     job = keyed.jobs.get(JOB_ID)
-    with pytest.raises(plasticdb.GoneError, match="retention"):
+    with pytest.raises(plasticdb.ResultsExpiredError, match="retention") as info:
         job.download(tmp_path)
+    assert isinstance(info.value, plasticdb.GoneError)
+    assert info.value.results_expired_at is not None
+    assert info.value.reason == "expired"
+
+
+def test_download_expired_by_the_server(
+    api: respx.MockRouter, keyed: plasticdb.Client, tmp_path: Path
+) -> None:
+    job = _done(api, keyed, "job_done")
+    api.get(f"/jobs/{JOB_ID}/download").respond(
+        410,
+        json={
+            "detail": "The result files were deleted under the retention policy.",
+            "reason": "expired",
+            "results_expired_at": "2027-02-16T01:00:00Z",
+        },
+    )
+    with pytest.raises(plasticdb.ResultsExpiredError) as info:
+        job.download(tmp_path)
+    assert info.value.results_expired_at is not None
+    assert info.value.results_expired_at.year == 2027
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_download_of_someone_elses_job(
@@ -692,6 +857,7 @@ def test_shared_job_is_read_only_and_needs_no_key(
 ) -> None:
     token = fixture("share_created")["body"]["token"]
     detail = api.get(f"/jobs/shared/{token}").mock(return_value=job_reply("job_done"))
+    results = _results(api, "job_done", token=token)
     download = api.get(f"/jobs/shared/{token}/download").mock(
         return_value=httpx.Response(200, content=HITS_TSV)
     )
@@ -702,7 +868,9 @@ def test_shared_job_is_read_only_and_needs_no_key(
     job = client.jobs.shared(f"{ROOT}/jobs/shared/{token}")
     assert job.shared and job.done
     assert "authorization" not in detail.calls.last.request.headers
+    assert detail.calls.last.request.url.params["include"] == "none"
     assert len(job.hits()) == 2
+    assert results.called
     job.download(tmp_path / "hits.tsv")
     assert download.called
     assert job.comparison().plastics == ["PET"]
@@ -772,17 +940,46 @@ def test_search_sequence_takes_one_sequence(keyed: plasticdb.Client) -> None:
         keyed.jobs.search_sequence(">a\nMKV\n>b\nMKV\n")
 
 
-def test_search_sequence_is_not_retried(
+def test_search_sequence_timeout_is_not_retried(
     api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float]
 ) -> None:
     route = api.post("/bioinformatics/search-sequence").mock(
         return_value=httpx.Response(
-            502, json={"detail": "DIAMOND search timed out after 15 seconds"}
+            504, json={"detail": "DIAMOND search timed out after 15 seconds", "reason": "timeout"}
         )
     )
-    with pytest.raises(plasticdb.ServerError, match="15 seconds"):
+    with pytest.raises(plasticdb.ServerError, match="15 seconds") as info:
         keyed.jobs.search_sequence("MNFPRASRLM")
+    assert info.value.reason == "timeout"
     assert route.call_count == 1
+
+
+def test_search_sequence_is_retried_like_a_read(
+    api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float]
+) -> None:
+    route = api.post("/bioinformatics/search-sequence")
+    route.side_effect = [
+        httpx.Response(502, json={"detail": "DIAMOND failed"}),
+        reply("search_sequence"),
+    ]
+    assert keyed.jobs.search_sequence("MNFPRASRLM").hits
+    assert route.call_count == 2
+    assert "idempotency-key" not in route.calls.last.request.headers
+
+
+@pytest.mark.parametrize("reason", ["index_unavailable", "binary_unavailable"])
+def test_search_sequence_unavailable(
+    api: respx.MockRouter, keyed: plasticdb.Client, sleeps: list[float], reason: str
+) -> None:
+    api.post("/bioinformatics/search-sequence").respond(
+        503,
+        json={"detail": "The reference database is not available", "reason": reason},
+        headers={"Retry-After": "120"},
+    )
+    with pytest.raises(plasticdb.ServiceUnavailableError) as info:
+        keyed.jobs.search_sequence("MNFPRASRLM")
+    assert info.value.reason == reason and info.value.retry_after == 120
+    assert sleeps == []  # 120 s is past max_retry_wait
 
 
 def test_job_repr(api: respx.MockRouter, keyed: plasticdb.Client) -> None:

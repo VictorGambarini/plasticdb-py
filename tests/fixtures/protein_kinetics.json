@@ -21,7 +21,7 @@
     "kcat": 6.5,
     "vmax": 23.6,
     "km_unit": "mM",
-    "kcat_unit": "s⁻¹",
+    "kcat_unit": "s\u207b\u00b9",
     "vmax_unit": "mM/h",
     "experiment": {
      "assay_result": null,
@@ -68,9 +68,9 @@
     "ph": null,
     "substrate_form": "model_substrate",
     "kcat_km": 802.4691358024692,
-    "kcat_km_unit": "M⁻¹·s⁻¹",
+    "kcat_km_unit": "M\u207b\u00b9\u00b7s\u207b\u00b9",
     "kcat_normalised": 6.5,
-    "kcat_normalised_unit": "s⁻¹",
+    "kcat_normalised_unit": "s\u207b\u00b9",
     "km_normalised": 8.1,
     "km_normalised_unit": "mM",
     "kcat_km_normalised": 802.4691358024692
@@ -89,7 +89,7 @@
     "kcat": 20.4,
     "vmax": 73.3,
     "km_unit": "mM",
-    "kcat_unit": "s⁻¹",
+    "kcat_unit": "s\u207b\u00b9",
     "vmax_unit": "mM/h",
     "experiment": {
      "assay_result": null,
@@ -136,9 +136,9 @@
     "ph": null,
     "substrate_form": "model_substrate",
     "kcat_km": 4079.9999999999995,
-    "kcat_km_unit": "M⁻¹·s⁻¹",
+    "kcat_km_unit": "M\u207b\u00b9\u00b7s\u207b\u00b9",
     "kcat_normalised": 20.4,
-    "kcat_normalised_unit": "s⁻¹",
+    "kcat_normalised_unit": "s\u207b\u00b9",
     "km_normalised": 5.0,
     "km_normalised_unit": "mM",
     "kcat_km_normalised": 4079.9999999999995

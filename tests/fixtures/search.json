@@ -8,22 +8,22 @@
   "total": 2,
   "items": [
    {
-    "id": 904,
-    "route_key": "904",
-    "name": "Ullah, A., Lee, G.-J., Kim, H., Kwon, H. T., & Lim, S. I. (2023). Development and evaluation of bioinspired pH-responsiv",
+    "id": 1199,
+    "route_key": "1199",
+    "name": "Thomsen, T. B., Radmer, T. S., & Meyer, A. S. (2024). Enzymatic degradation of poly(ethylene terephthalate) (PET): Ident",
     "entity_type": "paper",
-    "rank": 0.8127,
-    "extra": "Year: 2023",
+    "rank": 0.9999,
+    "extra": "Year: 2024",
     "match": null,
     "detail_url": null
    },
    {
-    "id": 714,
-    "route_key": "714",
-    "name": "Wallace, N.E., Adams, M.C., Chafin, A.C., Jones, D.D., Tsui, C.L., & Gruber, T.D. (2020). The highly crystalline PET fou",
+    "id": 653,
+    "route_key": "653",
+    "name": "Arciszewski, J., Zaker, A., Xia, Y., Baniasadi, H., Lan, C. B., & Auclair, K. (2026). Moist-Solid Biocatalysis Enables P",
     "entity_type": "paper",
-    "rank": 0.7599,
-    "extra": "Year: 2020",
+    "rank": 0.9999,
+    "extra": "Year: 2026",
     "match": null,
     "detail_url": null
    }

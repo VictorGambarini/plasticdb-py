@@ -7,6 +7,9 @@
  },
  "body": {
   "accession": "PBTNBA",
-  "location": "/api/v1/variants/PBTNBA"
+  "location": "/api/v1/variants/PBTNBA",
+  "kind": "engineered",
+  "reason": "merged",
+  "merged_into": "PBTNBA"
  }
 }

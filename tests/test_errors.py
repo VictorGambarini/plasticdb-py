@@ -116,9 +116,24 @@ def test_validation_errors_are_exposed(api: respx.MockRouter, client: plasticdb.
 @pytest.mark.parametrize(
     ("body", "kind"),
     [
-        ({"accession": "PDB000123", "location": "/api/v1/proteins/PDB000123"}, None),
         (
-            {"accession": "PB0042", "kind": "engineered", "location": "/api/v1/variants/PB0042"},
+            {
+                "accession": "PDB000123",
+                "location": "/api/v1/proteins/PDB000123",
+                "kind": "wild_type",
+                "reason": "merged",
+                "merged_into": "PDB000123",
+            },
+            "wild_type",
+        ),
+        (
+            {
+                "accession": "PB0042",
+                "kind": "engineered",
+                "location": "/api/v1/variants/PB0042",
+                "reason": "merged",
+                "merged_into": "PB0042",
+            },
             "engineered",
         ),
     ],
@@ -157,3 +172,84 @@ def test_error_url(api: respx.MockRouter, client: plasticdb.Client) -> None:
     with pytest.raises(errors.NotFoundError) as info:
         client._request(PROTEINS)
     assert info.value.url == "https://v2.plasticdb.org/api/v1/proteins"
+
+
+def test_engineered_variant_redirect(api: respx.MockRouter, client: plasticdb.Client) -> None:
+    body = {
+        "accession": "PB0042",
+        "location": "/api/v1/variants/PB0042",
+        "kind": "engineered",
+        "reason": "engineered_variant",
+    }
+    api.get("/proteins/PB0042").respond(301, json=body, headers={"Location": body["location"]})
+    with pytest.raises(errors.EngineeredVariantError) as info:
+        client._request(PROTEIN, accession="PB0042")
+    assert info.value.accession == "PB0042" and info.value.status_code == 301
+    assert not isinstance(info.value, errors.MergedError)
+
+
+REASON_CASES: list[tuple[int, dict[str, Any], type[errors.PlasticDBError], str]] = [
+    (
+        404,
+        {
+            "detail": "PB0042 is an engineered variant",
+            "accession": "PB0042",
+            "kind": "engineered",
+            "reason": "engineered_variant",
+            "location": "/api/v1/variants/PB0042",
+            "merged_into": "PB0043",
+        },
+        errors.EngineeredVariantError,
+        "engineered_variant",
+    ),
+    (
+        410,
+        {"detail": "deleted", "accession": "PB0001", "reason": "withdrawn"},
+        errors.GoneError,
+        "withdrawn",
+    ),
+    (
+        410,
+        {"detail": "deleted", "reason": "expired", "results_expired_at": "2027-01-01T00:00:00Z"},
+        errors.ResultsExpiredError,
+        "expired",
+    ),
+    (
+        422,
+        {
+            "detail": [
+                {"type": "idempotency_key_reused", "loc": ["header", "Idempotency-Key"], "msg": "x"}
+            ]
+        },
+        errors.IdempotencyKeyReusedError,
+        "",
+    ),
+    (503, {"detail": "busy", "reason": "archive_unavailable"}, errors.ServiceUnavailableError, ""),
+    (504, {"detail": "slow", "reason": "timeout"}, errors.ServerError, "timeout"),
+]
+
+
+@pytest.mark.parametrize(("status", "body", "cls", "reason"), REASON_CASES)
+def test_reason_mapping(
+    api: respx.MockRouter,
+    status: int,
+    body: dict[str, Any],
+    cls: type[errors.PlasticDBError],
+    reason: str,
+) -> None:
+    api.get("/proteins").respond(status, json=body)
+    with plasticdb.Client(max_retries=0) as c, pytest.raises(cls) as info:
+        c._request(PROTEINS)
+    assert type(info.value) is cls
+    assert info.value.reason == (reason or body.get("reason"))
+    if isinstance(info.value, errors.EngineeredVariantError):
+        assert info.value.merged_into == "PB0043"
+        assert info.value.location == "/api/v1/variants/PB0042"
+    if isinstance(info.value, errors.ResultsExpiredError):
+        assert info.value.results_expired_at is not None
+
+
+def test_every_public_error_is_exported() -> None:
+    assert set(errors.__all__) <= set(plasticdb.__all__)
+    for name in errors.__all__:
+        assert getattr(plasticdb, name) is getattr(errors, name)

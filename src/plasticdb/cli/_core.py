@@ -54,12 +54,15 @@ EXIT_CODES: tuple[tuple[ExitCode, str], ...] = (
     (ExitCode.OK, "success"),
     (ExitCode.ERROR, "any other error"),
     (ExitCode.USAGE, "bad command line, option or parameter value (also a server 422)"),
-    (ExitCode.NOT_FOUND, "no such record, or it was withdrawn or merged"),
+    (ExitCode.NOT_FOUND, "no such record, it was withdrawn or merged, or a job's files expired"),
     (ExitCode.AUTH, "no API key, an invalid one, or not allowed"),
     (ExitCode.RATE_LIMITED, "rate limited (429) beyond the retry budget"),
     (ExitCode.RELEASE, "release unknown, unavailable, or unable to answer this"),
     (ExitCode.JOB_FAILED, "the job failed on the server"),
-    (ExitCode.TIMEOUT, "timed out (a request, or --timeout while waiting for a job)"),
+    (
+        ExitCode.TIMEOUT,
+        "timed out (a request, a sequence search's 15 s, or --timeout waiting for a job)",
+    ),
     (ExitCode.UNAVAILABLE, "server unreachable or failing (5xx): retry later"),
     (ExitCode.INTERRUPTED, "interrupted (Ctrl-C)"),
 )
@@ -78,10 +81,15 @@ def classify(exc: BaseException) -> ExitCode:
         return ExitCode.JOB_FAILED
     if isinstance(exc, (errors.JobTimeoutError, errors.APITimeoutError)):
         return ExitCode.TIMEOUT
+    if isinstance(exc, errors.ServerError) and exc.reason == "timeout":
+        return ExitCode.TIMEOUT
     if isinstance(exc, (errors.AuthenticationError, errors.PermissionDenied)):
         return ExitCode.AUTH
     if isinstance(exc, errors.RateLimitError):
         return ExitCode.RATE_LIMITED
+    if isinstance(exc, errors.EngineeredVariantError):
+        # A variant asked for where only wild-type proteins are: the command was wrong.
+        return ExitCode.USAGE
     if isinstance(exc, (errors.NotFoundError, errors.GoneError)):
         return ExitCode.NOT_FOUND
     if isinstance(
@@ -90,7 +98,6 @@ def classify(exc: BaseException) -> ExitCode:
             errors.ValidationError,
             errors.BadRequestError,
             errors.PayloadTooLargeError,
-            errors.EngineeredVariantError,
             TypeError,
             ValueError,
         ),
@@ -106,6 +113,10 @@ def describe(exc: BaseException) -> str:
     text = str(exc) or type(exc).__name__
     if isinstance(exc, errors.MergedError):
         text += f" (merged into {exc.merged_into}; pass --follow-merges to get it)"
+    elif isinstance(exc, errors.EngineeredVariantError):
+        text += f" (try: plasticdb variants get {exc.accession})"
+    elif isinstance(exc, errors.IdempotencyKeyReusedError):
+        text += " (that --idempotency-key named a different submission: use a new key)"
     elif isinstance(exc, errors.AuthenticationError):
         text += " (run `plasticdb auth login`, or set PLASTICDB_API_KEY)"
     elif isinstance(exc, errors.UnsupportedFilterError) and exc.parameters:

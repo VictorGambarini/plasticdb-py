@@ -15,7 +15,7 @@
     "parent_accession": "PB6JCU",
     "plasticdb_id": null,
     "accession": "PBDTZX",
-    "name": "Dm-TA-ΔLCC",
+    "name": "Dm-TA-\u0394LCC",
     "genbank_id": null,
     "has_signal_peptide": null,
     "uniprot_accession": null,
@@ -123,25 +123,6 @@
       "result": "positive",
       "methods": [
        "fluorescent_assay",
-       "hplc"
-      ],
-      "positive_count": 1,
-      "inconclusive_count": 0,
-      "negative_count": 0,
-      "positive_papers": 1,
-      "inconclusive_papers": 0,
-      "negative_papers": 0,
-      "paper_count": 1,
-      "result_polarity": "positive"
-     },
-     {
-      "plastic": {
-       "id": 49,
-       "name": "PBAT",
-       "abbreviation": "PBAT"
-      },
-      "result": "positive",
-      "methods": [
        "hplc"
       ],
       "positive_count": 1,
