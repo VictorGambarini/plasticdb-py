@@ -1,0 +1,77 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 474,
+  "scope": null,
+  "groups": {
+   "plastic": {
+    "total": 0,
+    "more_query": "plastic:PETase",
+    "items": []
+   },
+   "protein": {
+    "total": 388,
+    "more_query": "protein:PETase",
+    "items": [
+     {
+      "id": 3,
+      "route_key": "PBFCTW",
+      "name": "PETase",
+      "entity_type": "protein",
+      "rank": 0.3603,
+      "extra": "Gene: N/A · from Pseudideonella sakaiensis",
+      "match": null,
+      "detail_url": null
+     },
+     {
+      "id": 641,
+      "route_key": "PBCZWX",
+      "name": "PETase candidate PC3 (WP_103939557.1)",
+      "entity_type": "protein",
+      "rank": 0.304,
+      "extra": "Gene: N/A · from Thermomonospora echinospora",
+      "match": null,
+      "detail_url": null
+     }
+    ]
+   },
+   "microorganism": {
+    "total": 0,
+    "more_query": "microorganism:PETase",
+    "items": []
+   },
+   "paper": {
+    "total": 86,
+    "more_query": "paper:PETase",
+    "items": [
+     {
+      "id": 904,
+      "route_key": "904",
+      "name": "Ullah, A., Lee, G.-J., Kim, H., Kwon, H. T., & Lim, S. I. (2023). Development and evaluation of bioinspired pH-responsiv",
+      "entity_type": "paper",
+      "rank": 0.8127,
+      "extra": "Year: 2023",
+      "match": null,
+      "detail_url": null
+     },
+     {
+      "id": 714,
+      "route_key": "714",
+      "name": "Wallace, N.E., Adams, M.C., Chafin, A.C., Jones, D.D., Tsui, C.L., & Gruber, T.D. (2020). The highly crystalline PET fou",
+      "entity_type": "paper",
+      "rank": 0.7599,
+      "extra": "Year: 2020",
+      "match": null,
+      "detail_url": null
+     }
+    ]
+   }
+  },
+  "plastic_matches": [],
+  "suggestion": null
+ }
+}

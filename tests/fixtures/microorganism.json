@@ -1,0 +1,354 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "id": 3612,
+  "name": "[Candida] sp.",
+  "tax_id": 1853550,
+  "accession": "PBCZU2",
+  "taxonomy_status": "resolved",
+  "taxonomy_cause": null,
+  "taxonomy_note": null,
+  "growth_temp_opt": null,
+  "oxygen_requirement": null,
+  "degradation_links": [
+   {
+    "plastic": {
+     "id": 31,
+     "name": "PHB",
+     "abbreviation": "PHB"
+    },
+    "result": "positive",
+    "methods": [
+     "clear_zone"
+    ],
+    "positive_count": 1,
+    "inconclusive_count": 0,
+    "negative_count": 0,
+    "positive_papers": 1,
+    "inconclusive_papers": 0,
+    "negative_papers": 0,
+    "paper_count": 1,
+    "result_polarity": "positive"
+   },
+   {
+    "plastic": {
+     "id": 22,
+     "name": "PLA Blend",
+     "abbreviation": "PLA Blend"
+    },
+    "result": "positive",
+    "methods": [
+     "clear_zone"
+    ],
+    "positive_count": 1,
+    "inconclusive_count": 0,
+    "negative_count": 0,
+    "positive_papers": 1,
+    "inconclusive_papers": 0,
+    "negative_papers": 0,
+    "paper_count": 1,
+    "result_polarity": "positive"
+   }
+  ],
+  "paper": null,
+  "papers": [
+   {
+    "id": 978,
+    "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+    "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+    "doi": "10.1007/s11274-018-2483-y",
+    "year": 2018,
+    "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+    "journal": "World Journal of Microbiology and Biotechnology",
+    "corresponding_author_country": "Slovakia"
+   }
+  ],
+  "assay_temp_min": null,
+  "assay_temp_max": null,
+  "environments": [],
+  "locations": [],
+  "strain_designations": [],
+  "updated_at": "2026-10-18T03:28:17.062481Z",
+  "lineage": "cellular root:cellular organisms; domain:Eukaryota; clade:Opisthokonta; kingdom:Fungi; subkingdom:Dikarya; phylum:Ascomycota; clade:saccharomyceta; subphylum:Saccharomycotina; class:Saccharomycetes; order:Saccharomycetales; species:[Candida] sp.",
+  "synonyms": [
+   "Candida sp. (Debaryomycetaceae)",
+   "Candida sp. (Saccharomycetales)"
+  ],
+  "also_known_as": [
+   "Candida sp. (Debaryomycetaceae)",
+   "Candida sp. (Saccharomycetales)"
+  ],
+  "growth_temp_min": null,
+  "growth_temp_max": null,
+  "plastics": [
+   {
+    "id": 31,
+    "name": "PHB",
+    "abbreviation": "PHB"
+   },
+   {
+    "id": 22,
+    "name": "PLA Blend",
+    "abbreviation": "PLA Blend"
+   }
+  ],
+  "interactions": [
+   {
+    "id": 15140,
+    "plastic": {
+     "id": 31,
+     "name": "PHB",
+     "abbreviation": "PHB"
+    },
+    "actor_type": "microorganism",
+    "result": "positive",
+    "notes": "Polymer agar clearing assay (Table S2): the reaction of this isolate on PHB agar was scored '+' (weak positive reaction); assays were run in triplicate and the paper reports no zone diameter, incubation temperature or duration. The paper reports this isolate as 'Candida sp.'. NCBI Taxonomy resolves that string to the node '[Candida] sp.' (NCBI:txid1853550); the square brackets are NCBI's own marker for a generic assignment it regards as unsettled, and the name is stored exactly as NCBI holds it. Isolate recovered from the agricultural soil/perlite mixture (SSP) at the start of the experiment.",
+    "strain_occurrence": {
+     "strain_designation": "SSP FSS7-f",
+     "genome_assembly_accession": null,
+     "culture_collection_ids": null,
+     "sample_source": {
+      "id": 3118,
+      "country": "Slovakia",
+      "region": "South Slovakia (agricultural land near the Danube River)",
+      "latitude": null,
+      "longitude": null,
+      "environment_type": "soil",
+      "sample_description": "Sieved agricultural soil (pH 7.5, moisture holding capacity 0.85) from an agricultural region of South Slovakia near the Danube River, mixed in equal amount with expanded perlite (sample SSP) and sampled at the start of the respirometric experiment."
+     },
+     "genetic_background": "unknown",
+     "counts_for_species": true
+    },
+    "paper_id": 978,
+    "paper": {
+     "id": 978,
+     "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+     "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+     "doi": "10.1007/s11274-018-2483-y",
+     "year": 2018,
+     "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+     "journal": "World Journal of Microbiology and Biotechnology",
+     "corresponding_author_country": "Slovakia"
+    },
+    "experiments": [
+     {
+      "id": 42111,
+      "method": "clear_zone",
+      "temperature": null,
+      "temperature_unit": "C",
+      "ph": null,
+      "buffer": null,
+      "duration": null,
+      "duration_unit": null,
+      "substrate_form": "emulsion",
+      "sole_carbon_source": false,
+      "culture_medium": "basal mineral salts agar (KH2PO4, (NH4)2SO4, MgSO4.7H2O, FeCl3, NaCl, CaCl2, 0.25 g/l yeast extract, 0.1 g/l Triton X) with 1 g of polymer dispersed per 150 ml",
+      "aerobicity": "not_reported",
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "clear_zone_diameter",
+        "value": null,
+        "unit": "mm",
+        "text_description": "Zone of clearance around the colony on PHB agar, scored '+' (weak positive reaction) in Table S2; the paper grades the reaction on a qualitative -/+/++/+++/++++ scale and reports no zone diameter."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": "SSP FSS7-f"
+   },
+   {
+    "id": 15141,
+    "plastic": {
+     "id": 22,
+     "name": "PLA Blend",
+     "abbreviation": "PLA Blend"
+    },
+    "actor_type": "microorganism",
+    "result": "positive",
+    "notes": "Polymer agar clearing assay (Table S2): the reaction of this isolate on PLA/PHB blend agar was scored '+' (weak positive reaction); assays were run in triplicate and the paper reports no zone diameter, incubation temperature or duration. The paper reports this isolate as 'Candida sp.'. NCBI Taxonomy resolves that string to the node '[Candida] sp.' (NCBI:txid1853550); the square brackets are NCBI's own marker for a generic assignment it regards as unsettled, and the name is stored exactly as NCBI holds it. Isolate recovered from the agricultural soil/perlite mixture (SSP) at the start of the experiment.",
+    "strain_occurrence": {
+     "strain_designation": "SSP FSS7-f",
+     "genome_assembly_accession": null,
+     "culture_collection_ids": null,
+     "sample_source": {
+      "id": 3118,
+      "country": "Slovakia",
+      "region": "South Slovakia (agricultural land near the Danube River)",
+      "latitude": null,
+      "longitude": null,
+      "environment_type": "soil",
+      "sample_description": "Sieved agricultural soil (pH 7.5, moisture holding capacity 0.85) from an agricultural region of South Slovakia near the Danube River, mixed in equal amount with expanded perlite (sample SSP) and sampled at the start of the respirometric experiment."
+     },
+     "genetic_background": "unknown",
+     "counts_for_species": true
+    },
+    "paper_id": 978,
+    "paper": {
+     "id": 978,
+     "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+     "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+     "doi": "10.1007/s11274-018-2483-y",
+     "year": 2018,
+     "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+     "journal": "World Journal of Microbiology and Biotechnology",
+     "corresponding_author_country": "Slovakia"
+    },
+    "experiments": [
+     {
+      "id": 42112,
+      "method": "clear_zone",
+      "temperature": null,
+      "temperature_unit": "C",
+      "ph": null,
+      "buffer": null,
+      "duration": null,
+      "duration_unit": null,
+      "substrate_form": "emulsion",
+      "sole_carbon_source": false,
+      "culture_medium": "basal mineral salts agar (KH2PO4, (NH4)2SO4, MgSO4.7H2O, FeCl3, NaCl, CaCl2, 0.25 g/l yeast extract, 0.1 g/l Triton X) with 1 g of polymer dispersed per 150 ml",
+      "aerobicity": "not_reported",
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "clear_zone_diameter",
+        "value": null,
+        "unit": "mm",
+        "text_description": "Zone of clearance around the colony on PLA/PHB blend agar, scored '+' (weak positive reaction) in Table S2; the paper grades the reaction on a qualitative -/+/++/+++/++++ scale and reports no zone diameter."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": "SSP FSS7-f"
+   }
+  ],
+  "indirect_interactions": [],
+  "construct_interactions": [],
+  "proteins": [],
+  "strain_occurrences": [
+   {
+    "strain_designation": "SSP FSS7-f",
+    "genome_assembly_accession": null,
+    "culture_collection_ids": null,
+    "sample_source": {
+     "id": 3118,
+     "country": "Slovakia",
+     "region": "South Slovakia (agricultural land near the Danube River)",
+     "latitude": null,
+     "longitude": null,
+     "environment_type": "soil",
+     "sample_description": "Sieved agricultural soil (pH 7.5, moisture holding capacity 0.85) from an agricultural region of South Slovakia near the Danube River, mixed in equal amount with expanded perlite (sample SSP) and sampled at the start of the respirometric experiment."
+    },
+    "genetic_background": "unknown",
+    "id": 7876,
+    "paper": {
+     "id": 978,
+     "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+     "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+     "doi": "10.1007/s11274-018-2483-y",
+     "year": 2018,
+     "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+     "journal": "World Journal of Microbiology and Biotechnology",
+     "corresponding_author_country": "Slovakia"
+    },
+    "counts_for_species": true
+   }
+  ],
+  "strains": [
+   {
+    "designation": "SSP FSS7-f",
+    "occurrence_ids": [
+     7876
+    ],
+    "genetic_background": "unknown",
+    "culture_collection_ids": [],
+    "genome_assembly_accessions": [],
+    "isolation_sources": [
+     "Sieved agricultural soil (pH 7.5, moisture holding capacity 0.85) from an agricultural region of South Slovakia near the Danube River, mixed in equal amount with expanded perlite (sample SSP) and sampled at the start of the respirometric experiment. (South Slovakia (agricultural land near the Danube River), Slovakia)"
+    ],
+    "papers": [
+     {
+      "id": 978,
+      "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+      "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+      "doi": "10.1007/s11274-018-2483-y",
+      "year": 2018,
+      "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+      "journal": "World Journal of Microbiology and Biotechnology",
+      "corresponding_author_country": "Slovakia"
+     }
+    ],
+    "plastics": [
+     {
+      "plastic": {
+       "id": 31,
+       "name": "PHB",
+       "abbreviation": "PHB"
+      },
+      "positive": 1,
+      "inconclusive": 0,
+      "negative": 0,
+      "paper_count": 1,
+      "call": "positive"
+     },
+     {
+      "plastic": {
+       "id": 20,
+       "name": "PLA",
+       "abbreviation": "PLA"
+      },
+      "positive": 1,
+      "inconclusive": 0,
+      "negative": 0,
+      "paper_count": 1,
+      "call": "positive"
+     }
+    ],
+    "possible_duplicates": [],
+    "counts_for_species": true
+   }
+  ]
+ }
+}

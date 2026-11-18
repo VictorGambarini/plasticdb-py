@@ -1,0 +1,33 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "wild_type": {
+   "degrader": 853,
+   "negative_only": 244,
+   "inconclusive_only": 28,
+   "mixed_nonpositive": 5,
+   "untested": 35,
+   "tested": 1130
+  },
+  "engineered": {
+   "degrader": 2982,
+   "negative_only": 248,
+   "inconclusive_only": 64,
+   "mixed_nonpositive": 1,
+   "untested": 101,
+   "tested": 3295
+  },
+  "both": {
+   "degrader": 3835,
+   "negative_only": 492,
+   "inconclusive_only": 92,
+   "mixed_nonpositive": 6,
+   "untested": 136,
+   "tested": 4425
+  }
+ }
+}

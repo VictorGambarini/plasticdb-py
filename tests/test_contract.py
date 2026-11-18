@@ -64,6 +64,64 @@ def test_pinnable_endpoints_accept_release(endpoint: Endpoint) -> None:
     assert "release" in names
 
 
+def _operation(endpoint: Endpoint) -> dict[str, Any]:
+    spec = _spec()["paths"]
+    target = _normalise(PREFIX + endpoint.path)
+    path = next(p for p in spec if _normalise(p) == target)
+    op: dict[str, Any] = spec[path][endpoint.method.lower()]
+    return op
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [e for e in _sdk_endpoints() if e.method == "GET"],
+    ids=lambda e: f"{e.method} {e.path}",
+)
+def test_live_only_matches_the_contract(endpoint: Endpoint) -> None:
+    """The server documents a 409 exactly on the operations that refuse a past release."""
+    responses = _operation(endpoint).get("responses", {})
+    assert endpoint.live_only == ("409" in responses)
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [e for e in _sdk_endpoints() if e.method == "GET" and not e.pinnable],
+    ids=lambda e: f"{e.method} {e.path}",
+)
+def test_unpinnable_endpoints_take_no_release(endpoint: Endpoint) -> None:
+    names = {p["name"] for p in _operation(endpoint).get("parameters", [])}
+    assert "release" not in names
+
+
+# Contract operations the SDK deliberately does not wrap (yet): jobs and compute
+# are phase P3; the rest are site plumbing or duplicates of a wrapped call.
+NOT_WRAPPED = {
+    ("GET", "/api/v1/auth/me"),
+    ("GET", "/api/v1/compounds"),
+    ("GET", "/api/v1/compounds/{}"),
+    ("GET", "/api/v1/microorganisms/accession/{}"),
+    ("GET", "/api/v1/microorganisms/search"),
+    ("GET", "/api/v1/proteins/accession/{}"),
+    ("GET", "/api/v1/snapshots"),
+    ("GET", "/api/v1/snapshots/latest"),
+    ("GET", "/api/v1/snapshots/{}"),
+    ("GET", "/api/v1/vocabularies"),
+    ("GET", "/api/v1/vocabulary"),
+    ("GET", "/api/v1/vocabulary/{}"),
+}
+
+
+def _is_p3(path: str) -> bool:
+    return path.startswith(("/api/v1/jobs", "/api/v1/bioinformatics", "/api/v1/tree"))
+
+
+def test_every_contract_operation_is_wrapped_or_listed() -> None:
+    wrapped = {(e.method, _normalise(PREFIX + e.path)) for e in _sdk_endpoints()}
+    missing = {op for op in _operations() if op not in wrapped and not _is_p3(op[1])}
+    assert missing == NOT_WRAPPED
+    assert not NOT_WRAPPED & wrapped
+
+
 def test_only_known_endpoints_are_outside_the_contract() -> None:
     outside = {(e.method, e.path) for e in REGISTRY if not e.in_contract}
     assert outside == {("GET", "/health")}

@@ -1,0 +1,39 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "since": "2026-11-10T00:00:00+00:00",
+  "as_of": "2026-11-18T06:54:00.703245+00:00",
+  "release": null,
+  "total": 3,
+  "items": [
+   {
+    "entity_type": "paper",
+    "id": 1551,
+    "accession": null,
+    "status": "updated",
+    "merged_into": null,
+    "updated_at": "2026-11-10T03:25:52.184555+00:00"
+   },
+   {
+    "entity_type": "protein_variant",
+    "id": 3470,
+    "accession": "PB9CZG",
+    "status": "updated",
+    "merged_into": null,
+    "updated_at": "2026-11-10T03:26:01.054842+00:00"
+   },
+   {
+    "entity_type": "protein_variant",
+    "id": 3723,
+    "accession": "PB9YSG",
+    "status": "updated",
+    "merged_into": null,
+    "updated_at": "2026-11-10T03:26:56.649390+00:00"
+   }
+  ]
+ }
+}

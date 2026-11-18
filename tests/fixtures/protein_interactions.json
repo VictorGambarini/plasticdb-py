@@ -1,0 +1,237 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 2,
+  "items": [
+   {
+    "id": 10,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein",
+    "result": "positive",
+    "notes": "Wild-type I. sakaiensis PET hydrolase (mesophilic; labile above 37 C). Baseline scaffold. Recombinantly expressed in Pseudomonas putida KT2440.",
+    "strain_occurrence": null,
+    "paper_id": 2,
+    "paper": {
+     "id": 2,
+     "citation": "Lu, H., Diaz, D. J., Czarnecki, N. J., Zhu, C., Kim, W., Shroff, R., Acosta, D. J., Alexander, B. R., Cole, H. O., Zhang, Y., Lynd, N. A., Ellington, A. D., & Alper, H. S. (2022). Machine learning-aided engineering of hydrolases for PET depolymerization. Nature, 604(7907), 662-667.",
+     "title": "Machine learning-aided engineering of hydrolases for PET depolymerization",
+     "doi": "10.1038/s41586-022-04599-z",
+     "year": 2022,
+     "authors": "Lu, H.; Diaz, D.J.; Czarnecki, N.J.; Zhu, C.; Kim, W.; Shroff, R.; Acosta, D.J.; Alexander, B.R.; Cole, H.O.; Zhang, Y.; Lynd, N.A.; Ellington, A.D.; Alper, H.S.",
+     "journal": "Nature",
+     "corresponding_author_country": "United States"
+    },
+    "experiments": [
+     {
+      "id": 26,
+      "method": "hplc",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 24.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": 1.2,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": false,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 0.231,
+        "unit": "mM",
+        "text_description": "~0.23 mM monomers from bean cake pc-PET at 50 C, 24 h - far lower than FAST-PETase (Fig. 3b)"
+       }
+      ]
+     },
+     {
+      "id": 27,
+      "method": "hplc",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 24.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": 2.0,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": false,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 0.57,
+        "unit": "mM",
+        "text_description": "~0.57 mM monomers from pretreated bottle film at 50 C, 24 h (Fig. 4c)"
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": null
+   },
+   {
+    "id": 20,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein",
+    "result": "positive",
+    "notes": "ISF6_4831 gene product, designated PETase. Shares 51% amino acid identity and catalytic residues with the Thermobifida fusca hydrolase TfH. Transcript level during growth on PET film was the highest among all analysed coding sequences (15x, 31x and 41x that on maltose, TPA-Na and BHET respectively), indicating induction by PET film itself. Extracellular; predicted localisation in supplementary text S1.",
+    "strain_occurrence": null,
+    "paper_id": 3,
+    "paper": {
+     "id": 3,
+     "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+     "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+     "doi": "10.1126/science.aad6359",
+     "year": 2016,
+     "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+     "journal": "Science",
+     "corresponding_author_country": "Japan"
+    },
+    "experiments": [
+     {
+      "id": 44,
+      "method": "sem",
+      "temperature": 30.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": null,
+      "duration": 18.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "surface_morphology",
+        "value": null,
+        "unit": null,
+        "text_description": "Prominent pitting developed on the PET film surface after 18 hours with 50 nM PETase at 30 degrees C, pH 7.0."
+       }
+      ]
+     },
+     {
+      "id": 45,
+      "method": "hplc",
+      "temperature": 30.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": null,
+      "duration": 18.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "product_identified",
+        "value": null,
+        "unit": null,
+        "text_description": "MHET (mono(2-hydroxyethyl) terephthalic acid) was the major product released from PET film, together with minor amounts of TPA and BHET."
+       },
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": null,
+        "unit": "mM",
+        "text_description": "TPA released as a minor product of PET film hydrolysis; quantitative values are in Fig. 2B, not the text."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": null
+   }
+  ]
+ }
+}

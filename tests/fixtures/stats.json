@@ -1,0 +1,19 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "plastics": 185,
+  "papers": 1418,
+  "pathways": 1,
+  "compounds": 196,
+  "microorganisms": 1436,
+  "microorganisms_whole_organism": 1130,
+  "microorganisms_via_enzyme": 306,
+  "proteins": 3835,
+  "proteins_wild_type": 853,
+  "proteins_variants": 2982
+ }
+}

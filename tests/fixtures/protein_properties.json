@@ -1,0 +1,78 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 2,
+  "items": [
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 16,
+    "protein_id": 3,
+    "paper_id": 8,
+    "protein_variant_id": null,
+    "experiment_id": 141,
+    "specific_activity": null,
+    "specific_activity_unit": null,
+    "optimal_temperature": null,
+    "optimal_ph": null,
+    "tm": 47.8,
+    "t50": null,
+    "half_life": null,
+    "half_life_temperature": null,
+    "assay_notes": "DSC melting temperature of wild-type IsPETase.",
+    "paper": {
+     "id": 8,
+     "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+     "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+     "doi": "10.1016/j.synbio.2025.10.001",
+     "year": 2026,
+     "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+     "journal": "Synthetic and Systems Biotechnology",
+     "corresponding_author_country": "China"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-07T06:07:31.922554Z",
+    "updated_at": "2026-10-28T17:56:11.220813Z",
+    "substrate_kind": null
+   },
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 17,
+    "protein_id": 3,
+    "paper_id": 8,
+    "protein_variant_id": null,
+    "experiment_id": 142,
+    "specific_activity": null,
+    "specific_activity_unit": null,
+    "optimal_temperature": null,
+    "optimal_ph": null,
+    "tm": null,
+    "t50": null,
+    "half_life": 4.0,
+    "half_life_temperature": 40.0,
+    "assay_notes": "Half-life of wild-type IsPETase at 40 °C, estimated from the residual-activity decay curve in Fig. 5f.",
+    "paper": {
+     "id": 8,
+     "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+     "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+     "doi": "10.1016/j.synbio.2025.10.001",
+     "year": 2026,
+     "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+     "journal": "Synthetic and Systems Biotechnology",
+     "corresponding_author_country": "China"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-07T06:07:31.941278Z",
+    "updated_at": "2026-10-28T17:56:11.220813Z",
+    "substrate_kind": null
+   }
+  ]
+ }
+}

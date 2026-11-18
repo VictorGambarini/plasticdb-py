@@ -7,19 +7,25 @@ import random
 import time
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from types import TracebackType
-from typing import Any
+from typing import Any, Literal
 
 import httpx
 
 from . import errors
 from ._cache import ResponseCache
 from ._endpoints import Endpoint
+from ._pagination import ChangeCollection
 from ._response import APIResponse, error_from_response, parse_retry_after, release_headers
 from ._version import __version__
+from .models import Change
 from .models.releases import DATA_LICENSE, DATA_LICENSE_URL, PAPER_CITATION, PAPER_DOI
+from .resources.catalogue import Microorganisms, Papers, Plastics
+from .resources.downloads import Downloads
+from .resources.evidence import Evidence, Pathways, Search, StatsResource
+from .resources.proteins import Proteins, Variants
 from .resources.releases import Releases
 
 log = logging.getLogger("plasticdb")
@@ -28,11 +34,13 @@ DEFAULT_BASE_URL = "https://v2.plasticdb.org/api/v1"
 DEFAULT_TIMEOUT = 30.0
 DEFAULT_MAX_RETRIES = 3
 DEFAULT_MAX_RETRY_WAIT = 60.0
+DEFAULT_MAX_CONCURRENCY = 4
 
 _IDEMPOTENT = frozenset({"GET", "HEAD", "OPTIONS", "PUT", "DELETE"})
 _RETRY_STATUS = frozenset({500, 502, 503, 504})
 
 _HEALTH = Endpoint("GET", "/health", pinnable=False, in_contract=False, root=True)
+_CHANGES = Endpoint("GET", "/changes", live_only=True)
 
 
 def user_agent() -> str:
@@ -86,7 +94,8 @@ class Client:
     ``api_key`` defaults to ``$PLASTICDB_API_KEY``; reads need none. ``release``
     (default ``$PLASTICDB_RELEASE``) pins every read to a dataset release, sent
     as ``?release=``. With ``cache_dir``, answers from a past release's snapshot
-    are kept on disk; live answers never are.
+    are kept on disk; live answers never are. ``max_concurrency`` caps the
+    parallel page requests of a bulk pull (``Collection.all()``); 1 disables it.
     """
 
     def __init__(
@@ -100,9 +109,12 @@ class Client:
         max_retries: int = DEFAULT_MAX_RETRIES,
         max_retry_wait: float = DEFAULT_MAX_RETRY_WAIT,
         backoff_factor: float = 0.5,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
     ) -> None:
         if max_retries < 0:
             raise ValueError("max_retries must be >= 0")
+        if max_concurrency < 1:
+            raise ValueError("max_concurrency must be >= 1")
         self._api_key = _clean(api_key) or _clean(os.environ.get("PLASTICDB_API_KEY"))
         self._release = _clean(release) or _clean(os.environ.get("PLASTICDB_RELEASE"))
         url = _clean(base_url) or _clean(os.environ.get("PLASTICDB_BASE_URL")) or DEFAULT_BASE_URL
@@ -112,11 +124,15 @@ class Client:
         self.max_retries = max_retries
         self.max_retry_wait = max_retry_wait
         self.backoff_factor = backoff_factor
+        self.max_concurrency = max_concurrency
 
         headers = {"User-Agent": user_agent(), "Accept": "application/json"}
         if self._api_key:
             headers["Authorization"] = f"Bearer {self._api_key}"
-        self._http = httpx.Client(headers=headers, timeout=timeout, follow_redirects=False)
+        limits = httpx.Limits(max_connections=max(max_concurrency, 4) * 2)
+        self._http = httpx.Client(
+            headers=headers, timeout=timeout, follow_redirects=False, limits=limits
+        )
 
         self._last: APIResponse | None = None
         self._last_read: APIResponse | None = None
@@ -124,6 +140,16 @@ class Client:
         self._server_version: str | None = None
 
         self.releases = Releases(self)
+        self.proteins = Proteins(self)
+        self.variants = Variants(self)
+        self.microorganisms = Microorganisms(self)
+        self.plastics = Plastics(self)
+        self.papers = Papers(self)
+        self.evidence = Evidence(self)
+        self.search = Search(self)
+        self.pathways = Pathways(self)
+        self.stats = StatsResource(self)
+        self.downloads = Downloads(self)
 
     # ── configuration ────────────────────────────────────────────────────────
 
@@ -168,6 +194,32 @@ class Client:
         tb: TracebackType | None,
     ) -> None:
         self.close()
+
+    # ── change feed ──────────────────────────────────────────────────────────
+
+    def changes(
+        self,
+        since: datetime | str,
+        *,
+        entity_type: Literal["protein", "protein_variant", "microorganism", "plastic", "paper"]
+        | None = None,
+        page_size: int | None = None,
+        limit: int | None = None,
+    ) -> ChangeCollection[Change]:
+        """Records updated, merged or removed at or after ``since`` (live only).
+
+        To keep a local copy in sync, store ``feed.as_of`` and pass it as the next
+        ``since``. A merge names its survivor in ``merged_into``.
+        """
+        return ChangeCollection(
+            self,
+            _CHANGES,
+            Change,
+            params={"since": since, "entity_type": entity_type},
+            page_size=page_size or 500,
+            limit=limit,
+            max_page_size=5000,
+        )
 
     # ── provenance and citation ──────────────────────────────────────────────
 
@@ -273,15 +325,9 @@ class Client:
         **path_params: Any,
     ) -> APIResponse:
         """Send one API call; raise a :class:`~plasticdb.errors.PlasticDBError` on failure."""
-        query = {k: _param(v) for k, v in (params or {}).items() if v is not None}
-        if endpoint.pinnable and self._release and "release" not in query:
-            query["release"] = self._release
-        method = endpoint.method.upper()
-        url = httpx.URL(self._url(endpoint, path_params), params=query)
-
-        pinned_release = query.get("release") if endpoint.pinnable else None
+        method, url, pinned_release = self._prepare(endpoint, params, path_params)
         cache_key = None
-        if self._cache is not None and method == "GET" and isinstance(pinned_release, str):
+        if self._cache is not None and method == "GET" and pinned_release is not None:
             cache_key = ResponseCache.key(method, url)
             hit = self._cache.get(pinned_release, cache_key)
             if hit is not None:
@@ -298,12 +344,59 @@ class Client:
         if (
             cache_key is not None
             and self._cache is not None
-            and isinstance(pinned_release, str)
+            and pinned_release is not None
             and result.release_source == "snapshot"
             and result.release == pinned_release
         ):
             self._cache.put(pinned_release, cache_key, response)
         return result
+
+    def _prepare(
+        self,
+        endpoint: Endpoint,
+        params: Mapping[str, Any] | None,
+        path_params: Mapping[str, Any],
+    ) -> tuple[str, httpx.URL, str | None]:
+        """The method, the URL and the release the request is pinned to (if any)."""
+        query: dict[str, Any] = {}
+        for k, v in (params or {}).items():
+            if v is not None:
+                query[k] = _param(v)
+        if endpoint.pinnable and self._release and "release" not in query:
+            query["release"] = self._release
+        url = httpx.URL(self._url(endpoint, path_params), params=query)
+        pinned = query.get("release") if endpoint.pinnable else None
+        return endpoint.method.upper(), url, pinned if isinstance(pinned, str) else None
+
+    def _download(
+        self,
+        endpoint: Endpoint,
+        dest: str | os.PathLike[str],
+        *,
+        params: Mapping[str, Any] | None = None,
+        sha256: str | None = None,
+        immutable_release: str | None = None,
+        default_name: str = "download",
+        **path_params: Any,
+    ) -> Path:
+        """Stream a file to ``dest`` (a file, or a directory to name it in).
+
+        Redirects are followed. With ``sha256`` the file is verified before it is
+        moved into place. A pinned snapshot answer (or any answer for
+        ``immutable_release``, a release-scoped artefact) is kept in the cache.
+        """
+        from ._download import stream_to_file
+
+        return stream_to_file(
+            self,
+            endpoint,
+            dest,
+            params=params,
+            path_params=path_params,
+            sha256=sha256,
+            immutable_release=immutable_release,
+            default_name=default_name,
+        )
 
     def _decode(
         self,
@@ -337,11 +430,14 @@ class Client:
             from_cache=from_cache,
         )
         if record:
-            self._last = result
-            if endpoint.pinnable:
-                self._last_read = result
-            self._announce(result)
+            self._remember(result, endpoint)
         return result
+
+    def _remember(self, result: APIResponse, endpoint: Endpoint) -> None:
+        self._last = result
+        if endpoint.pinnable:
+            self._last_read = result
+        self._announce(result)
 
     def _announce(self, result: APIResponse) -> None:
         if self._announced or self._release is not None:
@@ -358,15 +454,25 @@ class Client:
             log.info("PlasticDB: unpinned client; the server named no dataset release.")
 
     def _send(
-        self, method: str, url: httpx.URL, *, json: Any, follow_redirects: bool
+        self,
+        method: str,
+        url: httpx.URL,
+        *,
+        json: Any = None,
+        follow_redirects: bool = False,
+        stream: bool = False,
     ) -> httpx.Response:
+        """Send with retries. With ``stream``, a successful body is left unread."""
         idempotent = method in _IDEMPOTENT
         attempt = 0
         while True:
+            request = self._http.build_request(method, url, json=json)
             try:
-                response = self._http.request(
-                    method, url, json=json, follow_redirects=follow_redirects
+                response = self._http.send(
+                    request, stream=stream, follow_redirects=follow_redirects
                 )
+                if stream and not response.is_success:
+                    response.read()
             except (httpx.ConnectError, httpx.ConnectTimeout) as exc:
                 # Nothing reached the server, so even a POST is safe to resend.
                 if attempt < self.max_retries:

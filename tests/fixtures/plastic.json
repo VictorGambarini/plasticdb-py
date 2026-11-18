@@ -1,0 +1,241 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "id": 16,
+  "name": "PET",
+  "full_name": "Poly(ethylene terephthalate)",
+  "abbreviation": "PET",
+  "polymer_class": null,
+  "parent_id": null,
+  "smiles": null,
+  "cas_number": null,
+  "kind": null,
+  "trade_name": null,
+  "microorganism_count": 372,
+  "protein_count": 468,
+  "parent_name": null,
+  "children": [
+   {
+    "id": 99,
+    "name": "Apexa",
+    "full_name": "Apexa (biodegradable modified poly(ethylene terephthalate) copolyester, formerly Biomax)",
+    "parent_id": 16,
+    "kind": "copolymer"
+   },
+   {
+    "id": 114,
+    "name": "PET Blend",
+    "full_name": "Poly(ethylene terephthalate) blend (PET with a non-PET constituent, recorded in substrate_composition)",
+    "parent_id": 16,
+    "kind": "blend"
+   }
+  ],
+  "updated_at": "2026-09-23T14:26:33.069399Z",
+  "microorganism_degrading_count": 372,
+  "microorganism_inconclusive_count": 226,
+  "microorganism_no_activity_count": 180,
+  "protein_degrading_count": 468,
+  "protein_inconclusive_count": 21,
+  "protein_no_activity_count": 256,
+  "microorganisms": [
+   {
+    "id": 2,
+    "name": "Pseudideonella sakaiensis",
+    "tax_id": 1547922,
+    "accession": "PB3E8R",
+    "taxonomy_status": "resolved",
+    "taxonomy_cause": null,
+    "taxonomy_note": null,
+    "growth_temp_opt": null,
+    "oxygen_requirement": null,
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 16,
+       "name": "PET",
+       "abbreviation": "PET"
+      },
+      "result": "positive",
+      "methods": [],
+      "positive_count": 133,
+      "inconclusive_count": 12,
+      "negative_count": 8,
+      "positive_papers": 132,
+      "inconclusive_papers": 11,
+      "negative_papers": 8,
+      "paper_count": 146,
+      "result_polarity": "mixed"
+     }
+    ],
+    "paper": {
+     "id": 3,
+     "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+     "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+     "doi": "10.1126/science.aad6359",
+     "year": 2016,
+     "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+     "journal": "Science",
+     "corresponding_author_country": "Japan"
+    },
+    "papers": [
+     {
+      "id": 3,
+      "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+      "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+      "doi": "10.1126/science.aad6359",
+      "year": 2016,
+      "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+      "journal": "Science",
+      "corresponding_author_country": "Japan"
+     },
+     {
+      "id": 291,
+      "citation": "Han, X., Liu, W., Huang, J.-W., Ma, J., Zheng, Y., Ko, T.-P., Xu, L., Cheng, Y.-S., Chen, C.-C., & Guo, R.-T. (2017). Structural insight into catalytic mechanism of PET hydrolase. Nature Communications, 8, 2106. https://doi.org/10.1038/s41467-017-02255-z",
+      "title": "Structural insight into catalytic mechanism of PET hydrolase",
+      "doi": "10.1038/s41467-017-02255-z",
+      "year": 2017,
+      "authors": "Han, X.; Liu, W.; Huang, J.-W.; Ma, J.; Zheng, Y.; Ko, T.-P.; Xu, L.; Cheng, Y.-S.; Chen, C.-C.; Guo, R.-T.",
+      "journal": "Nature Communications",
+      "corresponding_author_country": "China"
+     }
+    ],
+    "assay_temp_min": null,
+    "assay_temp_max": null,
+    "environments": [],
+    "locations": [],
+    "strain_designations": [],
+    "updated_at": "2026-09-23T14:26:33.069399Z"
+   }
+  ],
+  "degradation_links": [],
+  "proteins": [
+   {
+    "activity_class": "untested",
+    "id": 2039,
+    "kind": "wild_type",
+    "variant_type": null,
+    "parent_accession": null,
+    "plasticdb_id": "02102",
+    "accession": "PBFXE3",
+    "name": "PES-H1",
+    "genbank_id": "XLT16887.1",
+    "has_signal_peptide": false,
+    "uniprot_accession": null,
+    "pdb_id": "7CUV",
+    "ec_number": null,
+    "source_microorganism": {
+     "id": 1384,
+     "name": "uncultured bacterium",
+     "tax_id": 77133,
+     "accession": "PB8E7A",
+     "taxonomy_status": "resolved",
+     "taxonomy_cause": null,
+     "taxonomy_note": null,
+     "growth_temp_opt": null,
+     "oxygen_requirement": null,
+     "degradation_links": [],
+     "paper": null,
+     "papers": [],
+     "assay_temp_min": null,
+     "assay_temp_max": null,
+     "environments": [],
+     "locations": [],
+     "strain_designations": [],
+     "updated_at": "2026-09-23T14:26:33.069399Z"
+    },
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 16,
+       "name": "PET",
+       "abbreviation": "PET"
+      },
+      "result": "positive",
+      "methods": [],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     }
+    ],
+    "paper": {
+     "id": 1601,
+     "citation": "Zhang, L., Chen, K., Xi, Z., Tian, Z., Wei, X., Aqma, W. S., Guo, Z., Wang, Q., & Niu, Q. (2026). Structure-Guided Terminal Modifications Enhance the Efficiency of PET Degradation. ACS Synthetic Biology, 15, 3553–3565.",
+     "title": "Structure-Guided Terminal Modifications Enhance the Efficiency of PET Degradation.",
+     "doi": "10.1021/acssynbio.5c00682",
+     "year": 2026,
+     "authors": "Zhang, L.; Chen, K.; Xi, Z.; Tian, Z.; Wei, X.; Aqma, W.S.; Guo, Z.; Wang, Q.; Niu, Q.",
+     "journal": "ACS Synthetic Biology",
+     "corresponding_author_country": "China"
+    },
+    "papers": [
+     {
+      "id": 1601,
+      "citation": "Zhang, L., Chen, K., Xi, Z., Tian, Z., Wei, X., Aqma, W. S., Guo, Z., Wang, Q., & Niu, Q. (2026). Structure-Guided Terminal Modifications Enhance the Efficiency of PET Degradation. ACS Synthetic Biology, 15, 3553–3565.",
+      "title": "Structure-Guided Terminal Modifications Enhance the Efficiency of PET Degradation.",
+      "doi": "10.1021/acssynbio.5c00682",
+      "year": 2026,
+      "authors": "Zhang, L.; Chen, K.; Xi, Z.; Tian, Z.; Wei, X.; Aqma, W.S.; Guo, Z.; Wang, Q.; Niu, Q.",
+      "journal": "ACS Synthetic Biology",
+      "corresponding_author_country": "China"
+     }
+    ],
+    "year": null,
+    "best_kcat_km": null,
+    "best_kcat_km_unit": null,
+    "updated_at": "2026-11-12T06:20:00.226687Z"
+   }
+  ],
+  "monomers": [],
+  "components": [],
+  "containing_blends": [
+   {
+    "id": 114,
+    "name": "PET Blend",
+    "full_name": "Poly(ethylene terephthalate) blend (PET with a non-PET constituent, recorded in substrate_composition)",
+    "kind": "blend"
+   },
+   {
+    "id": 72,
+    "name": "Plastic",
+    "full_name": null,
+    "kind": "blend"
+   }
+  ],
+  "paper_count": 461,
+  "chemical_reference": {
+   "pubchem_cid": null,
+   "chebi_id": "CHEBI:61452",
+   "inchikey": null,
+   "backbone_class": "heteroatom",
+   "polymer_family": "polyester",
+   "identifier_status": "unverified",
+   "source": "Classification: polymer-chemist review R03-4; ChEBI candidate from EBI OLS search, 2026-10-05",
+   "notes": "Polymer: PubChem has no single compound record for the polymer (only repeat-unit compounds and depositor substances), so pubchem_cid and inchikey are null. chebi_id is a CANDIDATE (poly(ethylene terephthalate) polymer); ChEBI separates 'polymer' and 'macromolecule' entries, and a curator must confirm which is meant.",
+   "monomers": [
+    {
+     "compound_id": 4,
+     "name": "Terephthalic acid",
+     "formula": "C8H6O4",
+     "role": "monomer"
+    },
+    {
+     "compound_id": 5,
+     "name": "Ethylene glycol",
+     "formula": "C2H6O2",
+     "role": "monomer"
+    }
+   ]
+  },
+  "vocabulary_note": null,
+  "is_placeholder": false
+ }
+}

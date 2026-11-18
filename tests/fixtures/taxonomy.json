@@ -1,0 +1,60 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "rank": "genus",
+  "name": "Pseudomonas",
+  "microbe_total": 69,
+  "evidenced_microbe_total": 69,
+  "protein_total": 38,
+  "plastic_total": 60,
+  "paper_total": 158,
+  "top_plastics": [
+   {
+    "name": "PET",
+    "count": 42
+   },
+   {
+    "name": "Impranil",
+    "count": 16
+   }
+  ],
+  "top_environments": [
+   {
+    "environment": "soil",
+    "count": 77
+   },
+   {
+    "environment": "coastal",
+    "count": 48
+   }
+  ],
+  "temperature_class": {
+   "psychrophile": 0,
+   "mesophile": 2,
+   "thermophile": 0,
+   "unknown": 67
+  },
+  "top_microorganisms": [
+   {
+    "id": 312,
+    "name": "Pseudomonas sp.",
+    "tax_id": 306,
+    "accession": "PBGPWS",
+    "protein_count": 15,
+    "evidence_count": 283
+   },
+   {
+    "id": 657,
+    "name": "Pseudomonas chlororaphis",
+    "tax_id": 587753,
+    "accession": "PBMS28",
+    "protein_count": 7,
+    "evidence_count": 75
+   }
+  ]
+ }
+}

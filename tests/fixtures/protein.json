@@ -1,0 +1,1362 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "activity_class": "degrader",
+  "id": 3,
+  "kind": "wild_type",
+  "variant_type": null,
+  "parent_accession": null,
+  "plasticdb_id": "00003",
+  "accession": "PBFCTW",
+  "name": "PETase",
+  "genbank_id": "GAP38373.1",
+  "has_signal_peptide": true,
+  "uniprot_accession": "A0A0K8P6T7",
+  "pdb_id": "6EQE",
+  "ec_number": null,
+  "source_microorganism": {
+   "id": 2,
+   "name": "Pseudideonella sakaiensis",
+   "tax_id": 1547922,
+   "accession": "PB3E8R",
+   "taxonomy_status": "resolved",
+   "taxonomy_cause": null,
+   "taxonomy_note": null,
+   "growth_temp_opt": null,
+   "oxygen_requirement": null,
+   "degradation_links": [],
+   "paper": null,
+   "papers": [],
+   "assay_temp_min": null,
+   "assay_temp_max": null,
+   "environments": [],
+   "locations": [],
+   "strain_designations": [],
+   "updated_at": "2026-09-23T14:26:33.069399Z"
+  },
+  "degradation_links": [
+   {
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "result": "positive",
+    "methods": [
+     "afm",
+     "biosensor"
+    ],
+    "positive_count": 125,
+    "inconclusive_count": 5,
+    "negative_count": 1,
+    "positive_papers": 125,
+    "inconclusive_papers": 5,
+    "negative_papers": 1,
+    "paper_count": 131,
+    "result_polarity": "mixed"
+   },
+   {
+    "plastic": {
+     "id": 62,
+     "name": "PEF",
+     "abbreviation": "PEF"
+    },
+    "result": "positive",
+    "methods": [
+     "dsc",
+     "enzyme_assay"
+    ],
+    "positive_count": 4,
+    "inconclusive_count": 0,
+    "negative_count": 0,
+    "positive_papers": 4,
+    "inconclusive_papers": 0,
+    "negative_papers": 0,
+    "paper_count": 4,
+    "result_polarity": "positive"
+   }
+  ],
+  "paper": null,
+  "papers": [
+   {
+    "id": 3,
+    "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+    "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+    "doi": "10.1126/science.aad6359",
+    "year": 2016,
+    "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+    "journal": "Science",
+    "corresponding_author_country": "Japan"
+   },
+   {
+    "id": 291,
+    "citation": "Han, X., Liu, W., Huang, J.-W., Ma, J., Zheng, Y., Ko, T.-P., Xu, L., Cheng, Y.-S., Chen, C.-C., & Guo, R.-T. (2017). Structural insight into catalytic mechanism of PET hydrolase. Nature Communications, 8, 2106. https://doi.org/10.1038/s41467-017-02255-z",
+    "title": "Structural insight into catalytic mechanism of PET hydrolase",
+    "doi": "10.1038/s41467-017-02255-z",
+    "year": 2017,
+    "authors": "Han, X.; Liu, W.; Huang, J.-W.; Ma, J.; Zheng, Y.; Ko, T.-P.; Xu, L.; Cheng, Y.-S.; Chen, C.-C.; Guo, R.-T.",
+    "journal": "Nature Communications",
+    "corresponding_author_country": "China"
+   }
+  ],
+  "year": null,
+  "best_kcat_km": null,
+  "best_kcat_km_unit": null,
+  "updated_at": "2026-11-11T22:19:17.705155Z",
+  "v1_id": "00083",
+  "database_name": null,
+  "gene": null,
+  "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCS",
+  "structure_file": "6EQE.pdb",
+  "has_structure": true,
+  "uniprot_protein_name": null,
+  "uniprot_go_terms": null,
+  "active_site_residues": null,
+  "signal_peptide_cleavage_site": 27,
+  "cross_references": {
+   "interpro": [
+    {
+     "id": "G3DSA:3.40.50.1820",
+     "name": "alpha/beta hydrolase",
+     "type": "homologous_superfamily",
+     "db": "cathgene3d"
+    },
+    {
+     "id": "IPR029058",
+     "name": "Alpha/Beta hydrolase fold",
+     "type": "homologous_superfamily",
+     "db": "interpro"
+    }
+   ],
+   "alternate_genbank_ids": [
+    "WP_054022242.1"
+   ],
+   "merged_accessions": [
+    "PBG5RN",
+    "PB3KCW"
+   ]
+  },
+  "structures": [
+   {
+    "discovery_source": null,
+    "discovery_evidence": null,
+    "id": 1,
+    "pdb_id": "6EQE",
+    "method": "X-RAY DIFFRACTION",
+    "resolution": 0.92,
+    "deposition_date": "2017-10-12",
+    "source": "experimental",
+    "confidence": null,
+    "model_url": null,
+    "is_primary": true,
+    "protein_variant_id": null,
+    "sequence_check": null,
+    "sequence_identity": null,
+    "created_by": null,
+    "prediction_attribution": null
+   },
+   {
+    "discovery_source": null,
+    "discovery_evidence": null,
+    "id": 2,
+    "pdb_id": "8J45",
+    "method": "X-RAY DIFFRACTION",
+    "resolution": 1.49,
+    "deposition_date": "2023-04-19",
+    "source": "experimental",
+    "confidence": null,
+    "model_url": null,
+    "is_primary": false,
+    "protein_variant_id": 1,
+    "sequence_check": null,
+    "sequence_identity": null,
+    "created_by": null,
+    "prediction_attribution": null
+   }
+  ],
+  "plastics": [
+   {
+    "id": 16,
+    "name": "PET",
+    "abbreviation": "PET"
+   },
+   {
+    "id": 62,
+    "name": "PEF",
+    "abbreviation": "PEF"
+   }
+  ],
+  "variant_degradation_links": [
+   {
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "result": "positive",
+    "methods": [
+     "afm",
+     "cd"
+    ],
+    "positive_count": 977,
+    "inconclusive_count": 8,
+    "negative_count": 36,
+    "positive_papers": 139,
+    "inconclusive_papers": 5,
+    "negative_papers": 16,
+    "paper_count": 144,
+    "result_polarity": "mixed"
+   },
+   {
+    "plastic": {
+     "id": 62,
+     "name": "PEF",
+     "abbreviation": "PEF"
+    },
+    "result": "positive",
+    "methods": [
+     "dsc",
+     "hplc"
+    ],
+    "positive_count": 8,
+    "inconclusive_count": 0,
+    "negative_count": 2,
+    "positive_papers": 4,
+    "inconclusive_papers": 0,
+    "negative_papers": 1,
+    "paper_count": 4,
+    "result_polarity": "mixed"
+   }
+  ],
+  "interactions": [
+   {
+    "id": 10,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein",
+    "result": "positive",
+    "notes": "Wild-type I. sakaiensis PET hydrolase (mesophilic; labile above 37 C). Baseline scaffold. Recombinantly expressed in Pseudomonas putida KT2440.",
+    "strain_occurrence": null,
+    "paper_id": 2,
+    "paper": {
+     "id": 2,
+     "citation": "Lu, H., Diaz, D. J., Czarnecki, N. J., Zhu, C., Kim, W., Shroff, R., Acosta, D. J., Alexander, B. R., Cole, H. O., Zhang, Y., Lynd, N. A., Ellington, A. D., & Alper, H. S. (2022). Machine learning-aided engineering of hydrolases for PET depolymerization. Nature, 604(7907), 662-667.",
+     "title": "Machine learning-aided engineering of hydrolases for PET depolymerization",
+     "doi": "10.1038/s41586-022-04599-z",
+     "year": 2022,
+     "authors": "Lu, H.; Diaz, D.J.; Czarnecki, N.J.; Zhu, C.; Kim, W.; Shroff, R.; Acosta, D.J.; Alexander, B.R.; Cole, H.O.; Zhang, Y.; Lynd, N.A.; Ellington, A.D.; Alper, H.S.",
+     "journal": "Nature",
+     "corresponding_author_country": "United States"
+    },
+    "experiments": [
+     {
+      "id": 26,
+      "method": "hplc",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 24.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": 1.2,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": false,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 0.231,
+        "unit": "mM",
+        "text_description": "~0.23 mM monomers from bean cake pc-PET at 50 C, 24 h - far lower than FAST-PETase (Fig. 3b)"
+       }
+      ]
+     },
+     {
+      "id": 27,
+      "method": "hplc",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 24.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": 2.0,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": false,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 0.57,
+        "unit": "mM",
+        "text_description": "~0.57 mM monomers from pretreated bottle film at 50 C, 24 h (Fig. 4c)"
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": null
+   },
+   {
+    "id": 20,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein",
+    "result": "positive",
+    "notes": "ISF6_4831 gene product, designated PETase. Shares 51% amino acid identity and catalytic residues with the Thermobifida fusca hydrolase TfH. Transcript level during growth on PET film was the highest among all analysed coding sequences (15x, 31x and 41x that on maltose, TPA-Na and BHET respectively), indicating induction by PET film itself. Extracellular; predicted localisation in supplementary text S1.",
+    "strain_occurrence": null,
+    "paper_id": 3,
+    "paper": {
+     "id": 3,
+     "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+     "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+     "doi": "10.1126/science.aad6359",
+     "year": 2016,
+     "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+     "journal": "Science",
+     "corresponding_author_country": "Japan"
+    },
+    "experiments": [
+     {
+      "id": 44,
+      "method": "sem",
+      "temperature": 30.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": null,
+      "duration": 18.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "surface_morphology",
+        "value": null,
+        "unit": null,
+        "text_description": "Prominent pitting developed on the PET film surface after 18 hours with 50 nM PETase at 30 degrees C, pH 7.0."
+       }
+      ]
+     },
+     {
+      "id": 45,
+      "method": "hplc",
+      "temperature": 30.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": null,
+      "duration": 18.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "product_identified",
+        "value": null,
+        "unit": null,
+        "text_description": "MHET (mono(2-hydroxyethyl) terephthalic acid) was the major product released from PET film, together with minor amounts of TPA and BHET."
+       },
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": null,
+        "unit": "mM",
+        "text_description": "TPA released as a minor product of PET film hydrolysis; quantitative values are in Fig. 2B, not the text."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": null
+   }
+  ],
+  "indirect_interactions": [
+   {
+    "id": 9,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein_variant",
+    "result": "positive",
+    "notes": "Star enzyme of the study. Depolymerizes untreated postconsumer PET (51 products, water bottles, polyester textiles) and enables closed-loop PET recycling. Strong direct evidence (mass loss + HPLC monomer quantification + AFM/SEM).",
+    "strain_occurrence": null,
+    "paper_id": 2,
+    "paper": {
+     "id": 2,
+     "citation": "Lu, H., Diaz, D. J., Czarnecki, N. J., Zhu, C., Kim, W., Shroff, R., Acosta, D. J., Alexander, B. R., Cole, H. O., Zhang, Y., Lynd, N. A., Ellington, A. D., & Alper, H. S. (2022). Machine learning-aided engineering of hydrolases for PET depolymerization. Nature, 604(7907), 662-667.",
+     "title": "Machine learning-aided engineering of hydrolases for PET depolymerization",
+     "doi": "10.1038/s41586-022-04599-z",
+     "year": 2022,
+     "authors": "Lu, H.; Diaz, D.J.; Czarnecki, N.J.; Zhu, C.; Kim, W.; Shroff, R.; Acosta, D.J.; Alexander, B.R.; Cole, H.O.; Zhang, Y.; Lynd, N.A.; Ellington, A.D.; Alper, H.S.",
+     "journal": "Nature",
+     "corresponding_author_country": "United States"
+    },
+    "experiments": [
+     {
+      "id": 14,
+      "method": "hplc",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 96.0,
+      "duration_unit": "hours",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": true,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 33.8,
+        "unit": "mM",
+        "text_description": "33.8 mM PET monomers (TPA + MHET) released from amorphous gf-PET film after 96 h at 50 C - highest of all enzymes/temperatures"
+       }
+      ]
+     },
+     {
+      "id": 15,
+      "method": "weight_loss",
+      "temperature": 50.0,
+      "temperature_unit": "C",
+      "ph": 8.0,
+      "buffer": null,
+      "duration": 7.0,
+      "duration_unit": "days",
+      "substrate_form": "amorphous_film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": false,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "weight_loss",
+        "value": null,
+        "unit": "%",
+        "text_description": "All 51 postconsumer PET products fully degraded (films disappeared) within 1 week, some in as little as 24 h, by serial FAST-PETase treatment at 50 C"
+       },
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "mass_remaining",
+        "value": null,
+        "unit": "%",
+        "text_description": "Near-linear mass loss accompanying near-linear monomer release during depolymerization"
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": "FAST-PETase",
+    "indirect_source_url": "/proteins/PBFCTW#variant-1",
+    "expression_hosts": [],
+    "strain_designation": null
+   },
+   {
+    "id": 89,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein_variant",
+    "result": "positive",
+    "notes": "Previously reported high-performance IsPETase variant, re-synthesised in this study as the parent for QMFAST-PETase.",
+    "strain_occurrence": null,
+    "paper_id": 8,
+    "paper": {
+     "id": 8,
+     "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+     "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+     "doi": "10.1016/j.synbio.2025.10.001",
+     "year": 2026,
+     "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+     "journal": "Synthetic and Systems Biotechnology",
+     "corresponding_author_country": "China"
+    },
+    "experiments": [
+     {
+      "id": 190,
+      "method": "hplc",
+      "temperature": 55.0,
+      "temperature_unit": "C",
+      "ph": 9.0,
+      "buffer": null,
+      "duration": 72.0,
+      "duration_unit": "hours",
+      "substrate_form": "film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": true,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 6342.0,
+        "unit": "μM",
+        "text_description": "FAST-PETase released 6342 μM total PET monomers (TPA + MHET) from Gf-PET film after 72 h at 55 °C, pH 9.0. Read from Fig. 5."
+       }
+      ]
+     },
+     {
+      "id": 191,
+      "method": "enzyme_assay",
+      "temperature": 55.0,
+      "temperature_unit": "C",
+      "ph": 9.0,
+      "buffer": null,
+      "duration": null,
+      "duration_unit": null,
+      "substrate_form": "film",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": true,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "measurement_type": "activity_detected",
+        "value": 50.0,
+        "unit": "% of initial activity",
+        "text_description": "Residual activity of FAST-PETase fell to 50 % of its own initial activity after approximately 48 h of pre-incubation at 55 °C - the half-life reported by the authors, estimated from the residual-activity decay curve in Fig. 5f."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": "FAST-PETase",
+    "indirect_source_url": "/proteins/PBFCTW#variant-1",
+    "expression_hosts": [],
+    "strain_designation": null
+   }
+  ],
+  "variants": [
+   {
+    "synonyms": [
+     "FAST-PETase (Lu et al. 2022 scaffold)",
+     "BO-F"
+    ],
+    "genbank_id": null,
+    "numbering_scheme_code": null,
+    "numbering_reference": null,
+    "numbering_scheme_code_proposed": "precursor",
+    "originating_paper_id": 2,
+    "originating_doi": "10.1038/s41586-022-04599-z",
+    "originating_paper_source": "declared",
+    "id": 1,
+    "accession": "PBVPYT",
+    "parent_protein_id": 3,
+    "variant_name": "FAST-PETase",
+    "variant_type": "engineered",
+    "description": "Functional, active, stable and tolerant PETase: five mutations vs WT PETase (S121E/D186H/R224Q/N233K/R280A). Highest overall PET-hydrolytic activity at 30-50 C of all enzymes tested; degrades untreated postconsumer PET completely within 1 week at 50 C.",
+    "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPESRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWHSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSQNAKQFLEIKGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTAVSDFRTANCS",
+    "engineering_method": "machine learning (MutCompute) guided design",
+    "performance": "At 40 and 50 C, 2.4- and 38-fold higher activity than ThermoPETase; releases 33.8 mM PET monomers from amorphous gf-PET in 96 h at 50 C (highest of all mutants/temperatures tested).",
+    "numbering_scheme": "matches deposited reference sequence (position 1 = Met1)",
+    "numbering_offset": 0,
+    "paper": {
+     "id": 2,
+     "citation": "Lu, H., Diaz, D. J., Czarnecki, N. J., Zhu, C., Kim, W., Shroff, R., Acosta, D. J., Alexander, B. R., Cole, H. O., Zhang, Y., Lynd, N. A., Ellington, A. D., & Alper, H. S. (2022). Machine learning-aided engineering of hydrolases for PET depolymerization. Nature, 604(7907), 662-667.",
+     "title": "Machine learning-aided engineering of hydrolases for PET depolymerization",
+     "doi": "10.1038/s41586-022-04599-z",
+     "year": 2022,
+     "authors": "Lu, H.; Diaz, D.J.; Czarnecki, N.J.; Zhu, C.; Kim, W.; Shroff, R.; Acosta, D.J.; Alexander, B.R.; Cole, H.O.; Zhang, Y.; Lynd, N.A.; Ellington, A.D.; Alper, H.S.",
+     "journal": "Nature",
+     "corresponding_author_country": "United States"
+    },
+    "mutations": [
+     {
+      "id": 1,
+      "protein_variant_id": 1,
+      "wild_type_residue": "S",
+      "position": 121,
+      "mutant_residue": "E",
+      "raw": "S121E",
+      "sequence_position": 121
+     },
+     {
+      "id": 2,
+      "protein_variant_id": 1,
+      "wild_type_residue": "D",
+      "position": 186,
+      "mutant_residue": "H",
+      "raw": "D186H",
+      "sequence_position": 186
+     }
+    ],
+    "kinetics": [
+     {
+      "substrate": null,
+      "substrate_plastic_id": null,
+      "substrate_compound_id": null,
+      "id": 74,
+      "protein_id": 3,
+      "plastic_id": 16,
+      "paper_id": 200,
+      "protein_variant_id": 1,
+      "experiment_id": 4622,
+      "km": 0.63,
+      "kcat": null,
+      "vmax": null,
+      "km_unit": "uM",
+      "kcat_unit": null,
+      "vmax_unit": null,
+      "experiment": {
+       "assay_result": null,
+       "assay_result_notes": null,
+       "detection_limit": null,
+       "detection_limit_unit": null,
+       "quantitation_ceiling": null,
+       "quantitation_ceiling_unit": null,
+       "id": 4622,
+       "temperature": 50.0,
+       "temperature_unit": "C",
+       "ph": 8.0,
+       "substrate_form": "powder",
+       "buffer": null,
+       "notes": "Inverse Michaelis-Menten analysis (Baath et al. formalism) over 2 h, pH 8, 50 degC, 50 mg PET in 5 mL. IMPORTANT: the reported constant is the INVERSE Michaelis constant - the molar ENZYME concentration at half-saturation of the substrate surface - not a classical substrate Km. It is stored in kinetics.km because the contract has no separate field for it; a lower value means higher enzyme-substrate affinity. Fast-PETase.",
+       "duration": 2.0,
+       "duration_unit": "hours"
+      },
+      "plastic": {
+       "id": 16,
+       "name": "PET",
+       "full_name": "Poly(ethylene terephthalate)",
+       "abbreviation": "PET",
+       "polymer_class": null,
+       "parent_id": null,
+       "smiles": null,
+       "cas_number": null
+      },
+      "paper": {
+       "id": 200,
+       "citation": "Ma, X., Han, J., Ni, P., Wang, L., Zhou, Y., Wu, J., & Wang, Y. (2026). Aqueous micellar two-phase emulsions: An integrated reaction-separation platform for sustainable enzymatic depolymerization of PET waste. Journal of Hazardous Materials, 141625. https://doi.org/10.1016/j.jhazmat.2026.141625",
+       "title": "Aqueous micellar two-phase emulsions: An integrated reaction-separation platform for sustainable enzymatic depolymerization of PET waste.",
+       "doi": "10.1016/j.jhazmat.2026.141625",
+       "year": 2026,
+       "authors": "Ma, X.; Han, J.; Ni, P.; Wang, L.; Zhou, Y.; Wu, J.; Wang, Y.",
+       "journal": "Journal of Hazardous Materials",
+       "corresponding_author_country": "China"
+      },
+      "protein_variant": {
+       "id": 1,
+       "variant_name": "FAST-PETase"
+      },
+      "created_at": "2026-08-09T22:52:42.874269Z",
+      "updated_at": "2026-08-09T22:52:42.874273Z",
+      "substrate_kind": null,
+      "temperature": 50.0,
+      "ph": 8.0,
+      "substrate_form": "powder",
+      "kcat_km": null,
+      "kcat_km_unit": null,
+      "kcat_normalised": null,
+      "kcat_normalised_unit": null,
+      "km_normalised": 0.00063,
+      "km_normalised_unit": "mM",
+      "kcat_km_normalised": null
+     },
+     {
+      "substrate": null,
+      "substrate_plastic_id": null,
+      "substrate_compound_id": null,
+      "id": 75,
+      "protein_id": 3,
+      "plastic_id": 16,
+      "paper_id": 200,
+      "protein_variant_id": 1,
+      "experiment_id": 4623,
+      "km": 5.74,
+      "kcat": null,
+      "vmax": null,
+      "km_unit": "uM",
+      "kcat_unit": null,
+      "vmax_unit": null,
+      "experiment": {
+       "assay_result": null,
+       "assay_result_notes": null,
+       "detection_limit": null,
+       "detection_limit_unit": null,
+       "quantitation_ceiling": null,
+       "quantitation_ceiling_unit": null,
+       "id": 4623,
+       "temperature": 50.0,
+       "temperature_unit": "C",
+       "ph": 8.0,
+       "substrate_form": "powder",
+       "buffer": null,
+       "notes": "Inverse Michaelis-Menten analysis (Baath et al. formalism) over 2 h, pH 8, 50 degC, 50 mg PET in 5 mL. IMPORTANT: the reported constant is the INVERSE Michaelis constant - the molar ENZYME concentration at half-saturation of the substrate surface - not a classical substrate Km. It is stored in kinetics.km because the contract has no separate field for it; a lower value means higher enzyme-substrate affinity. Fast-PETase.",
+       "duration": 2.0,
+       "duration_unit": "hours"
+      },
+      "plastic": {
+       "id": 16,
+       "name": "PET",
+       "full_name": "Poly(ethylene terephthalate)",
+       "abbreviation": "PET",
+       "polymer_class": null,
+       "parent_id": null,
+       "smiles": null,
+       "cas_number": null
+      },
+      "paper": {
+       "id": 200,
+       "citation": "Ma, X., Han, J., Ni, P., Wang, L., Zhou, Y., Wu, J., & Wang, Y. (2026). Aqueous micellar two-phase emulsions: An integrated reaction-separation platform for sustainable enzymatic depolymerization of PET waste. Journal of Hazardous Materials, 141625. https://doi.org/10.1016/j.jhazmat.2026.141625",
+       "title": "Aqueous micellar two-phase emulsions: An integrated reaction-separation platform for sustainable enzymatic depolymerization of PET waste.",
+       "doi": "10.1016/j.jhazmat.2026.141625",
+       "year": 2026,
+       "authors": "Ma, X.; Han, J.; Ni, P.; Wang, L.; Zhou, Y.; Wu, J.; Wang, Y.",
+       "journal": "Journal of Hazardous Materials",
+       "corresponding_author_country": "China"
+      },
+      "protein_variant": {
+       "id": 1,
+       "variant_name": "FAST-PETase"
+      },
+      "created_at": "2026-08-09T22:52:42.883835Z",
+      "updated_at": "2026-08-09T22:52:42.883837Z",
+      "substrate_kind": null,
+      "temperature": 50.0,
+      "ph": 8.0,
+      "substrate_form": "powder",
+      "kcat_km": null,
+      "kcat_km_unit": null,
+      "kcat_normalised": null,
+      "kcat_normalised_unit": null,
+      "km_normalised": 0.00574,
+      "km_normalised_unit": "mM",
+      "kcat_km_normalised": null
+     }
+    ],
+    "properties": [
+     {
+      "substrate": null,
+      "substrate_plastic_id": null,
+      "substrate_compound_id": null,
+      "id": 21,
+      "protein_id": 3,
+      "paper_id": 8,
+      "protein_variant_id": 1,
+      "experiment_id": 191,
+      "specific_activity": null,
+      "specific_activity_unit": null,
+      "optimal_temperature": null,
+      "optimal_ph": null,
+      "tm": null,
+      "t50": null,
+      "half_life": 48.0,
+      "half_life_temperature": 55.0,
+      "assay_notes": "Half-life of FAST-PETase at 55 °C, estimated from the residual-activity decay curve in Fig. 5f.",
+      "paper": {
+       "id": 8,
+       "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+       "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+       "doi": "10.1016/j.synbio.2025.10.001",
+       "year": 2026,
+       "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+       "journal": "Synthetic and Systems Biotechnology",
+       "corresponding_author_country": "China"
+      },
+      "protein_variant": {
+       "id": 1,
+       "variant_name": "FAST-PETase"
+      },
+      "created_at": "2026-08-07T06:07:32.563637Z",
+      "updated_at": "2026-10-28T17:56:11.257144Z",
+      "substrate_kind": null
+     },
+     {
+      "substrate": null,
+      "substrate_plastic_id": null,
+      "substrate_compound_id": null,
+      "id": 1104,
+      "protein_id": 3,
+      "paper_id": 538,
+      "protein_variant_id": 1,
+      "experiment_id": 24473,
+      "specific_activity": null,
+      "specific_activity_unit": null,
+      "optimal_temperature": null,
+      "optimal_ph": null,
+      "tm": null,
+      "t50": null,
+      "half_life": null,
+      "half_life_temperature": null,
+      "assay_notes": "Bioconjugate showed no significant activity loss over 12 days at 4 °C; no fitted half-life was reported.",
+      "paper": {
+       "id": 538,
+       "citation": "Kotnis, S., Gulati, S., & Sun, Q. (2025). High-efficiency PET degradation with a duo-enzyme system immobilized on magnetic nanoparticles. Biotechnology and Bioengineering, 122(6), 1397–1401. https://doi.org/10.1002/bit.28963",
+       "title": "High-Efficiency PET Degradation With a Duo-Enzyme System Immobilized on Magnetic Nanoparticles.",
+       "doi": "10.1002/bit.28963",
+       "year": 2025,
+       "authors": "Kotnis, S.; Gulati, S.; Sun, Q.",
+       "journal": "Biotechnology and Bioengineering",
+       "corresponding_author_country": "United States"
+      },
+      "protein_variant": {
+       "id": 1,
+       "variant_name": "FAST-PETase"
+      },
+      "created_at": "2026-08-29T10:11:44.018750Z",
+      "updated_at": "2026-10-28T17:56:11.752329Z",
+      "substrate_kind": null
+     }
+    ]
+   },
+   {
+    "synonyms": [],
+    "genbank_id": null,
+    "numbering_scheme_code": null,
+    "numbering_reference": null,
+    "numbering_scheme_code_proposed": "precursor",
+    "originating_paper_id": null,
+    "originating_doi": null,
+    "originating_paper_source": "derived",
+    "id": 2,
+    "accession": "PB6CC8",
+    "parent_protein_id": 3,
+    "variant_name": "ThermoPETase",
+    "variant_type": "engineered",
+    "description": "Thermostabilized PETase scaffold (S121E/D186H/R280A) used as the background for FAST-PETase.",
+    "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPESRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWHSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTAVSDFRTANCS",
+    "engineering_method": "rational protein engineering (Son et al. 2019)",
+    "performance": "Higher thermostability than WT PETase; FAST-PETase (built on this scaffold) shows 2.4- and 38-fold higher activity at 40 and 50 C.",
+    "numbering_scheme": "matches deposited reference sequence (position 1 = Met1)",
+    "numbering_offset": null,
+    "paper": {
+     "id": 2,
+     "citation": "Lu, H., Diaz, D. J., Czarnecki, N. J., Zhu, C., Kim, W., Shroff, R., Acosta, D. J., Alexander, B. R., Cole, H. O., Zhang, Y., Lynd, N. A., Ellington, A. D., & Alper, H. S. (2022). Machine learning-aided engineering of hydrolases for PET depolymerization. Nature, 604(7907), 662-667.",
+     "title": "Machine learning-aided engineering of hydrolases for PET depolymerization",
+     "doi": "10.1038/s41586-022-04599-z",
+     "year": 2022,
+     "authors": "Lu, H.; Diaz, D.J.; Czarnecki, N.J.; Zhu, C.; Kim, W.; Shroff, R.; Acosta, D.J.; Alexander, B.R.; Cole, H.O.; Zhang, Y.; Lynd, N.A.; Ellington, A.D.; Alper, H.S.",
+     "journal": "Nature",
+     "corresponding_author_country": "United States"
+    },
+    "mutations": [
+     {
+      "id": 6,
+      "protein_variant_id": 2,
+      "wild_type_residue": "S",
+      "position": 121,
+      "mutant_residue": "E",
+      "raw": "S121E",
+      "sequence_position": null
+     },
+     {
+      "id": 7,
+      "protein_variant_id": 2,
+      "wild_type_residue": "D",
+      "position": 186,
+      "mutant_residue": "H",
+      "raw": "D186H",
+      "sequence_position": null
+     }
+    ],
+    "kinetics": [],
+    "properties": []
+   }
+  ],
+  "kinetics": [
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 54,
+    "protein_id": 3,
+    "plastic_id": 16,
+    "paper_id": 127,
+    "protein_variant_id": null,
+    "experiment_id": 2304,
+    "km": 8.1,
+    "kcat": 6.5,
+    "vmax": 23.6,
+    "km_unit": "mM",
+    "kcat_unit": "s⁻¹",
+    "vmax_unit": "mM/h",
+    "experiment": {
+     "assay_result": null,
+     "assay_result_notes": null,
+     "detection_limit": null,
+     "detection_limit_unit": null,
+     "quantitation_ceiling": null,
+     "quantitation_ceiling_unit": null,
+     "id": 2304,
+     "temperature": 30.0,
+     "temperature_unit": "C",
+     "ph": null,
+     "substrate_form": "model_substrate",
+     "buffer": null,
+     "notes": "In vitro kinetics on the PET model substrate BHET using enzyme purified from the culture; not a whole-polymer assay. Michaelis-Menten fit (Supplementary Table 4).",
+     "duration": 2.0,
+     "duration_unit": "hours"
+    },
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "full_name": "Poly(ethylene terephthalate)",
+     "abbreviation": "PET",
+     "polymer_class": null,
+     "parent_id": null,
+     "smiles": null,
+     "cas_number": null
+    },
+    "paper": {
+     "id": 127,
+     "citation": "Akiyama, M., Tashiro, M., Huang, Y., Uehara, M., Kanzaki, T., Itaya, M., Kataoka, M., Miyamoto, K., & Sakakibara, Y. (2026). Cross-species gene redesign leveraging ortholog information and generative modeling. Nature Communications. https://doi.org/10.1038/s41467-026-69966-0",
+     "title": "Cross-species gene redesign leveraging ortholog information and generative modeling.",
+     "doi": "10.1038/s41467-026-69966-0",
+     "year": 2026,
+     "authors": "Akiyama, M.; Tashiro, M.; Huang, Y.; Uehara, M.; Kanzaki, T.; Itaya, M.; Kataoka, M.; Miyamoto, K.; Sakakibara, Y.",
+     "journal": "Nature Communications",
+     "corresponding_author_country": "Japan"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-09T22:39:34.370299Z",
+    "updated_at": "2026-08-09T22:39:34.370301Z",
+    "substrate_kind": null,
+    "temperature": 30.0,
+    "ph": null,
+    "substrate_form": "model_substrate",
+    "kcat_km": 802.4691358024692,
+    "kcat_km_unit": "M⁻¹·s⁻¹",
+    "kcat_normalised": 6.5,
+    "kcat_normalised_unit": "s⁻¹",
+    "km_normalised": 8.1,
+    "km_normalised_unit": "mM",
+    "kcat_km_normalised": 802.4691358024692
+   },
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 55,
+    "protein_id": 3,
+    "plastic_id": 16,
+    "paper_id": 127,
+    "protein_variant_id": null,
+    "experiment_id": 2305,
+    "km": 5.0,
+    "kcat": 20.4,
+    "vmax": 73.3,
+    "km_unit": "mM",
+    "kcat_unit": "s⁻¹",
+    "vmax_unit": "mM/h",
+    "experiment": {
+     "assay_result": null,
+     "assay_result_notes": null,
+     "detection_limit": null,
+     "detection_limit_unit": null,
+     "quantitation_ceiling": null,
+     "quantitation_ceiling_unit": null,
+     "id": 2305,
+     "temperature": 30.0,
+     "temperature_unit": "C",
+     "ph": null,
+     "substrate_form": "model_substrate",
+     "buffer": null,
+     "notes": "In vitro kinetics on the PET model substrate BHET using enzyme purified from the culture; not a whole-polymer assay. Michaelis-Menten fit (Supplementary Table 4). Protein identical to WT; the difference from the WT construct reflects expression, not enzyme identity.",
+     "duration": 2.0,
+     "duration_unit": "hours"
+    },
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "full_name": "Poly(ethylene terephthalate)",
+     "abbreviation": "PET",
+     "polymer_class": null,
+     "parent_id": null,
+     "smiles": null,
+     "cas_number": null
+    },
+    "paper": {
+     "id": 127,
+     "citation": "Akiyama, M., Tashiro, M., Huang, Y., Uehara, M., Kanzaki, T., Itaya, M., Kataoka, M., Miyamoto, K., & Sakakibara, Y. (2026). Cross-species gene redesign leveraging ortholog information and generative modeling. Nature Communications. https://doi.org/10.1038/s41467-026-69966-0",
+     "title": "Cross-species gene redesign leveraging ortholog information and generative modeling.",
+     "doi": "10.1038/s41467-026-69966-0",
+     "year": 2026,
+     "authors": "Akiyama, M.; Tashiro, M.; Huang, Y.; Uehara, M.; Kanzaki, T.; Itaya, M.; Kataoka, M.; Miyamoto, K.; Sakakibara, Y.",
+     "journal": "Nature Communications",
+     "corresponding_author_country": "Japan"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-09T22:39:34.378016Z",
+    "updated_at": "2026-08-09T22:39:34.378019Z",
+    "substrate_kind": null,
+    "temperature": 30.0,
+    "ph": null,
+    "substrate_form": "model_substrate",
+    "kcat_km": 4079.9999999999995,
+    "kcat_km_unit": "M⁻¹·s⁻¹",
+    "kcat_normalised": 20.4,
+    "kcat_normalised_unit": "s⁻¹",
+    "km_normalised": 5.0,
+    "km_normalised_unit": "mM",
+    "kcat_km_normalised": 4079.9999999999995
+   }
+  ],
+  "properties": [
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 16,
+    "protein_id": 3,
+    "paper_id": 8,
+    "protein_variant_id": null,
+    "experiment_id": 141,
+    "specific_activity": null,
+    "specific_activity_unit": null,
+    "optimal_temperature": null,
+    "optimal_ph": null,
+    "tm": 47.8,
+    "t50": null,
+    "half_life": null,
+    "half_life_temperature": null,
+    "assay_notes": "DSC melting temperature of wild-type IsPETase.",
+    "paper": {
+     "id": 8,
+     "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+     "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+     "doi": "10.1016/j.synbio.2025.10.001",
+     "year": 2026,
+     "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+     "journal": "Synthetic and Systems Biotechnology",
+     "corresponding_author_country": "China"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-07T06:07:31.922554Z",
+    "updated_at": "2026-10-28T17:56:11.220813Z",
+    "substrate_kind": null
+   },
+   {
+    "substrate": null,
+    "substrate_plastic_id": null,
+    "substrate_compound_id": null,
+    "id": 17,
+    "protein_id": 3,
+    "paper_id": 8,
+    "protein_variant_id": null,
+    "experiment_id": 142,
+    "specific_activity": null,
+    "specific_activity_unit": null,
+    "optimal_temperature": null,
+    "optimal_ph": null,
+    "tm": null,
+    "t50": null,
+    "half_life": 4.0,
+    "half_life_temperature": 40.0,
+    "assay_notes": "Half-life of wild-type IsPETase at 40 °C, estimated from the residual-activity decay curve in Fig. 5f.",
+    "paper": {
+     "id": 8,
+     "citation": "Han, Y., Xing, S., Ding, M., Wang, Y., Xiao, W., Jiang, Y., & Yao, M. (2026). Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability. Synthetic and Systems Biotechnology, 11, 419-429. https://doi.org/10.1016/j.synbio.2025.10.001",
+     "title": "Synergistic engineering PETase reveals loop-region mutations for enhanced catalytic activity and thermal stability.",
+     "doi": "10.1016/j.synbio.2025.10.001",
+     "year": 2026,
+     "authors": "Han, Y.; Xing, S.; Ding, M.; Wang, Y.; Xiao, W.; Jiang, Y.; Yao, M.",
+     "journal": "Synthetic and Systems Biotechnology",
+     "corresponding_author_country": "China"
+    },
+    "protein_variant": null,
+    "created_at": "2026-08-07T06:07:31.941278Z",
+    "updated_at": "2026-10-28T17:56:11.220813Z",
+    "substrate_kind": null
+   }
+  ],
+  "identity_sources": [
+   {
+    "source": "cited_paper",
+    "label": "taken from a paper this one cites",
+    "fields": [
+     "sequence",
+     "genbank_id"
+    ]
+   },
+   {
+    "source": "reference_record",
+    "label": "a reference record for the commercial product",
+    "fields": [
+     "sequence"
+    ]
+   }
+  ],
+  "model_input": {
+   "status": "processed",
+   "sequence": "QTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCS",
+   "length": 263,
+   "span": [
+    27,
+    290
+   ],
+   "source_length": 290,
+   "whole_sequence_fallback": false,
+   "cuts": [
+    {
+     "kind": "signal_peptide",
+     "terminus": "N",
+     "start": 0,
+     "end": 27
+    }
+   ],
+   "reasons": [],
+   "blocking_reasons": [],
+   "policy_version": "plasticdb-seqnorm/2",
+   "model_sha256": "9d13f4b8705d24eb60e086484e927d5dea8cc1cffc915af2d02ca580ecabda22",
+   "canonical_sha256": "12c59fe9dab495ee536f1c2a5fc28c66e212192096c2351044d4dc139042f5af"
+  },
+  "origin": {
+   "origin_type": "culture_collection",
+   "origin_label": "Culture-collection strain",
+   "environment_type": "industrial",
+   "environment_label": "Industrial site",
+   "country": "Japan",
+   "region": "Sakai, Osaka",
+   "note": "NBRC 110686; TISTR 2288",
+   "paper": {
+    "id": 3,
+    "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+    "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+    "doi": "10.1126/science.aad6359",
+    "year": 2016,
+    "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+    "journal": "Science",
+    "corresponding_author_country": "Japan"
+   },
+   "curated": false,
+   "source_record": null,
+   "inherited_from": null
+  },
+  "reaction_products": {
+   "pathway_steps": [],
+   "reported": [
+    {
+     "plastic": {
+      "id": 132,
+      "name": "Aromatic polyester (other)",
+      "abbreviation": null
+     },
+     "products": [
+      {
+       "compound": {
+        "id": 97,
+        "name": "1-(3-Hydroxypropyl)indole-3-carboxylic acid"
+       },
+       "measurement_types": [
+        "product_identified"
+       ],
+       "papers": [
+        {
+         "id": 871,
+         "citation": "Wang, P., Linares-Pastén, J. A., & Zhang, B. (2020). Synthesis, Molecular Docking Simulation, and Enzymatic Degradation of AB-Type Indole-Based Polyesters with Improved Thermal Properties. Biomacromolecules, 21(3), 1078–1090.",
+         "year": 2020,
+         "doi": "10.1021/acs.biomac.9b01399"
+        }
+       ]
+      },
+      {
+       "compound": {
+        "id": 98,
+        "name": "1-(4-Hydroxybutyl)indole-3-carboxylic acid"
+       },
+       "measurement_types": [
+        "product_identified"
+       ],
+       "papers": [
+        {
+         "id": 871,
+         "citation": "Wang, P., Linares-Pastén, J. A., & Zhang, B. (2020). Synthesis, Molecular Docking Simulation, and Enzymatic Degradation of AB-Type Indole-Based Polyesters with Improved Thermal Properties. Biomacromolecules, 21(3), 1078–1090.",
+         "year": 2020,
+         "doi": "10.1021/acs.biomac.9b01399"
+        }
+       ]
+      }
+     ],
+     "totals": []
+    },
+    {
+     "plastic": {
+      "id": 49,
+      "name": "PBAT",
+      "abbreviation": "PBAT"
+     },
+     "products": [
+      {
+       "compound": {
+        "id": 4,
+        "name": "Terephthalic acid"
+       },
+       "measurement_types": [
+        "monomer_released"
+       ],
+       "papers": [
+        {
+         "id": 258,
+         "citation": "Yang, Y., Min, J., Xue, T., Jiang, P., Liu, X., Peng, R., Huang, J.-W., Qu, Y., Li, X., Ma, N., Tsai, F.-C., Dai, L., Zhang, Q., Liu, Y., Chen, C.-C., & Guo, R.-T. (2023). Complete bio-degradation of poly(butylene adipate-co-terephthalate) via engineered cutinases. Nature Communications, 14. https://doi.org/10.1038/s41467-023-37374-3",
+         "year": 2023,
+         "doi": "10.1038/s41467-023-37374-3"
+        }
+       ]
+      }
+     ],
+     "totals": []
+    }
+   ]
+  }
+ }
+}

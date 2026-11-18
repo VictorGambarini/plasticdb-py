@@ -1,0 +1,505 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "synonyms": [],
+  "genbank_id": null,
+  "numbering_scheme_code": null,
+  "numbering_reference": null,
+  "numbering_scheme_code_proposed": null,
+  "originating_paper_id": null,
+  "originating_doi": null,
+  "originating_paper_source": "derived",
+  "activity_class": "degrader",
+  "originating_paper": null,
+  "id": 4271,
+  "accession": "PBDTZX",
+  "variant_name": "Dm-TA-ΔLCC",
+  "variant_type": "fusion",
+  "description": "Native N-terminal signal peptide omitted. Drosophila chymotrypsin-like 17-residue secretory signal fused to the enzyme; C-terminal His6 tag.",
+  "sequence": "MKQFAVIFALALASVSAQSNPYQRGPNPTRSALTADGPFSVATYTVSRLSVSGFGGGVIYYPTGTSLTFGGIAMSPGYTADASSLAWLGRRLASHGFVVLVINTNSRFDYPDSRASQLSAALNYLRTSSPSAVRARLDANRLAVAGHSMGGGGTLRIAEQNPSLKAAVPLTPWHTDKTFNTSVPVLIVGAEADTVAPVSQHAIPFYQNLPSTTPKVYVELDNASHTAPNSNNAAISVYTISWMKLWVDNDTRYRQFLCNVNDPALSDFRTNNRHAQHHHHHH",
+  "engineering_method": "site-directed mutagenesis",
+  "performance": null,
+  "numbering_scheme": "paper residue numbering",
+  "numbering_offset": null,
+  "structures": [
+   {
+    "discovery_source": null,
+    "discovery_evidence": null,
+    "id": 8862,
+    "pdb_id": null,
+    "method": null,
+    "resolution": null,
+    "deposition_date": null,
+    "source": "esmfold",
+    "confidence": 96.47,
+    "model_url": null,
+    "is_primary": true,
+    "protein_variant_id": 4271,
+    "sequence_check": null,
+    "sequence_identity": null,
+    "created_by": "prediction",
+    "prediction_attribution": {
+     "status": "validated",
+     "tool": "esmfold",
+     "provider": "local_hf_transformers",
+     "recipe": "plasticdb-v2/esmfold-offline-hf/1",
+     "tool_version": "facebook/esmfold_v1",
+     "model_status": "processed",
+     "fallback": false,
+     "model_sha256": "f01cc723cc853a4a52fb0b53a5ea762494458a319c16046068b8b23b04dde8b6",
+     "model_length": 276,
+     "model_span": [
+      0,
+      276
+     ],
+     "policy_version": "plasticdb-seqnorm/1",
+     "chain_id": "A",
+     "association": "predicted",
+     "schema": "plasticdb-v2/structure-prediction/2",
+     "runtime": {
+      "model": "facebook/esmfold_v1",
+      "revision": "75a3841ee059df2bf4d56688166c8fb459ddd97a",
+      "transformers": "4.57.3",
+      "torch": "2.10.0+cu128",
+      "num_recycles": 4,
+      "chunk_size": 128
+     },
+     "coverage": {
+      "match": "exact",
+      "modelled_residues": 276,
+      "missing_positions": [],
+      "missing_reason": null,
+      "full_geometry": true
+     },
+     "confidence": {
+      "source_scale": "0-1",
+      "mean_plddt_source": 0.9646959972122441,
+      "mean_plddt_0_100": 96.47,
+      "ptm_source": 0.9365954399108887
+     },
+     "auxiliary": {
+      "per_residue_confidence": true,
+      "plddt_atom37": true
+     }
+    }
+   }
+  ],
+  "primary_structure": {
+   "discovery_source": null,
+   "discovery_evidence": null,
+   "id": 8862,
+   "pdb_id": null,
+   "method": null,
+   "resolution": null,
+   "deposition_date": null,
+   "source": "esmfold",
+   "confidence": 96.47,
+   "model_url": null,
+   "is_primary": true,
+   "protein_variant_id": 4271,
+   "sequence_check": null,
+   "sequence_identity": null,
+   "created_by": "prediction",
+   "prediction_attribution": {
+    "status": "validated",
+    "tool": "esmfold",
+    "provider": "local_hf_transformers",
+    "recipe": "plasticdb-v2/esmfold-offline-hf/1",
+    "tool_version": "facebook/esmfold_v1",
+    "model_status": "processed",
+    "fallback": false,
+    "model_sha256": "f01cc723cc853a4a52fb0b53a5ea762494458a319c16046068b8b23b04dde8b6",
+    "model_length": 276,
+    "model_span": [
+     0,
+     276
+    ],
+    "policy_version": "plasticdb-seqnorm/1",
+    "chain_id": "A",
+    "association": "predicted",
+    "schema": "plasticdb-v2/structure-prediction/2",
+    "runtime": {
+     "model": "facebook/esmfold_v1",
+     "revision": "75a3841ee059df2bf4d56688166c8fb459ddd97a",
+     "transformers": "4.57.3",
+     "torch": "2.10.0+cu128",
+     "num_recycles": 4,
+     "chunk_size": 128
+    },
+    "coverage": {
+     "match": "exact",
+     "modelled_residues": 276,
+     "missing_positions": [],
+     "missing_reason": null,
+     "full_geometry": true
+    },
+    "confidence": {
+     "source_scale": "0-1",
+     "mean_plddt_source": 0.9646959972122441,
+     "mean_plddt_0_100": 96.47,
+     "ptm_source": 0.9365954399108887
+    },
+    "auxiliary": {
+     "per_residue_confidence": true,
+     "plddt_atom37": true
+    }
+   }
+  },
+  "structure_file": "esmfold-0a391baadda66fc5bdcf555fb363bc22c1a9ad781f4f57cd757700d64ba3387b.pdb",
+  "has_signal_peptide": null,
+  "signal_peptide_cleavage_site": null,
+  "parent_protein": {
+   "id": 4,
+   "accession": "PB6JCU",
+   "name": "LCC",
+   "genbank_id": "AEV21261.1",
+   "uniprot_accession": "G9BY57"
+  },
+  "paper": {
+   "id": 1598,
+   "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+   "title": "Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity.",
+   "doi": "10.1016/j.ibmb.2026.104683",
+   "year": 2027,
+   "authors": "Pirillo, V.; Barca, F.; Bruno, D.; Caramella, S.; Fontana, C.; Battistolli, M.; Catelan-Carphio, E.; Roma, D.; Casartelli, M.; Caccia, S.; Grapputo, A.; Tettamanti, G.; Molla, G.; Sandrelli, F.",
+   "journal": "Insect Biochemistry and Molecular Biology",
+   "corresponding_author_country": "Italy"
+  },
+  "mutations": [
+   {
+    "id": 39325,
+    "protein_variant_id": 4271,
+    "wild_type_residue": "F",
+    "position": 243,
+    "mutant_residue": "T",
+    "raw": "F243T",
+    "sequence_position": null
+   },
+   {
+    "id": 39326,
+    "protein_variant_id": 4271,
+    "wild_type_residue": "C",
+    "position": 292,
+    "mutant_residue": "A",
+    "raw": "C292A",
+    "sequence_position": null
+   }
+  ],
+  "kinetics": [],
+  "properties": [],
+  "plastics": [
+   {
+    "id": 16,
+    "name": "PET",
+    "full_name": "Poly(ethylene terephthalate)",
+    "abbreviation": "PET",
+    "polymer_class": null,
+    "parent_id": null,
+    "smiles": null,
+    "cas_number": null
+   }
+  ],
+  "interactions": [
+   {
+    "id": 24034,
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "actor_type": "protein_variant",
+    "result": "positive",
+    "notes": "Cell-free enzyme assay; expression host is not a plastic-degrading organism record.",
+    "strain_occurrence": null,
+    "paper_id": 1598,
+    "paper": {
+     "id": 1598,
+     "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+     "title": "Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity.",
+     "doi": "10.1016/j.ibmb.2026.104683",
+     "year": 2027,
+     "authors": "Pirillo, V.; Barca, F.; Bruno, D.; Caramella, S.; Fontana, C.; Battistolli, M.; Catelan-Carphio, E.; Roma, D.; Casartelli, M.; Caccia, S.; Grapputo, A.; Tettamanti, G.; Molla, G.; Sandrelli, F.",
+     "journal": "Insect Biochemistry and Molecular Biology",
+     "corresponding_author_country": "Italy"
+    },
+    "experiments": [
+     {
+      "id": 77954,
+      "method": "enzyme_assay",
+      "temperature": 30.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": "50 mM Na2HPO4, 100 mM NaCl",
+      "duration": 60.0,
+      "duration_unit": "seconds",
+      "substrate_form": "model_substrate",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": null,
+      "assay_result_notes": null,
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": null,
+      "initial_mass_unit": null,
+      "observations": [
+       {
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": 3,
+        "control_value": null,
+        "measurement_type": "activity_detected",
+        "value": 0.43,
+        "unit": "U/mL",
+        "text_description": "Approximately 0.43 U/mL culture medium on pNPA, digitised from Supplementary Fig. 10. Mock-supernatant activity subtracted. Error bars approximately ±0.015 U/mL."
+       }
+      ]
+     },
+     {
+      "id": 77955,
+      "method": "uv_vis",
+      "temperature": 45.0,
+      "temperature_unit": "C",
+      "ph": 7.0,
+      "buffer": "50 mM Na2HPO4, 100 mM NaCl",
+      "duration": 41.0,
+      "duration_unit": "hours",
+      "substrate_form": "model_substrate",
+      "sole_carbon_source": null,
+      "culture_medium": null,
+      "aerobicity": null,
+      "substrate_crystallinity_pct": null,
+      "substrate_mw": null,
+      "substrate_mw_unit": null,
+      "analytical_grade": null,
+      "assay_result": "positive",
+      "assay_result_notes": "Section 3.2 and Supplementary Fig. 11: soluble product accumulation exceeds mock control at 41 h.",
+      "detection_limit": null,
+      "detection_limit_unit": null,
+      "quantitation_ceiling": null,
+      "quantitation_ceiling_unit": null,
+      "initial_mass": 240.0,
+      "initial_mass_unit": "µg",
+      "observations": [
+       {
+        "time_point": 41.0,
+        "time_point_unit": "h",
+        "sd": null,
+        "n": 2,
+        "control_value": null,
+        "measurement_type": "monomer_released",
+        "value": 387.0,
+        "unit": "µM",
+        "text_description": "387 ± 32 µM soluble PET degradation products after 41 h (Section 3.2; Supplementary Fig. 11B); UV measurement is a combined aromatic-product concentration."
+       }
+      ]
+     }
+    ],
+    "indirect_source_label": null,
+    "indirect_source_url": null,
+    "expression_hosts": [],
+    "strain_designation": null
+   }
+  ],
+  "degradation_links": [
+   {
+    "plastic": {
+     "id": 16,
+     "name": "PET",
+     "abbreviation": "PET"
+    },
+    "result": "positive",
+    "methods": [
+     "enzyme_assay",
+     "hplc"
+    ],
+    "positive_count": 1,
+    "inconclusive_count": 0,
+    "negative_count": 0,
+    "positive_papers": 1,
+    "inconclusive_papers": 0,
+    "negative_papers": 0,
+    "paper_count": 1,
+    "result_polarity": "positive"
+   }
+  ],
+  "identity_sources": [],
+  "updated_at": "2026-11-13T14:19:53.370162Z",
+  "model_input": {
+   "status": "processed",
+   "sequence": "MKQFAVIFALALASVSAQSNPYQRGPNPTRSALTADGPFSVATYTVSRLSVSGFGGGVIYYPTGTSLTFGGIAMSPGYTADASSLAWLGRRLASHGFVVLVINTNSRFDYPDSRASQLSAALNYLRTSSPSAVRARLDANRLAVAGHSMGGGGTLRIAEQNPSLKAAVPLTPWHTDKTFNTSVPVLIVGAEADTVAPVSQHAIPFYQNLPSTTPKVYVELDNASHTAPNSNNAAISVYTISWMKLWVDNDTRYRQFLCNVNDPALSDFRTNNRHAQ",
+   "length": 276,
+   "span": [
+    0,
+    276
+   ],
+   "source_length": 282,
+   "whole_sequence_fallback": false,
+   "cuts": [
+    {
+     "kind": "purification_tag",
+     "terminus": "C",
+     "start": 276,
+     "end": 282
+    }
+   ],
+   "reasons": [],
+   "blocking_reasons": [],
+   "policy_version": "plasticdb-seqnorm/1",
+   "model_sha256": "f01cc723cc853a4a52fb0b53a5ea762494458a319c16046068b8b23b04dde8b6",
+   "canonical_sha256": "214782a2fe4d5ab53644ed99e51f2b7011873e31b72230103cbff2f58b8d0c24"
+  },
+  "origin": {
+   "origin_type": "metagenome",
+   "origin_label": "Metagenome",
+   "environment_type": "compost",
+   "environment_label": "Compost",
+   "country": "Japan",
+   "region": "Osaka",
+   "note": "environment from GenBank AEV21261.1 source feature",
+   "paper": {
+    "id": 143,
+    "citation": "Sulaiman, S., Yamato, S., Kanaya, E., Kim, J.-J., Koga, Y., Takano, K., & Kanaya, S. (2012). Isolation of a novel cutinase homolog with polyethylene terephthalate-degrading activity from leaf-branch compost by using a metagenomic approach. Applied and Environmental Microbiology, 78(5), 1556-1562. https://doi.org/10.1128/AEM.06725-11",
+    "title": "Isolation of a Novel Cutinase Homolog with Polyethylene Terephthalate-Degrading Activity from Leaf-Branch Compost by Using a Metagenomic Approach",
+    "doi": "10.1128/aem.06725-11",
+    "year": 2012,
+    "authors": "Sulaiman, S.; Yamato, S.; Kanaya, E.; Kim, J.J.; Koga, Y.; Takano, K.; Kanaya, S.",
+    "journal": "Applied and Environmental Microbiology",
+    "corresponding_author_country": "Japan"
+   },
+   "curated": false,
+   "source_record": null,
+   "inherited_from": "PB6JCU"
+  },
+  "reaction_products": {
+   "pathway_steps": [],
+   "reported": [
+    {
+     "plastic": {
+      "id": 16,
+      "name": "PET",
+      "abbreviation": "PET"
+     },
+     "products": [
+      {
+       "compound": {
+        "id": 3,
+        "name": "Mono(2-hydroxyethyl) terephthalate"
+       },
+       "measurement_types": [
+        "monomer_released"
+       ],
+       "papers": [
+        {
+         "id": 1598,
+         "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+         "year": 2027,
+         "doi": "10.1016/j.ibmb.2026.104683"
+        }
+       ]
+      },
+      {
+       "compound": {
+        "id": 4,
+        "name": "Terephthalic acid"
+       },
+       "measurement_types": [
+        "monomer_released",
+        "product_identified"
+       ],
+       "papers": [
+        {
+         "id": 1598,
+         "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+         "year": 2027,
+         "doi": "10.1016/j.ibmb.2026.104683"
+        }
+       ]
+      }
+     ],
+     "totals": [
+      {
+       "compounds": [
+        {
+         "id": 2,
+         "name": "Bis(2-hydroxyethyl) terephthalate"
+        },
+        {
+         "id": 3,
+         "name": "Mono(2-hydroxyethyl) terephthalate"
+        }
+       ],
+       "measurement_types": [
+        "monomer_released"
+       ],
+       "papers": [
+        {
+         "id": 1598,
+         "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+         "year": 2027,
+         "doi": "10.1016/j.ibmb.2026.104683"
+        }
+       ],
+       "readings": [
+        {
+         "observation_id": 130552,
+         "value": 387.0,
+         "unit": "µM",
+         "paper_id": 1598
+        }
+       ]
+      },
+      {
+       "compounds": [
+        {
+         "id": 3,
+         "name": "Mono(2-hydroxyethyl) terephthalate"
+        },
+        {
+         "id": 4,
+         "name": "Terephthalic acid"
+        }
+       ],
+       "measurement_types": [
+        "monomer_released"
+       ],
+       "papers": [
+        {
+         "id": 1598,
+         "citation": "Pirillo, V., Barca, F., Bruno, D., Caramella, S., Fontana, C., Battistolli, M., Catelan-Carphio, E., Roma, D., Casartelli, M., Caccia, S., Grapputo, A., Tettamanti, G., Molla, G., Sandrelli, F. (2027). Functional expression of engineered IsPETase and LCC variants in Drosophila melanogaster reveals host tolerance and differential catalytic activity. Insect Biochemistry and Molecular Biology, 196, 104683.",
+         "year": 2027,
+         "doi": "10.1016/j.ibmb.2026.104683"
+        }
+       ],
+       "readings": [
+        {
+         "observation_id": 130557,
+         "value": 11.0,
+         "unit": "µM",
+         "paper_id": 1598
+        },
+        {
+         "observation_id": 130558,
+         "value": 43.0,
+         "unit": "µM",
+         "paper_id": 1598
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,162 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 2,
+  "items": [
+   {
+    "id": 3612,
+    "name": "[Candida] sp.",
+    "tax_id": 1853550,
+    "accession": "PBCZU2",
+    "taxonomy_status": "resolved",
+    "taxonomy_cause": null,
+    "taxonomy_note": null,
+    "growth_temp_opt": null,
+    "oxygen_requirement": null,
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 31,
+       "name": "PHB",
+       "abbreviation": "PHB"
+      },
+      "result": "positive",
+      "methods": [
+       "clear_zone"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     },
+     {
+      "plastic": {
+       "id": 22,
+       "name": "PLA Blend",
+       "abbreviation": "PLA Blend"
+      },
+      "result": "positive",
+      "methods": [
+       "clear_zone"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     }
+    ],
+    "paper": {
+     "id": 978,
+     "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+     "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+     "doi": "10.1007/s11274-018-2483-y",
+     "year": 2018,
+     "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+     "journal": "World Journal of Microbiology and Biotechnology",
+     "corresponding_author_country": "Slovakia"
+    },
+    "papers": [
+     {
+      "id": 978,
+      "citation": "Jeszeova, L., Puskarova, A., Buckova, M., Krakova, L., Grivalsky, T., Danko, M., Mosnackova, K., Chmela, S., & Pangallo, D. (2018). Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests. World Journal of Microbiology and Biotechnology, 34(7), 101.",
+      "title": "Microbial communities responsible for the degradation of poly(lactic acid)/poly(3-hydroxybutyrate) blend mulches in soil burial respirometric tests.",
+      "doi": "10.1007/s11274-018-2483-y",
+      "year": 2018,
+      "authors": "Jeszeova, L.; Puskarova, A.; Buckova, M.; Krakova, L.; Grivalsky, T.; Danko, M.; Mosnackova, K.; Chmela, S.; Pangallo, D.",
+      "journal": "World Journal of Microbiology and Biotechnology",
+      "corresponding_author_country": "Slovakia"
+     }
+    ],
+    "assay_temp_min": null,
+    "assay_temp_max": null,
+    "environments": [
+     "soil"
+    ],
+    "locations": [
+     "Slovakia, South Slovakia (agricultural land near the Danube River)"
+    ],
+    "strain_designations": [
+     "SSP FSS7-f"
+    ],
+    "updated_at": "2026-10-18T03:28:17.062481Z"
+   },
+   {
+    "id": 3907,
+    "name": "[Ulocladium] sp.",
+    "tax_id": 1914427,
+    "accession": "PBB2FK",
+    "taxonomy_status": "resolved",
+    "taxonomy_cause": null,
+    "taxonomy_note": null,
+    "growth_temp_opt": null,
+    "oxygen_requirement": null,
+    "degradation_links": [
+     {
+      "plastic": {
+       "id": 25,
+       "name": "PC",
+       "abbreviation": "PC"
+      },
+      "result": "positive",
+      "methods": [
+       "afm",
+       "clear_zone"
+      ],
+      "positive_count": 1,
+      "inconclusive_count": 0,
+      "negative_count": 0,
+      "positive_papers": 1,
+      "inconclusive_papers": 0,
+      "negative_papers": 0,
+      "paper_count": 1,
+      "result_polarity": "positive"
+     }
+    ],
+    "paper": {
+     "id": 1264,
+     "citation": "Arefian, M., Zia, M., Tahmourespour, A., & Bayat, M. (2013). Polycarbonate biodegradation by isolated molds using clear-zone and atomic force microscopic methods. International Journal of Environmental Science and Technology, 10, 1319-1324.",
+     "title": "Polycarbonate biodegradation by isolated molds using clear-zone and atomic force microscopic methods",
+     "doi": "10.1007/s13762-013-0359-0",
+     "year": 2013,
+     "authors": "Arefian, M.; Zia, M.; Tahmourespour, A.; Bayat, M.",
+     "journal": "International Journal of Environmental Science and Technology",
+     "corresponding_author_country": "Iran"
+    },
+    "papers": [
+     {
+      "id": 1264,
+      "citation": "Arefian, M., Zia, M., Tahmourespour, A., & Bayat, M. (2013). Polycarbonate biodegradation by isolated molds using clear-zone and atomic force microscopic methods. International Journal of Environmental Science and Technology, 10, 1319-1324.",
+      "title": "Polycarbonate biodegradation by isolated molds using clear-zone and atomic force microscopic methods",
+      "doi": "10.1007/s13762-013-0359-0",
+      "year": 2013,
+      "authors": "Arefian, M.; Zia, M.; Tahmourespour, A.; Bayat, M.",
+      "journal": "International Journal of Environmental Science and Technology",
+      "corresponding_author_country": "Iran"
+     }
+    ],
+    "assay_temp_min": 35.0,
+    "assay_temp_max": 35.0,
+    "environments": [
+     "soil"
+    ],
+    "locations": [
+     "Iran, Isfahan"
+    ],
+    "strain_designations": [],
+    "updated_at": "2026-10-18T03:29:55.604995Z"
+   }
+  ]
+ }
+}

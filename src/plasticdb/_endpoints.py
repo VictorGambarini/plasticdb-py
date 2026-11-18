@@ -21,6 +21,9 @@ class Endpoint:
     """An API operation: method plus a path template relative to ``/api/v1``.
 
     ``pinnable`` operations receive the client's ``release`` as ``?release=``.
+    ``live_only`` operations take ``release`` but answer only the current one
+    (a past release is a 409 ``live_only``); they are still pinnable, so a pinned
+    client gets that error instead of a silently live answer.
     ``in_contract=False`` marks the few calls outside the SDK contract (they are
     still listed, so the contract test can see them).
     ``raw_params`` are path parameters that may contain ``/``.
@@ -30,11 +33,14 @@ class Endpoint:
     method: str
     path: str
     pinnable: bool = True
+    live_only: bool = False
     in_contract: bool = True
     raw_params: tuple[str, ...] = ()
     root: bool = False
 
     def __post_init__(self) -> None:
+        if self.live_only and not self.pinnable:
+            raise ValueError(f"{self.path}: live_only implies pinnable")
         REGISTRY.append(self)
 
     @property

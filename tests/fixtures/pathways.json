@@ -1,0 +1,19 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 1,
+  "items": [
+   {
+    "id": 1,
+    "plastic_id": 16,
+    "plastic_name": "PET",
+    "name": "PET degradation (Pseudideonella sakaiensis 201-F6)",
+    "step_count": 10
+   }
+  ]
+ }
+}

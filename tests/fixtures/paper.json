@@ -1,0 +1,41 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "id": 1262,
+  "citation": "Shao, C., Shen, X., Long, J., Cui, Z., Chen, B., & Tan, T. (2027). Deep learning-driven synergistic engineering of PET hydrolase for post-consumer PET depolymerization. Synthetic and Systems Biotechnology, 15, 170-180. https://doi.org/10.1016/j.synbio.2026.06.003",
+  "title": "Deep Learning-driven synergistic engineering of PET hydrolase for post-consumer PET depolymerization.",
+  "doi": "10.1016/j.synbio.2026.06.003",
+  "year": 2027,
+  "authors": "Shao, C.; Shen, X.; Long, J.; Cui, Z.; Chen, B.; Tan, T.",
+  "journal": "Synthetic and Systems Biotechnology",
+  "corresponding_author_country": "China",
+  "updated_at": "2026-10-15T20:39:12.794792Z",
+  "pmid": "42433475",
+  "microorganisms": [],
+  "proteins": [],
+  "protein_variants": [
+   {
+    "id": 2114,
+    "parent_protein_id": 511,
+    "parent_protein_accession": "PBHHTE",
+    "variant_name": "NI",
+    "variant_type": "engineered",
+    "engineering_method": "site-directed mutagenesis of ThcCut1 (performed in the authors' earlier work, ref. 43; not repeated here)",
+    "performance": "Specific activity 370 umol TPAeq h-1 mg-1 on Gf-PET film (0.5 mg/g, 70 C, 12 h); Tm 84.90 C; 63.0% conversion of pc-PET powder and 35.8% of untreated pc-PET film at 24 h."
+   },
+   {
+    "id": 2115,
+    "parent_protein_id": 511,
+    "parent_protein_accession": "PBHHTE",
+    "variant_name": "NI E65K",
+    "variant_type": "engineered",
+    "engineering_method": "deep-learning guided design (EITLEM-Kinetics kinetic-parameter prediction with FoldX ddG filtering), then site-directed mutagenesis",
+    "performance": "1.76-fold the total Gf-PET depolymerization product yield of NI; dTm +2.20 C (Tm 87.10 C)."
+   }
+  ]
+ }
+}

@@ -1,0 +1,44 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "total": 1,
+  "items": [
+   {
+    "activity_class": "untested",
+    "id": 1533,
+    "kind": "wild_type",
+    "variant_type": null,
+    "parent_accession": null,
+    "plasticdb_id": "01587",
+    "accession": "PBKFNU",
+    "name": "AaCut10",
+    "genbank_id": "WVE62556.1",
+    "has_signal_peptide": true,
+    "uniprot_accession": "A0A177DYN9",
+    "pdb_id": null,
+    "ec_number": "3.1.1.74",
+    "source_microorganism": null,
+    "degradation_links": [],
+    "paper": {
+     "id": 1115,
+     "citation": "Lang, F., Fei, F., Sun, C., & Wu, S. (2025). Highly efficient degradation of polybutylene succinate (PBS) and polycaprolactone (PCL) by a recombinant marine fungal cutinase. Applied and Environmental Microbiology, 91(9), e00833-25. https://doi.org/10.1128/aem.00833-25",
+     "title": "Highly efficient degradation of polybutylene succinate (PBS) and polycaprolactone (PCL) by a recombinant marine fungal cutinase.",
+     "doi": "10.1128/aem.00833-25",
+     "year": 2025,
+     "authors": "Lang, F.; Fei, F.; Sun, C.; Wu, S.",
+     "journal": "Applied and Environmental Microbiology",
+     "corresponding_author_country": "China"
+    },
+    "papers": [],
+    "year": null,
+    "best_kcat_km": null,
+    "best_kcat_km_unit": null,
+    "updated_at": null
+   }
+  ]
+ }
+}

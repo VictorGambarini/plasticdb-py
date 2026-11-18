@@ -1,0 +1,12 @@
+{
+ "status": 301,
+ "headers": {
+  "content-type": "application/json",
+  "location": "/api/v1/variants/PBTNBA",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "accession": "PBTNBA",
+  "location": "/api/v1/variants/PBTNBA"
+ }
+}

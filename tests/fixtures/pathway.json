@@ -1,0 +1,88 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "id": 1,
+  "plastic_id": 16,
+  "name": "PET degradation (Pseudideonella sakaiensis 201-F6)",
+  "organism_id": 2,
+  "description": "The PET degradation pathway of Pseudideonella sakaiensis 201-F6 (formerly Ideonella sakaiensis). PETase and MHETase act outside the cell, terephthalate is imported, and the aromatic ring is opened in the cytoplasm.",
+  "steps": [
+   {
+    "id": 1,
+    "pathway_id": 1,
+    "step_order": 1,
+    "substrate_compound_id": 1,
+    "product_compound_id": 3,
+    "protein_id": null,
+    "description": "The principal PETase reaction.",
+    "evidence": null,
+    "enzyme_name": "PETase",
+    "enzyme_accessions": [
+     "WP_054022242.1"
+    ],
+    "ec_number": "3.1.1.101",
+    "substrate_compartment": "extracellular",
+    "product_compartment": "extracellular",
+    "step_type": "conversion",
+    "substrate_compound": {
+     "id": 1,
+     "name": "Polyethylene terephthalate",
+     "formula": "(C10H8O4)n",
+     "smiles": null,
+     "description": "The polymer substrate.",
+     "is_additive": null
+    },
+    "product_compound": {
+     "id": 3,
+     "name": "Mono(2-hydroxyethyl) terephthalate",
+     "formula": "C10H10O5",
+     "smiles": null,
+     "description": "The principal PETase product and the MHETase substrate.",
+     "is_additive": null
+    },
+    "protein": null
+   },
+   {
+    "id": 2,
+    "pathway_id": 1,
+    "step_order": 2,
+    "substrate_compound_id": 1,
+    "product_compound_id": 2,
+    "protein_id": null,
+    "description": "Minor PETase product.",
+    "evidence": null,
+    "enzyme_name": "PETase",
+    "enzyme_accessions": [
+     "WP_054022242.1"
+    ],
+    "ec_number": "3.1.1.101",
+    "substrate_compartment": "extracellular",
+    "product_compartment": "extracellular",
+    "step_type": "conversion",
+    "substrate_compound": {
+     "id": 1,
+     "name": "Polyethylene terephthalate",
+     "formula": "(C10H8O4)n",
+     "smiles": null,
+     "description": "The polymer substrate.",
+     "is_additive": null
+    },
+    "product_compound": {
+     "id": 2,
+     "name": "Bis(2-hydroxyethyl) terephthalate",
+     "formula": "C12H14O6",
+     "smiles": null,
+     "description": "Minor PETase product; hydrolysed onward to MHET.",
+     "is_additive": null
+    },
+    "protein": null
+   }
+  ],
+  "created_at": "2026-07-28T01:36:54.867034Z",
+  "updated_at": "2026-07-28T01:36:54.867044Z"
+ }
+}

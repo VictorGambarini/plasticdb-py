@@ -18,10 +18,13 @@ __all__ = [
     "APITimeoutError",
     "AuthenticationError",
     "BadRequestError",
+    "ChecksumError",
     "ConflictError",
+    "EngineeredVariantError",
     "GoneError",
     "LiveOnlyError",
     "MergedError",
+    "MergedRecordWarning",
     "NotFoundError",
     "PermissionDenied",
     "PlasticDBError",
@@ -120,6 +123,27 @@ class MergedError(GoneError):
         self.kind = kind
 
 
+class EngineeredVariantError(PlasticDBError):
+    """The accession names an engineered variant, not a wild-type protein.
+
+    The server answers ``/proteins/{accession}`` for a variant with a 301 to
+    ``/variants/{accession}``. :meth:`Proteins.get` follows it and returns the
+    :class:`~plasticdb.models.Variant`; the per-protein sub-collections raise this,
+    because variants have none. ``accession`` is the variant, ``location`` its path.
+    """
+
+    def __init__(
+        self, message: str, *, accession: str, location: str | None = None, **kwargs: Any
+    ) -> None:
+        super().__init__(message, **kwargs)
+        self.accession = accession
+        self.location = location
+
+
+class MergedRecordWarning(UserWarning):
+    """Issued when ``get(..., follow_merges=True)`` returns a merge survivor."""
+
+
 class ConflictError(PlasticDBError):
     """409."""
 
@@ -147,7 +171,24 @@ class ServerError(PlasticDBError):
 
 
 class ServiceUnavailableError(ServerError):
-    """503: the server, or a service it depends on, is temporarily unavailable."""
+    """503: the server, or a service it depends on, is temporarily unavailable.
+
+    ``retry_after`` is the server's ``Retry-After`` in seconds, when it sent one
+    (``dataset.zip`` answers 120 while the archive is being built).
+    """
+
+    def __init__(self, message: str, *, retry_after: float | None = None, **kwargs: Any) -> None:
+        super().__init__(message, **kwargs)
+        self.retry_after = retry_after
+
+
+class ChecksumError(PlasticDBError):
+    """A downloaded file did not match the SHA-256 the server published for it."""
+
+    def __init__(self, message: str, *, expected: str, actual: str, **kwargs: Any) -> None:
+        super().__init__(message, **kwargs)
+        self.expected = expected
+        self.actual = actual
 
 
 class ReleaseError(PlasticDBError):

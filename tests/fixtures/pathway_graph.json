@@ -1,0 +1,67 @@
+{
+ "status": 200,
+ "headers": {
+  "content-type": "application/json",
+  "x-plasticdb-release-source": "live"
+ },
+ "body": {
+  "nodes": [
+   {
+    "data": {
+     "id": "compartment-extracellular",
+     "label": "Extracellular",
+     "type": "compartment"
+    }
+   },
+   {
+    "data": {
+     "id": "compartment-cytoplasm",
+     "label": "Cytoplasm",
+     "type": "compartment"
+    }
+   }
+  ],
+  "edges": [
+   {
+    "data": {
+     "id": "step-1",
+     "source": "compound-1@extracellular",
+     "target": "compound-3@extracellular",
+     "label": "PETase",
+     "step_order": 1,
+     "step_type": "conversion",
+     "accessions": [
+      "WP_054022242.1"
+     ],
+     "protein_id": null,
+     "ec_number": "3.1.1.101",
+     "ec_numbers": [
+      "3.1.1.101"
+     ],
+     "description": "The principal PETase reaction.",
+     "evidence": ""
+    }
+   },
+   {
+    "data": {
+     "id": "step-2",
+     "source": "compound-1@extracellular",
+     "target": "compound-2@extracellular",
+     "label": "PETase",
+     "step_order": 2,
+     "step_type": "conversion",
+     "accessions": [
+      "WP_054022242.1"
+     ],
+     "protein_id": null,
+     "ec_number": "3.1.1.101",
+     "ec_numbers": [
+      "3.1.1.101"
+     ],
+     "description": "Minor PETase product.",
+     "evidence": ""
+    }
+   }
+  ]
+ }
+}
