@@ -62,7 +62,7 @@ def test_proteins_list_items(api: respx.MockRouter, client: plasticdb.Client) ->
 
 def test_protein_get(api: respx.MockRouter, client: plasticdb.Client) -> None:
     route = api.get("/proteins/PBFCTW").mock(return_value=reply("protein"))
-    protein = client.proteins.get("PBFCTW")
+    protein = client.proteins.get("PBFCTW", view="full")
     assert isinstance(protein, Protein)
     assert protein.name == "PETase"
     assert protein.sequence and protein.sequence.startswith("MNFPRASRLMQ")
@@ -365,6 +365,8 @@ def test_every_record_fixture_validates() -> None:
 
     singles: dict[str, type[m.PlasticDBModel]] = {
         "protein": m.Protein,
+        "protein_summary": m.Protein,
+        "evidence_interaction": m.InteractionRecord,
         "variant": m.Variant,
         "microorganism": m.Microorganism,
         "plastic": m.Plastic,
@@ -394,6 +396,10 @@ def test_every_record_fixture_validates() -> None:
         "protein_kinetics": m.Kinetics,
         "protein_properties": m.Properties,
         "protein_variants": m.VariantSummary,
+        "proteins_sequence": m.ProteinSummary,
+        "evidence_interactions": m.InteractionRecord,
+        "evidence_experiments": m.ExperimentRecord,
+        "evidence_observations": m.ObservationRecord,
     }
     for name, model in lists.items():
         items = fixture(name)["body"]["items"]

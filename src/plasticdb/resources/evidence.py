@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import builtins
-from typing import Any
+from typing import Any, Generic, TypeVar
 
+from pydantic import BaseModel
 from typing_extensions import Unpack
 
 from .._endpoints import Endpoint
@@ -12,9 +13,12 @@ from .._pagination import Collection, InteractionCollection
 from ..models import (
     BindingAssay,
     Construct,
+    ExperimentRecord,
     GroupedSearch,
     Interaction,
+    InteractionRecord,
     Kinetics,
+    ObservationRecord,
     Pathway,
     PathwayGraph,
     PathwaySummary,
@@ -28,12 +32,22 @@ from ..models import (
 from ._base import Resource
 from ._filters import (
     BindingAssayFilters,
+    EvidenceLevel,
+    EvidenceListFilters,
     EvidenceScope,
-    InteractionKind,
+    ExperimentListFilters,
     MaterialFilters,
+    ObservationListFilters,
     RowEvidenceScope,
     check,
 )
+
+_INTERACTION_LIST = Endpoint("GET", "/interactions")
+_INTERACTION_GET = Endpoint("GET", "/interactions/{record_id}")
+_EXPERIMENT_LIST = Endpoint("GET", "/experiments")
+_EXPERIMENT_GET = Endpoint("GET", "/experiments/{record_id}")
+_OBSERVATION_LIST = Endpoint("GET", "/observations")
+_OBSERVATION_GET = Endpoint("GET", "/observations/{record_id}")
 
 _BINDING_LIST = Endpoint("GET", "/binding-assays")
 _BINDING_GET = Endpoint("GET", "/binding-assays/{assay_id}")
@@ -59,35 +73,142 @@ _STATS_CHARTS = Endpoint("GET", "/stats/charts", live_only=True)
 _STATS_COUNTRY = Endpoint("GET", "/stats/by-country", live_only=True)
 
 
-class Evidence(Resource):
-    """The evidence behind the catalogue.
+R = TypeVar("R", bound=BaseModel)
 
-    Evidence is organised interaction -> experiment -> observation (see
-    :class:`~plasticdb.models.Interaction`). Interactions are listed per protein
-    (and embedded in every organism, plastic and paper record);
-    ``interactions(...).to_pandas(level="observation")`` gives one row per
-    measured value. The material tables describe what was assayed: constructs
-    (sequences as expressed), preparations (host, purification, tags) and
-    binding assays.
+
+class _Records(Resource, Generic[R]):
+    """Shared plumbing of the three flat evidence lists."""
+
+    _list: Endpoint
+    _get: Endpoint
+    _model: type[R]
+    _schema: Any
+    _name: str
+
+    def _collection(
+        self, filters: dict[str, Any], page_size: int | None, limit: int | None
+    ) -> Collection[R]:
+        params = check(filters, self._schema, f"evidence.{self._name}.list")
+        return Collection(
+            self._client,
+            self._list,
+            self._model,
+            params=params,
+            page_size=page_size,
+            limit=limit,
+        )
+
+    def get(self, record_id: int) -> R:
+        """One record by id (``NotFoundError`` when it does not exist or is not public)."""
+        data = self._client._request(self._get, record_id=record_id).data
+        return self._model.model_validate(data)
+
+
+class InteractionRecords(_Records[InteractionRecord]):
+    """``client.evidence.interactions``: every public interaction as a flat record.
+
+    ``.list(**filters)`` pages ``GET /interactions`` (ordered by id; 500 a page at
+    most); ``.get(id)`` reads one. Called with a protein accession,
+    ``client.evidence.interactions("PBFCTW")`` is the older per-protein call
+    (:meth:`Proteins.interactions`: nested experiments and observations).
     """
 
-    def interactions(
+    _list = _INTERACTION_LIST
+    _get = _INTERACTION_GET
+    _model = InteractionRecord
+    _schema = EvidenceListFilters
+    _name = "interactions"
+
+    def list(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[EvidenceListFilters],
+    ) -> Collection[InteractionRecord]:
+        """Interactions matching the filters, as flat records (pinnable)."""
+        return self._collection(dict(filters), page_size, limit)
+
+    def __call__(
         self,
         protein: str,
         *,
-        kind: InteractionKind = "all",
+        evidence_level: EvidenceLevel | None = None,
         include_sequenceless: bool = False,
         page_size: int | None = None,
         limit: int | None = None,
+        kind: EvidenceLevel | None = None,
     ) -> InteractionCollection[Interaction]:
         """A protein's interactions, each with its experiments and observations."""
         return self._client.proteins.interactions(
             protein,
-            kind=kind,
+            evidence_level=evidence_level,
             include_sequenceless=include_sequenceless,
             page_size=page_size,
             limit=limit,
+            kind=kind,
         )
+
+
+class ExperimentRecords(_Records[ExperimentRecord]):
+    """``client.evidence.experiments``: ``.list(**filters)`` and ``.get(id)``."""
+
+    _list = _EXPERIMENT_LIST
+    _get = _EXPERIMENT_GET
+    _model = ExperimentRecord
+    _schema = ExperimentListFilters
+    _name = "experiments"
+
+    def list(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[ExperimentListFilters],
+    ) -> Collection[ExperimentRecord]:
+        """Experiments matching the filters (``interaction_id`` narrows to one interaction)."""
+        return self._collection(dict(filters), page_size, limit)
+
+
+class ObservationRecords(_Records[ObservationRecord]):
+    """``client.evidence.observations``: ``.list(**filters)`` and ``.get(id)``."""
+
+    _list = _OBSERVATION_LIST
+    _get = _OBSERVATION_GET
+    _model = ObservationRecord
+    _schema = ObservationListFilters
+    _name = "observations"
+
+    def list(
+        self,
+        *,
+        page_size: int | None = None,
+        limit: int | None = None,
+        **filters: Unpack[ObservationListFilters],
+    ) -> Collection[ObservationRecord]:
+        """Measured values matching the filters (``interaction_id``, ``experiment_id``)."""
+        return self._collection(dict(filters), page_size, limit)
+
+
+class Evidence(Resource):
+    """The evidence behind the catalogue.
+
+    Evidence is organised interaction -> experiment -> observation (see
+    :class:`~plasticdb.models.Interaction`). Three namespaces list it flat, across
+    the whole database: ``evidence.interactions``, ``evidence.experiments`` and
+    ``evidence.observations`` (each ``.list(**filters)`` and ``.get(id)``; records
+    link by ``interaction_id`` / ``experiment_id``). ``evidence.interactions(protein)``
+    is the per-protein call with the children nested;
+    ``.to_pandas(level="observation")`` of it gives one row per measured value.
+    The material tables describe what was assayed: constructs (sequences as
+    expressed), preparations (host, purification, tags) and binding assays.
+    """
+
+    def __init__(self, client: Any) -> None:
+        super().__init__(client)
+        self.interactions = InteractionRecords(client)
+        self.experiments = ExperimentRecords(client)
+        self.observations = ObservationRecords(client)
 
     def kinetics(
         self, protein: str, *, page_size: int | None = None, limit: int | None = None

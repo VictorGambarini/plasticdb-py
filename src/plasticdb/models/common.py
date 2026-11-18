@@ -300,3 +300,89 @@ class ProteinOrigin(PlasticDBModel):
     note: str | None = None
     paper: PaperRef | None = None
     source_record: dict[str, Any] | None = None
+
+
+# ── flat evidence records (GET /interactions, /experiments, /observations) ───
+
+
+class InteractionRecord(PlasticDBModel):
+    """One interaction as a flat row (the release table's columns), without its children.
+
+    ``actor_type`` says which of the actor columns are set (a microorganism strain,
+    a protein or an engineered variant). Experiments and observations are listed
+    separately (``client.evidence.experiments``, ``.observations``).
+    """
+
+    id: int
+    paper_id: int
+    plastic_id: int
+    actor_type: str
+    result: str
+    experimental_system: str
+    credited_microorganism_id: int | None = None
+    microorganism_id: int | None = None
+    microorganism_accession: str | None = None
+    protein_id: int | None = None
+    protein_accession: str | None = None
+    protein_variant_id: int | None = None
+    protein_variant_accession: str | None = None
+    strain_occurrence_id: int | None = None
+    strain_designation: str | None = None
+    genetic_background: str | None = None
+    enzyme_preparation: str | None = None
+    enzyme_production_context: str | None = None
+
+
+class ExperimentRecord(PlasticDBModel):
+    """One experiment as a flat row; ``interaction_id`` points at its interaction."""
+
+    id: int
+    interaction_id: int
+    paper_id: int
+    method: str | None = None
+    method_category: str | None = None
+    assay_result: str | None = None
+    assay_result_notes: str | None = None
+    substrate_form: str | None = None
+    substrate_mw: float | None = None
+    substrate_mw_unit: str | None = None
+    substrate_crystallinity_pct: float | None = None
+    analytical_grade: bool | None = None
+    initial_mass: float | None = None
+    initial_mass_unit: str | None = None
+    temperature: float | None = None
+    temperature_unit: str | None = None
+    ph: float | None = None
+    buffer: str | None = None
+    culture_medium: str | None = None
+    aerobicity: str | None = None
+    sole_carbon_source: bool | None = None
+    duration: float | None = None
+    duration_unit: str | None = None
+    detection_limit: float | None = None
+    detection_limit_unit: str | None = None
+    quantitation_ceiling: float | None = None
+    quantitation_ceiling_unit: str | None = None
+    additional_conditions: Any = None
+    notes: str | None = None
+
+
+class ObservationRecord(PlasticDBModel):
+    """One measured value as a flat row; ``product_compound_ids`` is a list."""
+
+    id: int
+    experiment_id: int
+    interaction_id: int
+    paper_id: int
+    measurement_type: str | None = None
+    measurement_category: str | None = None
+    value: float | None = None
+    unit: str | None = None
+    sd: float | None = None
+    n: int | None = None
+    control_value: float | None = None
+    time_point: float | None = None
+    time_point_unit: str | None = None
+    products_summed: bool | None = None
+    product_compound_ids: list[int] = Field(default_factory=list)
+    text_description: str | None = None

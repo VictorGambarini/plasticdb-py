@@ -1,0 +1,1165 @@
+{
+  "status": 200,
+  "headers": {
+    "content-type": "application/json",
+    "x-plasticdb-release-source": "live"
+  },
+  "body": {
+    "activity_class": "degrader",
+    "id": 3,
+    "kind": "wild_type",
+    "variant_type": null,
+    "parent_accession": null,
+    "plasticdb_id": "00003",
+    "accession": "PBFCTW",
+    "name": "PETase",
+    "genbank_id": "GAP38373.1",
+    "has_signal_peptide": true,
+    "uniprot_accession": "A0A0K8P6T7",
+    "pdb_id": "6EQE",
+    "ec_number": null,
+    "source_microorganism": {
+      "id": 2,
+      "name": "Pseudideonella sakaiensis",
+      "tax_id": 1547922,
+      "accession": "PB3E8R",
+      "taxonomy_status": "resolved",
+      "taxonomy_cause": null,
+      "taxonomy_note": null,
+      "growth_temp_opt": null,
+      "oxygen_requirement": null,
+      "degradation_links": [],
+      "paper": null,
+      "papers": [],
+      "assay_temp_min": null,
+      "assay_temp_max": null,
+      "environments": [],
+      "locations": [],
+      "strain_designations": [],
+      "updated_at": "2026-09-23T14:26:33.069399Z"
+    },
+    "degradation_links": [
+      {
+        "plastic": {
+          "id": 16,
+          "name": "PET",
+          "abbreviation": "PET"
+        },
+        "result": "positive",
+        "methods": [
+          "afm",
+          "biosensor",
+          "cd",
+          "clear_zone",
+          "clsm",
+          "contact_angle",
+          "dsc",
+          "enzyme_assay",
+          "fluorescent_assay",
+          "ftir",
+          "hplc",
+          "lc_ms",
+          "ms",
+          "nmr",
+          "optical_microscopy",
+          "sem",
+          "tensile_strength",
+          "titration",
+          "uv_vis",
+          "visual_inspection",
+          "weight_loss",
+          "xrd"
+        ],
+        "positive_count": 125,
+        "inconclusive_count": 5,
+        "negative_count": 1,
+        "positive_papers": 125,
+        "inconclusive_papers": 5,
+        "negative_papers": 1,
+        "paper_count": 131,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 62,
+          "name": "PEF",
+          "abbreviation": "PEF"
+        },
+        "result": "positive",
+        "methods": [
+          "dsc",
+          "enzyme_assay",
+          "hplc",
+          "nmr",
+          "sem",
+          "uv_vis"
+        ],
+        "positive_count": 4,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 4,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 4,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 47,
+          "name": "PBS",
+          "abbreviation": "PBS"
+        },
+        "result": "positive",
+        "methods": [
+          "dsc",
+          "gpc_sec",
+          "hplc",
+          "sem",
+          "weight_loss"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 3,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 20,
+          "name": "PLA",
+          "abbreviation": "PLA"
+        },
+        "result": "positive",
+        "methods": [
+          "dsc",
+          "gpc_sec",
+          "hplc",
+          "sem",
+          "weight_loss"
+        ],
+        "positive_count": 4,
+        "inconclusive_count": 0,
+        "negative_count": 2,
+        "positive_papers": 4,
+        "inconclusive_papers": 0,
+        "negative_papers": 2,
+        "paper_count": 6,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 51,
+          "name": "Impranil",
+          "abbreviation": "Impranil"
+        },
+        "result": "inconclusive",
+        "methods": [
+          "fluorescent_assay",
+          "turbidity"
+        ],
+        "positive_count": 0,
+        "inconclusive_count": 1,
+        "negative_count": 0,
+        "positive_papers": 0,
+        "inconclusive_papers": 1,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "inconclusive"
+      },
+      {
+        "plastic": {
+          "id": 19,
+          "name": "PCL",
+          "abbreviation": "PCL"
+        },
+        "result": "positive",
+        "methods": [
+          "clear_zone",
+          "fluorescent_assay",
+          "gpc_sec",
+          "hplc",
+          "turbidity",
+          "weight_loss"
+        ],
+        "positive_count": 5,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 5,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 6,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 49,
+          "name": "PBAT",
+          "abbreviation": "PBAT"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "weight_loss"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 2,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 23,
+          "name": "PU",
+          "abbreviation": "PU"
+        },
+        "result": "positive",
+        "methods": [
+          "gpc_sec",
+          "weight_loss"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 2,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 132,
+          "name": "Aromatic polyester (other)",
+          "abbreviation": null
+        },
+        "result": "positive",
+        "methods": [
+          "lc_ms",
+          "visual_inspection"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 31,
+          "name": "PHB",
+          "abbreviation": "PHB"
+        },
+        "result": "positive",
+        "methods": [
+          "gpc_sec",
+          "weight_loss"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 7,
+          "name": "PE Blend",
+          "abbreviation": "PE Blend"
+        },
+        "result": "negative",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 0,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 0,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 1,
+        "result_polarity": "negative"
+      },
+      {
+        "plastic": {
+          "id": 18,
+          "name": "PBT",
+          "abbreviation": "PBT"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 2,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 103,
+          "name": "PEN",
+          "abbreviation": "PEN"
+        },
+        "result": "negative",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 0,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 0,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 1,
+        "result_polarity": "negative"
+      },
+      {
+        "plastic": {
+          "id": 114,
+          "name": "PET Blend",
+          "abbreviation": "PET Blend"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "nmr",
+          "sem",
+          "weight_loss"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      }
+    ],
+    "paper": null,
+    "papers": [
+      {
+        "id": 3,
+        "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+        "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+        "doi": "10.1126/science.aad6359",
+        "year": 2016,
+        "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+        "journal": "Science",
+        "corresponding_author_country": "Japan"
+      },
+      {
+        "id": 291,
+        "citation": "Han, X., Liu, W., Huang, J.-W., Ma, J., Zheng, Y., Ko, T.-P., Xu, L., Cheng, Y.-S., Chen, C.-C., & Guo, R.-T. (2017). Structural insight into catalytic mechanism of PET hydrolase. Nature Communications, 8, 2106. https://doi.org/10.1038/s41467-017-02255-z",
+        "title": "Structural insight into catalytic mechanism of PET hydrolase",
+        "doi": "10.1038/s41467-017-02255-z",
+        "year": 2017,
+        "authors": "Han, X.; Liu, W.; Huang, J.-W.; Ma, J.; Zheng, Y.; Ko, T.-P.; Xu, L.; Cheng, Y.-S.; Chen, C.-C.; Guo, R.-T.",
+        "journal": "Nature Communications",
+        "corresponding_author_country": "China"
+      },
+      {
+        "id": 130,
+        "citation": "Austin, H.P., Allen, M.D., Donohoe, B.S., Rorrer, N.A., Kearns, F.L., Silveira, R.L., Pollard, B.C., Dominick, G., Duman, R., El Omari, K., Mykhaylyk, V., Wagner, A., Michener, W.E., Amore, A., Skaf, M.S., Crowley, M.F., Thorne, A.W., Johnson, C.W., Woodcock, H.L., McGeehan, J.E., & Beckham, G.T. (2018). Characterization and engineering of a plastic-degrading aromatic polyesterase. Proceedings of the National Academy of Sciences of the United States of America, 115(19), E4350-E4357. https://doi.org/10.1073/pnas.1718804115",
+        "title": "Characterization and engineering of a plastic-degrading aromatic polyesterase",
+        "doi": "10.1073/pnas.1718804115",
+        "year": 2018,
+        "authors": "Austin, H.P.; Allen, M.D.; Donohoe, B.S.; Rorrer, N.A.; Kearns, F.L.; Silveira, R.L.; Pollard, B.C.; Dominick, G.; Duman, R.; El Omari, K.; Mykhaylyk, V.; Wagner, A.; Michener, W.E.; Amore, A.; Skaf, M.S.; Crowley, M.F.; Thorne, A.W.; Johnson, C.W.; Woodcock, H.L.; McGeehan, J.E.; Beckham, G.T.",
+        "journal": "Proceedings of the National Academy of Sciences of the United States of America",
+        "corresponding_author_country": "United States"
+      }
+    ],
+    "year": null,
+    "best_kcat_km": null,
+    "best_kcat_km_unit": null,
+    "updated_at": "2026-11-11T22:19:17.705155Z",
+    "v1_id": "00083",
+    "database_name": null,
+    "gene": null,
+    "sequence": "MNFPRASRLMQAAVLGGLMAVSAAATAQTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCS",
+    "structure_file": "6EQE.pdb",
+    "has_structure": true,
+    "uniprot_protein_name": null,
+    "uniprot_go_terms": null,
+    "active_site_residues": null,
+    "signal_peptide_cleavage_site": 27,
+    "cross_references": {
+      "interpro": [
+        {
+          "id": "G3DSA:3.40.50.1820",
+          "name": "alpha/beta hydrolase",
+          "type": "homologous_superfamily",
+          "db": "cathgene3d"
+        },
+        {
+          "id": "IPR029058",
+          "name": "Alpha/Beta hydrolase fold",
+          "type": "homologous_superfamily",
+          "db": "interpro"
+        },
+        {
+          "id": "IPR041127",
+          "name": "PET hydrolase/cutinase-like",
+          "type": "domain",
+          "db": "interpro"
+        },
+        {
+          "id": "IPR050261",
+          "name": "FrsA/Cutinase/Hydrolase-like",
+          "type": "family",
+          "db": "interpro"
+        },
+        {
+          "id": "PF12740",
+          "name": "PET hydrolase-like",
+          "type": "domain",
+          "db": "pfam"
+        },
+        {
+          "id": "PTHR22946",
+          "name": "FrsA esterase",
+          "type": "family",
+          "db": "panther"
+        },
+        {
+          "id": "SSF53474",
+          "name": "alpha/beta-Hydrolases",
+          "type": "homologous_superfamily",
+          "db": "ssf"
+        }
+      ],
+      "alternate_genbank_ids": [
+        "WP_054022242.1"
+      ],
+      "merged_accessions": [
+        "PBG5RN",
+        "PB3KCW",
+        "PBC7RA",
+        "PB8V75",
+        "PB96WD",
+        "PBFXJ5"
+      ]
+    },
+    "structures": [
+      {
+        "discovery_source": null,
+        "discovery_evidence": null,
+        "id": 1,
+        "pdb_id": "6EQE",
+        "method": "X-RAY DIFFRACTION",
+        "resolution": 0.92,
+        "deposition_date": "2017-10-12",
+        "source": "experimental",
+        "confidence": null,
+        "model_url": null,
+        "is_primary": true,
+        "protein_variant_id": null,
+        "sequence_check": null,
+        "sequence_identity": null,
+        "created_by": null,
+        "prediction_attribution": null
+      },
+      {
+        "discovery_source": null,
+        "discovery_evidence": null,
+        "id": 2,
+        "pdb_id": "8J45",
+        "method": "X-RAY DIFFRACTION",
+        "resolution": 1.49,
+        "deposition_date": "2023-04-19",
+        "source": "experimental",
+        "confidence": null,
+        "model_url": null,
+        "is_primary": false,
+        "protein_variant_id": 1,
+        "sequence_check": null,
+        "sequence_identity": null,
+        "created_by": null,
+        "prediction_attribution": null
+      }
+    ],
+    "plastics": [
+      {
+        "id": 16,
+        "name": "PET",
+        "abbreviation": "PET"
+      },
+      {
+        "id": 62,
+        "name": "PEF",
+        "abbreviation": "PEF"
+      },
+      {
+        "id": 47,
+        "name": "PBS",
+        "abbreviation": "PBS"
+      },
+      {
+        "id": 20,
+        "name": "PLA",
+        "abbreviation": "PLA"
+      },
+      {
+        "id": 51,
+        "name": "Impranil",
+        "abbreviation": "Impranil"
+      },
+      {
+        "id": 19,
+        "name": "PCL",
+        "abbreviation": "PCL"
+      },
+      {
+        "id": 49,
+        "name": "PBAT",
+        "abbreviation": "PBAT"
+      },
+      {
+        "id": 23,
+        "name": "PU",
+        "abbreviation": "PU"
+      },
+      {
+        "id": 132,
+        "name": "Aromatic polyester (other)",
+        "abbreviation": null
+      },
+      {
+        "id": 31,
+        "name": "PHB",
+        "abbreviation": "PHB"
+      },
+      {
+        "id": 7,
+        "name": "PE Blend",
+        "abbreviation": "PE Blend"
+      },
+      {
+        "id": 18,
+        "name": "PBT",
+        "abbreviation": "PBT"
+      },
+      {
+        "id": 103,
+        "name": "PEN",
+        "abbreviation": "PEN"
+      },
+      {
+        "id": 114,
+        "name": "PET Blend",
+        "abbreviation": "PET Blend"
+      }
+    ],
+    "variant_degradation_links": [
+      {
+        "plastic": {
+          "id": 16,
+          "name": "PET",
+          "abbreviation": "PET"
+        },
+        "result": "positive",
+        "methods": [
+          "afm",
+          "cd",
+          "clear_zone",
+          "clsm",
+          "contact_angle",
+          "dsc",
+          "enzyme_assay",
+          "fluorescent_assay",
+          "ftir",
+          "gc",
+          "gpc_sec",
+          "hplc",
+          "lc_ms",
+          "mass_remaining",
+          "nmr",
+          "optical_microscopy",
+          "raman",
+          "sem",
+          "tem",
+          "titration",
+          "tlc",
+          "turbidity",
+          "uv_vis",
+          "viscometry",
+          "visual_inspection",
+          "weight_loss",
+          "xps",
+          "xrd",
+          "zymogram"
+        ],
+        "positive_count": 977,
+        "inconclusive_count": 8,
+        "negative_count": 36,
+        "positive_papers": 139,
+        "inconclusive_papers": 5,
+        "negative_papers": 16,
+        "paper_count": 144,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 62,
+          "name": "PEF",
+          "abbreviation": "PEF"
+        },
+        "result": "positive",
+        "methods": [
+          "dsc",
+          "hplc",
+          "lc_ms",
+          "nmr",
+          "sem",
+          "weight_loss"
+        ],
+        "positive_count": 8,
+        "inconclusive_count": 0,
+        "negative_count": 2,
+        "positive_papers": 4,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 4,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 47,
+          "name": "PBS",
+          "abbreviation": "PBS"
+        },
+        "result": "negative",
+        "methods": [
+          "dsc"
+        ],
+        "positive_count": 0,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 0,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 1,
+        "result_polarity": "negative"
+      },
+      {
+        "plastic": {
+          "id": 20,
+          "name": "PLA",
+          "abbreviation": "PLA"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "sem",
+          "turbidity"
+        ],
+        "positive_count": 4,
+        "inconclusive_count": 0,
+        "negative_count": 2,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 2,
+        "paper_count": 4,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 49,
+          "name": "PBAT",
+          "abbreviation": "PBAT"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 2,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 85,
+          "name": "Nylon 6",
+          "abbreviation": "Nylon 6"
+        },
+        "result": "positive",
+        "methods": [
+          "enzyme_assay",
+          "lc_ms"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 25,
+          "name": "PC",
+          "abbreviation": "PC"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 6,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 51,
+          "name": "Impranil",
+          "abbreviation": "Impranil"
+        },
+        "result": "positive",
+        "methods": [
+          "clear_zone"
+        ],
+        "positive_count": 5,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 17,
+          "name": "PETG",
+          "abbreviation": "PETG"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "optical_microscopy",
+          "sem"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 2,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 110,
+          "name": "poly(trans-hydroxynopol dicarboxylate)",
+          "abbreviation": null
+        },
+        "result": "positive",
+        "methods": [
+          "gpc_sec",
+          "nmr"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 114,
+          "name": "PET Blend",
+          "abbreviation": "PET Blend"
+        },
+        "result": "positive",
+        "methods": [
+          "dsc",
+          "gpc_sec",
+          "hplc",
+          "sem",
+          "weight_loss"
+        ],
+        "positive_count": 3,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 3,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 3,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 19,
+          "name": "PCL",
+          "abbreviation": "PCL"
+        },
+        "result": "positive",
+        "methods": [
+          "clear_zone",
+          "fluorescent_assay",
+          "hplc"
+        ],
+        "positive_count": 4,
+        "inconclusive_count": 0,
+        "negative_count": 2,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 3,
+        "result_polarity": "mixed"
+      },
+      {
+        "plastic": {
+          "id": 7,
+          "name": "PE Blend",
+          "abbreviation": "PE Blend"
+        },
+        "result": "negative",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 0,
+        "inconclusive_count": 0,
+        "negative_count": 1,
+        "positive_papers": 0,
+        "inconclusive_papers": 0,
+        "negative_papers": 1,
+        "paper_count": 1,
+        "result_polarity": "negative"
+      },
+      {
+        "plastic": {
+          "id": 18,
+          "name": "PBT",
+          "abbreviation": "PBT"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "sem"
+        ],
+        "positive_count": 2,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 2,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 2,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 132,
+          "name": "Aromatic polyester (other)",
+          "abbreviation": null
+        },
+        "result": "positive",
+        "methods": [
+          "qcm"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 56,
+          "name": "PBAT-Blend",
+          "abbreviation": "PBAT-Blend"
+        },
+        "result": "positive",
+        "methods": [
+          "lc_ms",
+          "visual_inspection"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 177,
+          "name": "PET oligomer",
+          "abbreviation": "PET oligomer"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      },
+      {
+        "plastic": {
+          "id": 103,
+          "name": "PEN",
+          "abbreviation": "PEN"
+        },
+        "result": "positive",
+        "methods": [
+          "hplc",
+          "sem"
+        ],
+        "positive_count": 1,
+        "inconclusive_count": 0,
+        "negative_count": 0,
+        "positive_papers": 1,
+        "inconclusive_papers": 0,
+        "negative_papers": 0,
+        "paper_count": 1,
+        "result_polarity": "positive"
+      }
+    ],
+    "identity_sources": [
+      {
+        "source": "cited_paper",
+        "label": "taken from a paper this one cites",
+        "fields": [
+          "sequence",
+          "genbank_id",
+          "uniprot_accession"
+        ]
+      },
+      {
+        "source": "reference_record",
+        "label": "a reference record for the commercial product",
+        "fields": [
+          "sequence"
+        ]
+      },
+      {
+        "source": "database_lookup",
+        "label": "matched in an external database",
+        "fields": [
+          "sequence",
+          "genbank_id",
+          "uniprot_accession"
+        ]
+      }
+    ],
+    "model_input": {
+      "status": "processed",
+      "sequence": "QTNPYARGPNPTAASLEASAGPFTVRSFTVSRPSGYGAGTVYYPTNAGGTVGAIAIVPGYTARQSSIKWWGPRLASHGFVVITIDTNSTLDQPSSRSSQQMAALRQVASLNGTSSSPIYGKVDTARMGVMGWSMGGGGSLISAANNPSLKAAAPQAPWDSSTNFSSVTVPTLIFACENDSIAPVNSSALPIYDSMSRNAKQFLEINGGSHSCANSGNSNQALIGKKGVAWMKRFMDNDTRYSTFACENPNSTRVSDFRTANCS",
+      "length": 263,
+      "span": [
+        27,
+        290
+      ],
+      "source_length": 290,
+      "whole_sequence_fallback": false,
+      "cuts": [
+        {
+          "kind": "signal_peptide",
+          "terminus": "N",
+          "start": 0,
+          "end": 27
+        }
+      ],
+      "reasons": [],
+      "blocking_reasons": [],
+      "policy_version": "plasticdb-seqnorm/2",
+      "model_sha256": "9d13f4b8705d24eb60e086484e927d5dea8cc1cffc915af2d02ca580ecabda22",
+      "canonical_sha256": "12c59fe9dab495ee536f1c2a5fc28c66e212192096c2351044d4dc139042f5af"
+    },
+    "origin": {
+      "origin_type": "culture_collection",
+      "origin_label": "Culture-collection strain",
+      "environment_type": "industrial",
+      "environment_label": "Industrial site",
+      "country": "Japan",
+      "region": "Sakai, Osaka",
+      "note": "NBRC 110686; TISTR 2288",
+      "paper": {
+        "id": 3,
+        "citation": "Yoshida, S., Hiraga, K., Takehana, T., Taniguchi, I., Yamaji, H., Maeda, Y., Toyohara, K., Miyamoto, K., Kimura, Y., & Oda, K. (2016). A bacterium that degrades and assimilates poly(ethylene terephthalate). Science, 351(6278), 1196-1199.",
+        "title": "A bacterium that degrades and assimilates poly(ethylene terephthalate)",
+        "doi": "10.1126/science.aad6359",
+        "year": 2016,
+        "authors": "Yoshida, S.; Hiraga, K.; Takehana, T.; Taniguchi, I.; Yamaji, H.; Maeda, Y.; Toyohara, K.; Miyamoto, K.; Kimura, Y.; Oda, K.",
+        "journal": "Science",
+        "corresponding_author_country": "Japan"
+      },
+      "curated": false,
+      "source_record": null,
+      "inherited_from": null
+    },
+    "reaction_products": {
+      "pathway_steps": [],
+      "reported": [
+        {
+          "plastic": {
+            "id": 132,
+            "name": "Aromatic polyester (other)",
+            "abbreviation": null
+          },
+          "products": [
+            {
+              "compound": {
+                "id": 97,
+                "name": "1-(3-Hydroxypropyl)indole-3-carboxylic acid"
+              },
+              "measurement_types": [
+                "product_identified"
+              ],
+              "papers": [
+                {
+                  "id": 871,
+                  "citation": "Wang, P., Linares-Pastén, J. A., & Zhang, B. (2020). Synthesis, Molecular Docking Simulation, and Enzymatic Degradation of AB-Type Indole-Based Polyesters with Improved Thermal Properties. Biomacromolecules, 21(3), 1078–1090.",
+                  "year": 2020,
+                  "doi": "10.1021/acs.biomac.9b01399"
+                }
+              ]
+            },
+            {
+              "compound": {
+                "id": 98,
+                "name": "1-(4-Hydroxybutyl)indole-3-carboxylic acid"
+              },
+              "measurement_types": [
+                "product_identified"
+              ],
+              "papers": [
+                {
+                  "id": 871,
+                  "citation": "Wang, P., Linares-Pastén, J. A., & Zhang, B. (2020). Synthesis, Molecular Docking Simulation, and Enzymatic Degradation of AB-Type Indole-Based Polyesters with Improved Thermal Properties. Biomacromolecules, 21(3), 1078–1090.",
+                  "year": 2020,
+                  "doi": "10.1021/acs.biomac.9b01399"
+                }
+              ]
+            },
+            {
+              "compound": {
+                "id": 99,
+                "name": "1-(5-Hydroxypentyl)indole-3-carboxylic acid"
+              },
+              "measurement_types": [
+                "product_identified"
+              ],
+              "papers": [
+                {
+                  "id": 871,
+                  "citation": "Wang, P., Linares-Pastén, J. A., & Zhang, B. (2020). Synthesis, Molecular Docking Simulation, and Enzymatic Degradation of AB-Type Indole-Based Polyesters with Improved Thermal Properties. Biomacromolecules, 21(3), 1078–1090.",
+                  "year": 2020,
+                  "doi": "10.1021/acs.biomac.9b01399"
+                }
+              ]
+            }
+          ],
+          "totals": []
+        },
+        {
+          "plastic": {
+            "id": 49,
+            "name": "PBAT",
+            "abbreviation": "PBAT"
+          },
+          "products": [
+            {
+              "compound": {
+                "id": 4,
+                "name": "Terephthalic acid"
+              },
+              "measurement_types": [
+                "monomer_released"
+              ],
+              "papers": [
+                {
+                  "id": 258,
+                  "citation": "Yang, Y., Min, J., Xue, T., Jiang, P., Liu, X., Peng, R., Huang, J.-W., Qu, Y., Li, X., Ma, N., Tsai, F.-C., Dai, L., Zhang, Q., Liu, Y., Chen, C.-C., & Guo, R.-T. (2023). Complete bio-degradation of poly(butylene adipate-co-terephthalate) via engineered cutinases. Nature Communications, 14. https://doi.org/10.1038/s41467-023-37374-3",
+                  "year": 2023,
+                  "doi": "10.1038/s41467-023-37374-3"
+                }
+              ]
+            }
+          ],
+          "totals": []
+        },
+        {
+          "plastic": {
+            "id": 47,
+            "name": "PBS",
+            "abbreviation": "PBS"
+          },
+          "products": [
+            {
+              "compound": {
+                "id": 21,
+                "name": "Succinic acid"
+              },
+              "measurement_types": [
+                "monomer_released",
+                "product_identified"
+              ],
+              "papers": [
+                {
+                  "id": 1097,
+                  "citation": "Clark, M., Tornesakis, K., Konig, G., Zahn, M., Lichtenstein, B. R., Pickford, A. R., & Cox, P. A. (2024). Understanding the Catalytic Efficiency of Two Polyester Degrading Enzymes: An Experimental and Theoretical Investigation. ACS Omega, 9(44), 44724-44733.",
+                  "year": 2024,
+                  "doi": "10.1021/acsomega.4c06528"
+                }
+              ]
+            }
+          ],
+          "totals": []
+        }
+      ]
+    },
+    "view": "summary",
+    "counts": {
+      "interactions": 162,
+      "indirect_interactions": 1072,
+      "variants": 861,
+      "kinetics": 123,
+      "properties": 752
+    }
+  }
+}

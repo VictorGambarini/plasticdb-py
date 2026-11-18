@@ -2676,6 +2676,99 @@
         "title": "EnzymePropertiesRead",
         "type": "object"
       },
+      "EvidenceList_ExperimentRecord_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ExperimentRecord"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items",
+          "offset",
+          "limit"
+        ],
+        "title": "EvidenceList[ExperimentRecord]",
+        "type": "object"
+      },
+      "EvidenceList_InteractionRecord_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InteractionRecord"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items",
+          "offset",
+          "limit"
+        ],
+        "title": "EvidenceList[InteractionRecord]",
+        "type": "object"
+      },
+      "EvidenceList_ObservationRecord_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ObservationRecord"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items",
+          "offset",
+          "limit"
+        ],
+        "title": "EvidenceList[ObservationRecord]",
+        "type": "object"
+      },
       "EvidenceMethod": {
         "enum": [
           "adsorption_isotherm",
@@ -3252,6 +3345,315 @@
           "id"
         ],
         "title": "ExperimentRead",
+        "type": "object"
+      },
+      "ExperimentRecord": {
+        "properties": {
+          "additional_conditions": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additional Conditions"
+          },
+          "aerobicity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aerobicity"
+          },
+          "analytical_grade": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Analytical Grade"
+          },
+          "assay_result": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assay Result"
+          },
+          "assay_result_notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assay Result Notes"
+          },
+          "buffer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buffer"
+          },
+          "culture_medium": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Culture Medium"
+          },
+          "detection_limit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detection Limit"
+          },
+          "detection_limit_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detection Limit Unit"
+          },
+          "duration": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration"
+          },
+          "duration_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Unit"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "initial_mass": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Initial Mass"
+          },
+          "initial_mass_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Initial Mass Unit"
+          },
+          "interaction_id": {
+            "title": "Interaction Id",
+            "type": "integer"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "method_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method Category"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "paper_id": {
+            "title": "Paper Id",
+            "type": "integer"
+          },
+          "ph": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ph"
+          },
+          "quantitation_ceiling": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantitation Ceiling"
+          },
+          "quantitation_ceiling_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantitation Ceiling Unit"
+          },
+          "sole_carbon_source": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sole Carbon Source"
+          },
+          "substrate_crystallinity_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Substrate Crystallinity Pct"
+          },
+          "substrate_form": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Substrate Form"
+          },
+          "substrate_mw": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Substrate Mw"
+          },
+          "substrate_mw_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Substrate Mw Unit"
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Temperature"
+          },
+          "temperature_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Temperature Unit"
+          }
+        },
+        "required": [
+          "id",
+          "interaction_id",
+          "paper_id"
+        ],
+        "title": "ExperimentRecord",
         "type": "object"
       },
       "FootprintExperimentRead": {
@@ -5330,6 +5732,188 @@
         "title": "InteractionRead",
         "type": "object"
       },
+      "InteractionRecord": {
+        "properties": {
+          "actor_type": {
+            "enum": [
+              "microorganism",
+              "protein",
+              "protein_variant"
+            ],
+            "title": "Actor Type",
+            "type": "string"
+          },
+          "credited_microorganism_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The organism this evidence credits under the default `organism_or_enzyme` scope: the tested organism (not an expression host, knockout or engineered host), or an enzyme's public source organism.",
+            "title": "Credited Microorganism Id"
+          },
+          "enzyme_preparation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enzyme Preparation"
+          },
+          "enzyme_production_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Enzyme Production Context"
+          },
+          "experimental_system": {
+            "title": "Experimental System",
+            "type": "string"
+          },
+          "genetic_background": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genetic Background"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "microorganism_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Microorganism Accession"
+          },
+          "microorganism_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The tested organism (whole-organism evidence only).",
+            "title": "Microorganism Id"
+          },
+          "paper_id": {
+            "title": "Paper Id",
+            "type": "integer"
+          },
+          "plastic_id": {
+            "title": "Plastic Id",
+            "type": "integer"
+          },
+          "protein_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Accession"
+          },
+          "protein_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Id"
+          },
+          "protein_variant_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Accession"
+          },
+          "protein_variant_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Protein Variant Id"
+          },
+          "result": {
+            "enum": [
+              "positive",
+              "negative",
+              "inconclusive"
+            ],
+            "title": "Result",
+            "type": "string"
+          },
+          "strain_designation": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strain Designation"
+          },
+          "strain_occurrence_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strain Occurrence Id"
+          }
+        },
+        "required": [
+          "id",
+          "paper_id",
+          "plastic_id",
+          "actor_type",
+          "result",
+          "experimental_system"
+        ],
+        "title": "InteractionRecord",
+        "type": "object"
+      },
       "JobDetail": {
         "properties": {
           "blast_type": {
@@ -7368,6 +7952,163 @@
         "title": "ObservationRead",
         "type": "object"
       },
+      "ObservationRecord": {
+        "properties": {
+          "control_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Control Value"
+          },
+          "experiment_id": {
+            "title": "Experiment Id",
+            "type": "integer"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "interaction_id": {
+            "title": "Interaction Id",
+            "type": "integer"
+          },
+          "measurement_category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measurement Category"
+          },
+          "measurement_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measurement Type"
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N"
+          },
+          "paper_id": {
+            "title": "Paper Id",
+            "type": "integer"
+          },
+          "product_compound_ids": {
+            "default": [],
+            "items": {
+              "type": "integer"
+            },
+            "title": "Product Compound Ids",
+            "type": "array"
+          },
+          "products_summed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Products Summed"
+          },
+          "sd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sd"
+          },
+          "text_description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text Description"
+          },
+          "time_point": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Point"
+          },
+          "time_point_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Time Point Unit"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "required": [
+          "id",
+          "experiment_id",
+          "interaction_id",
+          "paper_id"
+        ],
+        "title": "ObservationRecord",
+        "type": "object"
+      },
       "OrganismTypeEnum": {
         "enum": [
           "no_signalp",
@@ -7687,6 +8428,27 @@
           "items"
         ],
         "title": "PaginatedResponse[ProteinListItem]",
+        "type": "object"
+      },
+      "PaginatedResponse_ProteinListSequenceItem_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ProteinListSequenceItem"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "items"
+        ],
+        "title": "PaginatedResponse[ProteinListSequenceItem]",
         "type": "object"
       },
       "PaginatedResponse_ProteinVariantRead_": {
@@ -10527,6 +11289,228 @@
           "name"
         ],
         "title": "ProteinListItem",
+        "type": "object"
+      },
+      "ProteinListSequenceItem": {
+        "description": "A ``/proteins`` row; ``sequence`` is present only with ``include_sequence=true``.",
+        "properties": {
+          "accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accession"
+          },
+          "activity_class": {
+            "default": "untested",
+            "title": "Activity Class",
+            "type": "string"
+          },
+          "best_kcat_km": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Kcat Km"
+          },
+          "best_kcat_km_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Best Kcat Km Unit"
+          },
+          "degradation_links": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/DegradationLink"
+            },
+            "title": "Degradation Links",
+            "type": "array"
+          },
+          "ec_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ec Number"
+          },
+          "genbank_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Genbank Id"
+          },
+          "has_signal_peptide": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Signal Peptide"
+          },
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "kind": {
+            "default": "wild_type",
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "paper": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaperRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "papers": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/PaperRead"
+            },
+            "title": "Papers",
+            "type": "array"
+          },
+          "parent_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Accession"
+          },
+          "pdb_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pdb Id"
+          },
+          "plasticdb_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plasticdb Id"
+          },
+          "sequence": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The amino-acid sequence (a variant's own). Only sent with `include_sequence=true`.",
+            "title": "Sequence"
+          },
+          "source_microorganism": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MicroorganismListItem"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "uniprot_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Uniprot Accession"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "variant_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variant Type"
+          },
+          "year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Year"
+          }
+        },
+        "required": [
+          "id",
+          "plasticdb_id",
+          "name"
+        ],
+        "title": "ProteinListSequenceItem",
         "type": "object"
       },
       "ProteinOriginRead": {
@@ -23586,6 +24570,553 @@
         ]
       }
     },
+    "/api/v1/experiments": {
+      "get": {
+        "description": "Experiments (one technique applied to an interaction, with its conditions),\nby id. The interaction filters apply to each experiment's interaction; the\nobservation filters ask one of its observations to match them all.",
+        "operationId": "list_experiments_api_v1_experiments_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "interaction_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Interaction Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+              "title": "Page"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          },
+          {
+            "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+            "in": "query",
+            "name": "plastic",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+              "title": "Plastic"
+            }
+          },
+          {
+            "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+            "in": "query",
+            "name": "include_subtypes",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+              "title": "Include Subtypes",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "plastic_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Plastic Id"
+            }
+          },
+          {
+            "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+            "in": "query",
+            "name": "microorganism",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+              "title": "Microorganism"
+            }
+          },
+          {
+            "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+            "in": "query",
+            "name": "protein",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+              "title": "Protein"
+            }
+          },
+          {
+            "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+            "in": "query",
+            "name": "evidence_level",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+              "enum": [
+                "all",
+                "direct",
+                "indirect"
+              ],
+              "title": "Evidence Level",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "paper_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Paper Id"
+            }
+          },
+          {
+            "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+            "in": "query",
+            "name": "doi",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+              "title": "Doi"
+            }
+          },
+          {
+            "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+            "in": "query",
+            "name": "polarity",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ResultEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+              "title": "Polarity"
+            }
+          },
+          {
+            "description": "An experiment used this method (closed vocabulary).",
+            "in": "query",
+            "name": "evidence_method",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EvidenceMethod"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment used this method (closed vocabulary).",
+              "title": "Evidence Method"
+            }
+          },
+          {
+            "description": "An experiment tested this substrate form.",
+            "in": "query",
+            "name": "substrate_form",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/SubstrateForm"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment tested this substrate form.",
+              "title": "Substrate Form"
+            }
+          },
+          {
+            "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+            "in": "query",
+            "name": "measurement_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+              "title": "Measurement Type"
+            }
+          },
+          {
+            "description": "true: an observation carries a numeric value.",
+            "in": "query",
+            "name": "has_quantitative",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "true: an observation carries a numeric value.",
+              "title": "Has Quantitative",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceList_ExperimentRecord_"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release, or one without artefacts."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "List Experiments",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/api/v1/experiments/{experiment_id}": {
+      "get": {
+        "operationId": "get_experiment_api_v1_experiments__experiment_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "experiment_id",
+            "required": true,
+            "schema": {
+              "title": "Experiment Id",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentRecord"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such public record, or an unknown release."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "Get Experiment",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
     "/api/v1/experiments/{experiment_id}/preparations": {
       "get": {
         "operationId": "experiment_preparations_api_v1_experiments__experiment_id__preparations_get",
@@ -23739,6 +25270,537 @@
         "summary": "Experiment Preparations",
         "tags": [
           "preparations"
+        ]
+      }
+    },
+    "/api/v1/interactions": {
+      "get": {
+        "description": "Interactions (an actor tested against a plastic in one paper), by id.",
+        "operationId": "list_interactions_api_v1_interactions_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+              "title": "Page"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          },
+          {
+            "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+            "in": "query",
+            "name": "plastic",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+              "title": "Plastic"
+            }
+          },
+          {
+            "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+            "in": "query",
+            "name": "include_subtypes",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+              "title": "Include Subtypes",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "plastic_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Plastic Id"
+            }
+          },
+          {
+            "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+            "in": "query",
+            "name": "microorganism",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+              "title": "Microorganism"
+            }
+          },
+          {
+            "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+            "in": "query",
+            "name": "protein",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+              "title": "Protein"
+            }
+          },
+          {
+            "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+            "in": "query",
+            "name": "evidence_level",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+              "enum": [
+                "all",
+                "direct",
+                "indirect"
+              ],
+              "title": "Evidence Level",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "paper_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Paper Id"
+            }
+          },
+          {
+            "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+            "in": "query",
+            "name": "doi",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+              "title": "Doi"
+            }
+          },
+          {
+            "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+            "in": "query",
+            "name": "polarity",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ResultEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+              "title": "Polarity"
+            }
+          },
+          {
+            "description": "An experiment used this method (closed vocabulary).",
+            "in": "query",
+            "name": "evidence_method",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EvidenceMethod"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment used this method (closed vocabulary).",
+              "title": "Evidence Method"
+            }
+          },
+          {
+            "description": "An experiment tested this substrate form.",
+            "in": "query",
+            "name": "substrate_form",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/SubstrateForm"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment tested this substrate form.",
+              "title": "Substrate Form"
+            }
+          },
+          {
+            "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+            "in": "query",
+            "name": "measurement_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+              "title": "Measurement Type"
+            }
+          },
+          {
+            "description": "true: an observation carries a numeric value.",
+            "in": "query",
+            "name": "has_quantitative",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "true: an observation carries a numeric value.",
+              "title": "Has Quantitative",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceList_InteractionRecord_"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release, or one without artefacts."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "List Interactions",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/api/v1/interactions/{interaction_id}": {
+      "get": {
+        "operationId": "get_interaction_api_v1_interactions__interaction_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "interaction_id",
+            "required": true,
+            "schema": {
+              "title": "Interaction Id",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionRecord"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such public record, or an unknown release."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "Get Interaction",
+        "tags": [
+          "evidence"
         ]
       }
     },
@@ -27047,6 +29109,569 @@
         "summary": "Get Microorganism",
         "tags": [
           "microorganisms"
+        ]
+      }
+    },
+    "/api/v1/observations": {
+      "get": {
+        "description": "Observations (one result an experiment produced), by id. The interaction and\nexperiment filters apply to the observation's own experiment and interaction.",
+        "operationId": "list_observations_api_v1_observations_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "interaction_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Interaction Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "experiment_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Experiment Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "1-based page number, an alternative to `offset`: `page=N` means `offset=(N-1)*limit`. Send one or the other; a non-zero `offset` together with `page` is rejected (422).",
+              "title": "Page"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          },
+          {
+            "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+            "in": "query",
+            "name": "plastic",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Records with evidence on this plastic. Exact, case-insensitive match on the plastic's name, abbreviation or full name ('PE' or 'Polyethylene') — never a substring, so 'PE' does not match 'PET'. Add `include_subtypes=true` to include its curated sub-types.",
+              "title": "Plastic"
+            }
+          },
+          {
+            "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+            "in": "query",
+            "name": "include_subtypes",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "With `plastic`, also match its curated sub-types (children in the plastic hierarchy, e.g. OXO-PE under PE).",
+              "title": "Include Subtypes",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "plastic_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Plastic Id"
+            }
+          },
+          {
+            "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+            "in": "query",
+            "name": "microorganism",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Evidence credited to this organism: an NCBI tax-id (digits), a PlasticDB accession, or a name/synonym (substring). Credited means its own whole-organism assays (not as an expression host, knockout or engineered host) or its enzymes' assays — the `organism_or_enzyme` scope.",
+              "title": "Microorganism"
+            }
+          },
+          {
+            "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+            "in": "query",
+            "name": "protein",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A protein or engineered-variant accession (e.g. `PB00012`), any case. `protein_id` / `protein_variant_id` take the numeric ids instead.",
+              "title": "Protein"
+            }
+          },
+          {
+            "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+            "in": "query",
+            "name": "evidence_level",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "description": "With `protein` or `microorganism`: `direct` is evidence recorded on that record itself (the protein's or variant's own assays; the organism's whole-organism assays), `indirect` is evidence credited to it through another record (a protein's engineered variants; an organism's enzymes), `all` both. `direct`/`indirect` without `protein` or `microorganism` is a 422.",
+              "enum": [
+                "all",
+                "direct",
+                "indirect"
+              ],
+              "title": "Evidence Level",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "paper_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Paper Id"
+            }
+          },
+          {
+            "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+            "in": "query",
+            "name": "doi",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Case-insensitive substring of the paper's DOI, as on `/papers`.",
+              "title": "Doi"
+            }
+          },
+          {
+            "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+            "in": "query",
+            "name": "polarity",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/ResultEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Interaction outcome: positive, negative or inconclusive. No default: without it, every outcome matches.",
+              "title": "Polarity"
+            }
+          },
+          {
+            "description": "An experiment used this method (closed vocabulary).",
+            "in": "query",
+            "name": "evidence_method",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/EvidenceMethod"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment used this method (closed vocabulary).",
+              "title": "Evidence Method"
+            }
+          },
+          {
+            "description": "An experiment tested this substrate form.",
+            "in": "query",
+            "name": "substrate_form",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/SubstrateForm"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An experiment tested this substrate form.",
+              "title": "Substrate Form"
+            }
+          },
+          {
+            "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+            "in": "query",
+            "name": "measurement_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An observation quantified this, by its exact name (e.g. `weight_loss`, `co2_evolved`).",
+              "title": "Measurement Type"
+            }
+          },
+          {
+            "description": "true: an observation carries a numeric value.",
+            "in": "query",
+            "name": "has_quantitative",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "true: an observation carries a numeric value.",
+              "title": "Has Quantitative",
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceList_ObservationRecord_"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unknown release, or one without artefacts."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "List Observations",
+        "tags": [
+          "evidence"
+        ]
+      }
+    },
+    "/api/v1/observations/{observation_id}": {
+      "get": {
+        "operationId": "get_observation_api_v1_observations__observation_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "observation_id",
+            "required": true,
+            "schema": {
+              "title": "Observation Id",
+              "type": "integer"
+            }
+          },
+          {
+            "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+            "in": "query",
+            "name": "release",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Answer from a dataset release (e.g. `2026.35`; see `/api/v1/releases`). Omitted, or the current release: the live database. A past release is answered from that release's immutable Parquet artefacts, in the same response shape; a filter the snapshot cannot answer is a 422 naming it. Unknown release, or one without artefacts: 404. The `X-PlasticDB-Release` response header says which release answered.",
+              "title": "Release"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservationRecord"
+                }
+              }
+            },
+            "description": "Successful Response",
+            "headers": {
+              "X-PlasticDB-Release": {
+                "description": "The dataset release that answered (the current one for a live answer).",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Release-Source": {
+                "description": "`snapshot` (a past release's Parquet artefacts) or `live`.",
+                "schema": {
+                  "enum": [
+                    "snapshot",
+                    "live"
+                  ],
+                  "type": "string"
+                }
+              },
+              "X-PlasticDB-Snapshot-Unavailable": {
+                "description": "On a past-release answer: the fields the release cannot fill (served empty), comma-separated paths.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such public record, or an unknown release."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation error. On a past release, each filter or option it cannot answer is an item with `type: release_unsupported`."
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "current_release": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "enum": [
+                        "unknown",
+                        "no_artefacts",
+                        "live_only",
+                        "not_mounted"
+                      ],
+                      "type": "string"
+                    },
+                    "release": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "detail",
+                    "reason"
+                  ],
+                  "title": "ReleaseError",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "The release's artefacts are not readable here."
+          }
+        },
+        "summary": "Get Observation",
+        "tags": [
+          "evidence"
         ]
       }
     },
@@ -30892,6 +33517,18 @@
             }
           },
           {
+            "description": "`true`: add each item's amino-acid `sequence` (a variant's own). Off by default, so the list stays small.",
+            "in": "query",
+            "name": "include_sequence",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "`true`: add each item's amino-acid `sequence` (a variant's own). Off by default, so the list stays small.",
+              "title": "Include Sequence",
+              "type": "boolean"
+            }
+          },
+          {
             "description": "Which protein entities to list: 'wild_type', 'engineered' (variants), or 'both'. An unrecognised value is a 422 — it used to fall back to 'both', which silently answered a typo with the wrong dataset.",
             "in": "query",
             "name": "kind",
@@ -31027,7 +33664,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaginatedResponse_ProteinListItem_"
+                  "$ref": "#/components/schemas/PaginatedResponse_ProteinListSequenceItem_"
                 }
               }
             },
@@ -31332,13 +33969,13 @@
             }
           },
           {
-            "description": "`full` (default): the whole record. `summary`: the record without its per-record evidence lists (`interactions`, `indirect_interactions`, `variants`, `kinetics`, `properties`), which are replaced by a `counts` object — a fraction of the size for a well-studied enzyme. Fetch `full` when you need the evidence rows.",
+            "description": "`summary` (default since 2.89.0): the record without its per-record evidence lists (`interactions`, `indirect_interactions`, `variants`, `kinetics`, `properties`), which are replaced by a `counts` object; page them from `/interactions`, `/variants`, `/kinetics` and `/properties`. `full`: the whole record, evidence rows included.",
             "in": "query",
             "name": "view",
             "required": false,
             "schema": {
-              "default": "full",
-              "description": "`full` (default): the whole record. `summary`: the record without its per-record evidence lists (`interactions`, `indirect_interactions`, `variants`, `kinetics`, `properties`), which are replaced by a `counts` object — a fraction of the size for a well-studied enzyme. Fetch `full` when you need the evidence rows.",
+              "default": "summary",
+              "description": "`summary` (default since 2.89.0): the record without its per-record evidence lists (`interactions`, `indirect_interactions`, `variants`, `kinetics`, `properties`), which are replaced by a `counts` object; page them from `/interactions`, `/variants`, `/kinetics` and `/properties`. `full`: the whole record, evidence rows included.",
               "enum": [
                 "full",
                 "summary"
@@ -31537,20 +34174,50 @@
             }
           },
           {
-            "description": "`direct`: evidence recorded on the protein itself (the detail's `interactions`). `indirect`: evidence credited through its engineered variants (`indirect_interactions`), each labelled with its variant. `all`: direct first, then indirect.",
+            "description": "`direct`: evidence recorded on the protein itself (the detail's `interactions`). `indirect`: evidence credited through its engineered variants (`indirect_interactions`), each labelled with its variant. `all` (default): direct first, then indirect.",
+            "in": "query",
+            "name": "evidence_level",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "all",
+                    "direct",
+                    "indirect"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "`direct`: evidence recorded on the protein itself (the detail's `interactions`). `indirect`: evidence credited through its engineered variants (`indirect_interactions`), each labelled with its variant. `all` (default): direct first, then indirect.",
+              "title": "Evidence Level"
+            }
+          },
+          {
+            "deprecated": true,
+            "description": "Deprecated alias of `evidence_level` (the name the top-level evidence lists use). Different values in both is a 422.",
             "in": "query",
             "name": "kind",
             "required": false,
             "schema": {
-              "default": "all",
-              "description": "`direct`: evidence recorded on the protein itself (the detail's `interactions`). `indirect`: evidence credited through its engineered variants (`indirect_interactions`), each labelled with its variant. `all`: direct first, then indirect.",
-              "enum": [
-                "all",
-                "direct",
-                "indirect"
+              "anyOf": [
+                {
+                  "enum": [
+                    "all",
+                    "direct",
+                    "indirect"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "title": "Kind",
-              "type": "string"
+              "description": "Deprecated alias of `evidence_level` (the name the top-level evidence lists use). Different values in both is a 422.",
+              "title": "Kind"
             }
           },
           {
@@ -34334,7 +37001,7 @@
     },
     "/api/v1/tree/build": {
       "post": {
-        "description": "Submit a Taxonomy Tree job. With an ``Idempotency-Key`` (signed-in callers), a repeat\nwithin 24 hours returns the first job instead of building another.",
+        "description": "Submit a Taxonomy Tree job (JWT or API key, like every job). With an\n``Idempotency-Key``, a repeat within 24 hours returns the first job instead of\nbuilding another.",
         "operationId": "build_tree_api_v1_tree_build_post",
         "parameters": [
           {
@@ -34470,7 +37137,6 @@
           }
         },
         "security": [
-          {},
           {
             "PlasticDBKey": []
           }
@@ -34483,7 +37149,7 @@
     },
     "/api/v1/tree/{job_id}": {
       "get": {
-        "description": "Poll a tree job for status and results. A tree job answers with the release it was\nbuilt against (its `release` field and the `X-PlasticDB-Release` header); pin it when\nsubmitting, with `POST /tree/build?release=`. A signed-in user's tree is private to\nthem, as on `GET /jobs/{id}`; share it with `POST /jobs/{id}/shares`.",
+        "description": "Poll a tree job for status and results. A tree job answers with the release it was\nbuilt against (its `release` field and the `X-PlasticDB-Release` header); pin it when\nsubmitting, with `POST /tree/build?release=`. A tree is private to its owner,\nas on `GET /jobs/{id}` (a tree built anonymously before 2.88.0 stays readable by id); share it with `POST /jobs/{id}/shares`.",
         "operationId": "get_tree_job_api_v1_tree__job_id__get",
         "parameters": [
           {

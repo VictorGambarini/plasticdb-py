@@ -670,3 +670,52 @@ def test_changes_prints_as_of_on_stderr(api: respx.MockRouter) -> None:
     assert result.exit_code == 0, result.stderr
     assert "as_of:" in result.stderr
     assert "as_of" not in result.stdout
+
+
+def _record_page(item: dict[str, Any]) -> dict[str, Any]:
+    return {"total": 1, "items": [item], "offset": 0, "limit": 100}
+
+
+def test_evidence_record_commands(api: respx.MockRouter) -> None:
+    obs = {"id": 21, "experiment_id": 11, "interaction_id": 7, "paper_id": 3, "value": 1.5}
+    route = api.get("/observations").respond(json=_record_page(obs))
+    result = cli(
+        "evidence", "observations", "--plastic", "PET", "--experiment-id", "11", "--format", "csv"
+    )
+    assert result.exit_code == 0, result.stderr
+    assert result.stdout.splitlines()[0].startswith("id,experiment_id,interaction_id")
+    params = route.calls.last.request.url.params
+    assert params["plastic"] == "PET" and params["experiment_id"] == "11"
+    api.get("/observations/21").respond(json=obs)
+    assert json.loads(cli("evidence", "observation", "21").stdout)["id"] == 21
+    api.get("/interactions").respond(
+        json=_record_page(
+            {
+                "id": 7,
+                "paper_id": 3,
+                "plastic_id": 16,
+                "actor_type": "protein",
+                "result": "positive",
+                "experimental_system": "in_vitro",
+            }
+        )
+    )
+    assert cli("evidence", "interaction-records", "--evidence-level", "all").exit_code == 0
+    api.get("/experiments").respond(
+        json=_record_page({"id": 11, "interaction_id": 7, "paper_id": 3})
+    )
+    assert cli("evidence", "experiments", "--interaction-id", "7").exit_code == 0
+
+
+def test_cli_evidence_level_and_the_hidden_kind(api: respx.MockRouter) -> None:
+    route = api.get("/proteins/PBFCTW/interactions").mock(
+        return_value=reply("protein_interactions")
+    )
+    assert cli("evidence", "interactions", "PBFCTW", "--evidence-level", "direct").exit_code == 0
+    assert route.calls.last.request.url.params["evidence_level"] == "direct"
+    old = cli("evidence", "interactions", "PBFCTW", "--kind", "indirect")
+    assert old.exit_code == 0, old.stderr
+    assert "deprecated" in old.stderr
+    params = route.calls.last.request.url.params
+    assert params["evidence_level"] == "indirect" and "kind" not in params
+    assert "--kind" not in cli("evidence", "interactions", "--help").stdout

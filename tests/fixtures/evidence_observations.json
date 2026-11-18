@@ -1,0 +1,74 @@
+{
+  "status": 200,
+  "headers": {
+    "content-type": "application/json",
+    "x-plasticdb-release-source": "live"
+  },
+  "body": {
+    "total": 48924,
+    "items": [
+      {
+        "id": 14,
+        "experiment_id": 14,
+        "interaction_id": 9,
+        "paper_id": 2,
+        "measurement_type": "monomer_released",
+        "measurement_category": "chromatography",
+        "value": 33.8,
+        "unit": "mM",
+        "text_description": "33.8 mM PET monomers (TPA + MHET) released from amorphous gf-PET film after 96 h at 50 C - highest of all enzymes/temperatures",
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "products_summed": true,
+        "product_compound_ids": [
+          3,
+          4
+        ]
+      },
+      {
+        "id": 17,
+        "experiment_id": 16,
+        "interaction_id": 9,
+        "paper_id": 2,
+        "measurement_type": "monomer_released",
+        "measurement_category": "chromatography",
+        "value": 32.964,
+        "unit": "mM",
+        "text_description": "~33 mM PET monomers released from bean cake pc-PET film after 24 h at 50 C (Fig. 3b)",
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "products_summed": true,
+        "product_compound_ids": [
+          3,
+          4
+        ]
+      },
+      {
+        "id": 21,
+        "experiment_id": 20,
+        "interaction_id": 9,
+        "paper_id": 2,
+        "measurement_type": "weight_loss",
+        "measurement_category": "gravimetric",
+        "value": 100.0,
+        "unit": "%",
+        "text_description": "Large ~6.4 g untreated pc-PET container completely degraded after 48 h at 50 C (scalable by increasing reaction volume)",
+        "time_point": null,
+        "time_point_unit": null,
+        "sd": null,
+        "n": null,
+        "control_value": null,
+        "products_summed": false,
+        "product_compound_ids": []
+      }
+    ],
+    "offset": 0,
+    "limit": 3
+  }
+}

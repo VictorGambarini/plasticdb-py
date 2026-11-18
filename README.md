@@ -37,13 +37,15 @@ df = pet.to_pandas()  # one flat row per protein
 pet.to_fasta("pet_enzymes.fasta")  # >PB8CAZ E4 ...
 records = pet.to_biopython()  # Bio.SeqRecord list (plasticdb[bio])
 
-# One record, with its evidence
+# One record (the summary; view="full" embeds interactions, variants, kinetics, properties)
 petase = client.proteins.get("PBFCTW")
 print(petase.name, len(petase.sequence or ""), petase.source_microorganism.name)
 
 # The evidence spine: interaction -> experiment -> observation
 evidence = client.evidence.interactions("PBFCTW")
 measurements = evidence.to_pandas(level="observation")  # one row per measured value
+# ... or the whole database as flat tables
+client.evidence.observations.list(plastic="PET", has_quantitative=True).to_pandas()
 
 # Engineered variants of PETase, with sequences
 client.proteins.variants("PBFCTW").to_fasta("petase_variants.fasta")
@@ -268,6 +270,7 @@ plasticdb cite --release 2026.50
 | `plastics list\|get\|names` | the plastic vocabulary |
 | `papers list\|get\|footprint\|export` | papers; `export` writes BibTeX or RIS |
 | `evidence interactions\|kinetics\|properties\|binding-assays\|constructs\|preparations` (and the singular `binding-assay`, `construct`, `preparation`) | the evidence; `interactions --level observation` gives one row per measured value |
+| `evidence interaction-records\|experiments\|observations` (and the singular `interaction`, `experiment`, `observation`) | the flat evidence tables of the whole database, with the evidence filters |
 | `search QUERY [--grouped]` | full-text search |
 | `pathways list\|get\|for-plastic\|graph` | degradation pathways |
 | `stats [--view summary\|protein-activity\|charts\|by-country]` | statistics |

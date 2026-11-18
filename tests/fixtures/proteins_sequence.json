@@ -1,0 +1,158 @@
+{
+  "status": 200,
+  "headers": {
+    "content-type": "application/json",
+    "x-plasticdb-release-source": "live"
+  },
+  "body": {
+    "total": 468,
+    "items": [
+      {
+        "activity_class": "degrader",
+        "id": 782,
+        "kind": "wild_type",
+        "variant_type": null,
+        "parent_accession": null,
+        "plasticdb_id": "00795",
+        "accession": "PB8CAZ",
+        "name": "E4",
+        "genbank_id": null,
+        "has_signal_peptide": false,
+        "uniprot_accession": "A0A4P1LYH5",
+        "pdb_id": "7C2A",
+        "ec_number": null,
+        "source_microorganism": {
+          "id": 3082,
+          "name": "Altericroceibacterium indicum",
+          "tax_id": 374177,
+          "accession": "PB34Q6",
+          "taxonomy_status": "resolved",
+          "taxonomy_cause": null,
+          "taxonomy_note": null,
+          "growth_temp_opt": null,
+          "oxygen_requirement": null,
+          "degradation_links": [],
+          "paper": null,
+          "papers": [],
+          "assay_temp_min": null,
+          "assay_temp_max": null,
+          "environments": [],
+          "locations": [],
+          "strain_designations": [],
+          "updated_at": "2026-09-23T14:26:33.069399Z"
+        },
+        "degradation_links": [
+          {
+            "plastic": {
+              "id": 16,
+              "name": "PET",
+              "abbreviation": "PET"
+            },
+            "result": "positive",
+            "methods": [
+              "clear_zone",
+              "uv_vis"
+            ],
+            "positive_count": 1,
+            "inconclusive_count": 0,
+            "negative_count": 0,
+            "positive_papers": 1,
+            "inconclusive_papers": 0,
+            "negative_papers": 0,
+            "paper_count": 1,
+            "result_polarity": "positive"
+          }
+        ],
+        "paper": {
+          "id": 373,
+          "citation": "Duan, S.; Yang, H.; Sun, R.; Ma, J.; Wang, K. (2026). Enzymatic Degradation of Polyethylene Terephthalate Model Substrates by Esterase E4. Biology, 15(7), 540. https://doi.org/10.3390/biology15070540",
+          "title": "Enzymatic Degradation of Polyethylene Terephthalate Model Substrates by Esterase E4.",
+          "doi": "10.3390/biology15070540",
+          "year": 2026,
+          "authors": "Duan, S.; Yang, H.; Sun, R.; Ma, J.; Wang, K.",
+          "journal": "Biology",
+          "corresponding_author_country": "China"
+        },
+        "papers": [],
+        "year": null,
+        "best_kcat_km": null,
+        "best_kcat_km_unit": null,
+        "updated_at": "2026-09-23T14:26:33.069399Z",
+        "sequence": "SMGESRVILAFGDSLFAGYGLDKGESYPAKLETALRSHGINARIINAGVSGDTTAAGLQRIKFVLDSQPDKPELAIVELGGNDLLRGLSPAEARQNLSGILEELQRRKIPILLMGMRAPPNLGAKYQREFDGIYPYLAEKYDAKLVPFFLEAVADRPDLIQKDHVHPTARGVEELVSATSNAVAKALPAKK"
+      },
+      {
+        "activity_class": "degrader",
+        "id": 783,
+        "kind": "wild_type",
+        "variant_type": null,
+        "parent_accession": null,
+        "plasticdb_id": "00796",
+        "accession": "PBTEJE",
+        "name": "SdPETase",
+        "genbank_id": null,
+        "has_signal_peptide": true,
+        "uniprot_accession": "A0A561VAE2",
+        "pdb_id": "29CU",
+        "ec_number": null,
+        "source_microorganism": {
+          "id": 3085,
+          "name": "Saccharopolyspora dendranthemae",
+          "tax_id": 1181886,
+          "accession": "PB9GDQ",
+          "taxonomy_status": "resolved",
+          "taxonomy_cause": null,
+          "taxonomy_note": null,
+          "growth_temp_opt": null,
+          "oxygen_requirement": null,
+          "degradation_links": [],
+          "paper": null,
+          "papers": [],
+          "assay_temp_min": null,
+          "assay_temp_max": null,
+          "environments": [],
+          "locations": [],
+          "strain_designations": [],
+          "updated_at": "2026-09-23T14:26:33.069399Z"
+        },
+        "degradation_links": [
+          {
+            "plastic": {
+              "id": 16,
+              "name": "PET",
+              "abbreviation": "PET"
+            },
+            "result": "positive",
+            "methods": [
+              "fluorescent_assay",
+              "hplc"
+            ],
+            "positive_count": 1,
+            "inconclusive_count": 0,
+            "negative_count": 0,
+            "positive_papers": 1,
+            "inconclusive_papers": 0,
+            "negative_papers": 0,
+            "paper_count": 1,
+            "result_polarity": "positive"
+          }
+        ],
+        "paper": {
+          "id": 377,
+          "citation": "Yew, M., Bi, H., Wang, D., Qi, R., Yuan, H., Zhai, H., Li, G., Wang, Q., & Zhu, L. (2026). A fluorescence-activated droplet sorting assay for ultra-high-throughput screening of PET hydrolases based on a pH indicator. RSC Chemical Biology, 7, 1056–1061.",
+          "title": "A fluorescence-activated droplet sorting assay for ultra-high-throughput screening of PET hydrolases based on a pH indicator.",
+          "doi": "10.1039/d6cb00122j",
+          "year": 2026,
+          "authors": "Yew, M.; Bi, H.; Wang, D.; Qi, R.; Yuan, H.; Zhai, H.; Li, G.; Wang, Q.; Zhu, L.",
+          "journal": "RSC Chemical Biology",
+          "corresponding_author_country": "China"
+        },
+        "papers": [],
+        "year": null,
+        "best_kcat_km": null,
+        "best_kcat_km_unit": null,
+        "updated_at": "2026-11-09T09:01:35.308002Z",
+        "sequence": "MELKRSTGHLSRLRRSLVVSLAVLGLISGSVTLAQAAETADVHGPDPTEESITAPRGPFEVAEESVPRSSVSGFGGGTIYYPTDTTDGLFSALAISPGFTGPEGSIAWLGPRLASQGFVVFTIETITLTDPPDSRAAQLQASLDYLTDDSSVQDRVDPDRLGVMGHSMGGGGSLKAALDNPALKAVVPLTPWHTTKDFSGVTAPTLIIGAQNDTIAPVSEHAEPFYESLPDDPAKAYVELAGEGHLAPILGNTTLAKYSIAWIKRFLDEDTRYDQFLCPPPQDPALSDYRSTCPH"
+      }
+    ]
+  }
+}

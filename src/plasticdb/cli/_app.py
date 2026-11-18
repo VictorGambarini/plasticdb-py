@@ -462,8 +462,11 @@ app.add_typer(evidence, name="evidence")
     "interactions",
     formats=TABLE,
     default_format="tsv",
-    extra=sdk_options(Proteins.interactions, skip={"accession"}),
-    choices={"level": ("interaction", "experiment", "observation")},
+    extra=sdk_options(Proteins.interactions, skip={"accession", "kind"}),
+    choices={
+        "level": ("interaction", "experiment", "observation"),
+        "kind": ("all", "direct", "indirect"),
+    },
 )
 def evidence_interactions(
     run: State,
@@ -474,10 +477,73 @@ def evidence_interactions(
         typer.Option(help="One row per interaction, experiment or observation (tsv/csv)."),
     ] = "interaction",
     limit: Limit = None,
+    kind: Annotated[
+        str | None,
+        typer.Option("--kind", hidden=True, help="Deprecated: use --evidence-level."),
+    ] = None,
 ) -> Any:
     """A protein's interactions with their experiments and observations."""
+    if kind is not None:
+        typer.echo("plasticdb: --kind is deprecated; use --evidence-level", err=True)
+        if extra.get("evidence_level") not in (None, kind):
+            raise typer.BadParameter("--kind and --evidence-level disagree", param_hint="--kind")
+        extra.setdefault("evidence_level", kind)
     coll = run.client.evidence.interactions(protein, limit=limit, **extra)
     return Table(rows=lambda: coll.rows(level), records=coll.records)
+
+
+@command(
+    evidence,
+    "interaction-records",
+    formats=TABLE,
+    default_format="tsv",
+    filters=typed_dict_hints(F.EvidenceListFilters),
+)
+def evidence_interaction_records(run: State, filters: dict[str, Any], limit: Limit = None) -> Any:
+    """Every interaction as a flat record (the whole evidence spine, one table per level)."""
+    return run.client.evidence.interactions.list(limit=limit, **filters)
+
+
+@command(evidence, "interaction", formats=RECORD, default_format="json", single=True)
+def evidence_interaction(run: State, interaction_id: Annotated[int, typer.Argument()]) -> Any:
+    """One interaction record."""
+    return run.client.evidence.interactions.get(interaction_id)
+
+
+@command(
+    evidence,
+    "experiments",
+    formats=TABLE,
+    default_format="tsv",
+    filters=typed_dict_hints(F.ExperimentListFilters),
+)
+def evidence_experiments(run: State, filters: dict[str, Any], limit: Limit = None) -> Any:
+    """Experiments (assays with their conditions) as flat records."""
+    return run.client.evidence.experiments.list(limit=limit, **filters)
+
+
+@command(evidence, "experiment", formats=RECORD, default_format="json", single=True)
+def evidence_experiment(run: State, experiment_id: Annotated[int, typer.Argument()]) -> Any:
+    """One experiment record."""
+    return run.client.evidence.experiments.get(experiment_id)
+
+
+@command(
+    evidence,
+    "observations",
+    formats=TABLE,
+    default_format="tsv",
+    filters=typed_dict_hints(F.ObservationListFilters),
+)
+def evidence_observations(run: State, filters: dict[str, Any], limit: Limit = None) -> Any:
+    """Measured values as flat records."""
+    return run.client.evidence.observations.list(limit=limit, **filters)
+
+
+@command(evidence, "observation", formats=RECORD, default_format="json", single=True)
+def evidence_observation(run: State, observation_id: Annotated[int, typer.Argument()]) -> Any:
+    """One observation record."""
+    return run.client.evidence.observations.get(observation_id)
 
 
 @command(evidence, "kinetics", formats=TABLE, default_format="tsv")

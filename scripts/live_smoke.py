@@ -43,6 +43,9 @@ def smoke_data(client: plasticdb.Client) -> None:
     protein = client.proteins.get(first.accession, view="summary")
     print(f"{protein.accession}: {protein.name}, {len(protein.sequence or '')} aa")
     client.proteins.interactions(first.accession, limit=2).rows("observation")
+    obs = client.evidence.observations.list(plastic="PET", limit=2)
+    print(f"PET observations: {obs.total}; first {obs.first()}")
+    assert client.evidence.interactions.list(plastic="PET", limit=1).first() is not None
     organism = client.microorganisms.list(limit=1).first()
     assert organism is not None
     client.microorganisms.get(organism.accession or organism.tax_id or organism.id)

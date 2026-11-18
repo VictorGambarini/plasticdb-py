@@ -25,12 +25,13 @@ from ._base import Resource
 if TYPE_CHECKING:
     from .._client import Client
 from ._filters import (
-    InteractionKind,
+    EvidenceLevel,
     ProteinFilters,
     ProteinListFilters,
     VariantListFilters,
     check,
     keys_of,
+    resolve_evidence_level,
 )
 
 _LIST = Endpoint("GET", "/proteins")
@@ -84,7 +85,7 @@ class Proteins(Resource):
         self,
         accession: str | int,
         *,
-        view: Literal["full", "summary"] = "full",
+        view: Literal["full", "summary"] = "summary",
         include_sequenceless: bool = False,
         follow_merges: bool = False,
     ) -> Protein | Variant:
@@ -95,8 +96,13 @@ class Proteins(Resource):
         :class:`~plasticdb.errors.MergedError` naming the survivor; with
         ``follow_merges=True`` the survivor is returned instead, with a
         :class:`~plasticdb.errors.MergedRecordWarning`. A withdrawn record raises
-        :class:`~plasticdb.errors.GoneError`. ``view="summary"`` leaves out the
-        per-record evidence lists (much smaller for well-studied enzymes).
+        :class:`~plasticdb.errors.GoneError`. The default
+        ``view="summary"`` (the server's, since 2.89.0) leaves out the per-record
+        evidence lists (``interactions``, ``indirect_interactions``, ``variants``,
+        ``kinetics``, ``properties``) and gives their sizes in ``counts``; page
+        them with :meth:`interactions`, :meth:`variants`, :meth:`kinetics` and
+        :meth:`properties`. ``view="full"`` embeds them (up to 12.5 MB for a
+        well-studied enzyme).
         """
         params = {"view": view, "include_sequenceless": include_sequenceless or None}
         ref: str | int = accession
@@ -133,6 +139,8 @@ class Proteins(Resource):
 
         Like every entity list, only records with a positive result are listed
         unless ``polarity=`` or ``include_negative=True`` says otherwise.
+        ``include_sequence=True`` adds each item's ``sequence`` (a variant's own);
+        ``.to_fasta()`` / ``.to_biopython()`` then need no second download.
         """
         params = check(filters, ProteinListFilters, "proteins.list")
         return protein_collection(self._client, params, page_size=page_size, limit=limit)
@@ -141,17 +149,25 @@ class Proteins(Resource):
         self,
         accession: str,
         *,
-        kind: InteractionKind = "all",
+        evidence_level: EvidenceLevel | None = None,
         include_sequenceless: bool = False,
         page_size: int | None = None,
         limit: int | None = None,
+        kind: EvidenceLevel | None = None,
     ) -> InteractionCollection[Interaction]:
-        """The protein's evidence: ``direct`` (assayed on it), ``indirect`` (via its organism)."""
+        """The protein's evidence: ``direct`` (assayed on it), ``indirect`` (via its organism).
+
+        ``evidence_level`` is ``all`` (default), ``direct`` or ``indirect``.
+        ``kind=`` is the deprecated pre-0.1.0 name of the same argument: it
+        emits a :class:`DeprecationWarning` and is sent to the server as
+        ``evidence_level`` (never both).
+        """
+        level = resolve_evidence_level(evidence_level, kind, "proteins.interactions")
         return InteractionCollection(
             self._client,
             _INTERACTIONS,
             Interaction,
-            params={"kind": kind, "include_sequenceless": include_sequenceless or None},
+            params={"evidence_level": level, "include_sequenceless": include_sequenceless or None},
             path_params={"accession": accession},
             page_size=page_size or SUB_PAGE_SIZE,
             limit=limit,
