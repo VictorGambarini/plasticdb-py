@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it. Cite the PlasticDB dataset release and paper for the data (CC BY 4.0)."
+title: "plasticdb: Python client for the PlasticDB API"
+type: software
+authors:
+  - family-names: Gambarini
+    given-names: Victor
+license: MIT
+version: 0.0.1
+repository-code: "https://github.com/VictorGambarini/plasticdb-py"
+url: "https://v2.plasticdb.org"
+preferred-citation:
+  type: article
+  title: "PlasticDB: a database of microorganisms and proteins linked to plastic biodegradation"
+  authors:
+    - family-names: Gambarini
+      given-names: Victor
+    - family-names: Pantos
+      given-names: Olga
+    - family-names: Kingsbury
+      given-names: Joanne M.
+    - family-names: Weaver
+      given-names: Louise
+    - family-names: Handley
+      given-names: Kim M.
+    - family-names: Lear
+      given-names: Gavin
+  journal: Database
+  year: 2022
+  volume: 2022
+  start: baac008
+  doi: 10.1093/database/baac008

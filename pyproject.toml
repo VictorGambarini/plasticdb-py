@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plasticdb"
+dynamic = ["version"]
+description = "Python client for the PlasticDB API: plastic-degrading microorganisms, proteins and the evidence behind them."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Victor Gambarini" }]
+keywords = ["plastic", "biodegradation", "bioinformatics", "enzymes", "database", "api-client"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Typing :: Typed",
+]
+dependencies = [
+    "httpx>=0.25,<1",
+    "pydantic>=2.5,<3",
+]
+
+[project.optional-dependencies]
+pandas = ["pandas>=1.5"]
+polars = ["polars>=0.20"]
+bio = ["biopython>=1.81"]
+cli = ["typer>=0.12"]
+all = ["plasticdb[pandas,polars,bio,cli]"]
+
+[project.urls]
+Homepage = "https://v2.plasticdb.org"
+Source = "https://github.com/VictorGambarini/plasticdb-py"
+Issues = "https://github.com/VictorGambarini/plasticdb-py/issues"
+Changelog = "https://github.com/VictorGambarini/plasticdb-py/blob/main/CHANGELOG.md"
+"API reference" = "https://v2.plasticdb.org/api/v1/docs"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "respx>=0.21",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "build>=1.2",
+    "twine>=5",
+]
+
+[tool.hatch.version]
+path = "src/plasticdb/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plasticdb"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/plasticdb", "tests", "README.md", "CHANGELOG.md", "CITATION.cff", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+filterwarnings = ["error"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src", "tests", "scripts"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["pandas", "pandas.*", "polars", "polars.*", "Bio", "Bio.*"]
+ignore_missing_imports = true
