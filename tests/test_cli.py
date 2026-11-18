@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import stat
 import sys
 from pathlib import Path
@@ -53,9 +54,16 @@ def _config_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return folder
 
 
+#: Rich renders usage errors in a box, in colour on CI: keep them plain and wide.
+PLAIN_TERMINAL = {"NO_COLOR": "1", "TERM": "dumb", "COLUMNS": "200", "FORCE_COLOR": None}
+ANSI = re.compile(r"\x1b\[[0-9;]*m")
+
+
 def cli(*args: str, input: str | bytes | None = None) -> Result:
-    result = _runner().invoke(app, list(args), input=input, catch_exceptions=False)
-    return Result(result.exit_code, result.stdout, result.stderr)
+    result = _runner().invoke(
+        app, list(args), input=input, env=PLAIN_TERMINAL, catch_exceptions=False
+    )
+    return Result(result.exit_code, result.stdout, ANSI.sub("", result.stderr))
 
 
 @pytest.fixture
