@@ -1072,12 +1072,14 @@ def jobs_submit(
     if job.replayed:
         run.say(f"Idempotency key {key} already submitted job {job.id}: not submitted again.")
     if not wait:
-        run.say(
-            f"Submitted {job.job_type} job {job.id}{release}. "
-            f"Check it with: plasticdb jobs status {job.id}"
-        )
+        if not job.replayed:
+            run.say(
+                f"Submitted {job.job_type} job {job.id}{release}. "
+                f"Check it with: plasticdb jobs status {job.id}"
+            )
         return Text(job.id)
-    run.say(f"Submitted {job.job_type} job {job.id}{release}; waiting...")
+    if not job.replayed:
+        run.say(f"Submitted {job.job_type} job {job.id}{release}; waiting...")
     _wait(run, job, timeout)
     if output and not fmt:
         path = job.download(output)
