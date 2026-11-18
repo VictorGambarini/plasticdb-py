@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Documentation site (MkDocs Material, mkdocstrings API reference) published to
+  GitHub Pages: quick start, reproducibility with pinned releases, data and jobs
+  guides, a CLI reference generated from the Typer app, errors, Snakemake and
+  Nextflow workflows and an example notebook. `make docs` builds it;
+  `requirements-docs.txt` lists its dependencies.
 - The `plasticdb` command-line tool (`pip install 'plasticdb[cli]'`; also
   `python -m plasticdb`). It is a thin layer over the SDK, with commands for
   proteins, variants, microorganisms, plastics, papers, evidence, search,

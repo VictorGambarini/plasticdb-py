@@ -1,6 +1,6 @@
 PY ?= .venv/bin/python
 
-.PHONY: install test lint format typecheck check build contract-refresh contract-check smoke
+.PHONY: docs install test lint format typecheck check build contract-refresh contract-check smoke
 
 install:
 	uv venv .venv && uv pip install -p $(PY) -e . --group dev
@@ -31,3 +31,6 @@ contract-check:
 
 smoke:
 	$(PY) -m scripts.live_smoke
+
+docs:
+	NO_MKDOCS_2_WARNING=1 mkdocs build --strict

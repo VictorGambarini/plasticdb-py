@@ -1,0 +1,86 @@
+site_name: plasticdb
+site_description: Python client and command-line tool for the PlasticDB API
+site_url: https://victorgambarini.github.io/plasticdb-py/
+repo_url: https://github.com/VictorGambarini/plasticdb-py
+repo_name: VictorGambarini/plasticdb-py
+edit_uri: edit/main/docs/
+strict: true
+exclude_docs: |
+  _*.md
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      toggle: { icon: material/weather-night, name: Switch to dark mode }
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      toggle: { icon: material/weather-sunny, name: Switch to light mode }
+
+nav:
+  - Home: index.md
+  - Quick start: quickstart.md
+  - Guides:
+      - Reproducibility: reproducibility.md
+      - Data: data.md
+      - Jobs: jobs.md
+      - Errors: errors.md
+  - Command line: cli.md
+  - Workflows:
+      - Snakemake and Nextflow: workflows.md
+      - Example notebook: examples/explore.ipynb
+  - API reference:
+      - Client: api/client.md
+      - Collections and downloads: api/collections.md
+      - Resources: api/resources.md
+      - Jobs: api/jobs.md
+      - Models: api/models.md
+      - Errors: api/errors.md
+  - Changelog: changelog.md
+
+plugins:
+  - search
+  - gen-files:
+      scripts:
+        - docs_tools/gen_cli.py
+        - docs_tools/gen_changelog.py
+  - mkdocs-jupyter:
+      execute: false
+      include_source: true
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            extensions:
+              - docs_tools/griffe_rst.py:RstRoles
+            docstring_style: google
+            show_root_heading: true
+            show_root_full_path: false
+            show_source: false
+            members_order: source
+            separate_signature: true
+            show_signature_annotations: true
+            signature_crossrefs: true
+            merge_init_into_class: true
+            show_if_no_docstring: false
+            filters: ["!^_"]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true

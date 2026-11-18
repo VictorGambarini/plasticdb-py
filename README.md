@@ -6,6 +6,10 @@ and proteins linked to plastic biodegradation, and the evidence behind them.
 > **Pre-alpha.** This release covers the client core, dataset releases, every
 > public data endpoint, the analysis jobs and the `plasticdb` command-line tool.
 
+**Documentation: <https://victorgambarini.github.io/plasticdb-py/>** (quick start,
+reproducibility with pinned releases, jobs, CLI reference, Snakemake and Nextflow
+examples, API reference).
+
 ## Install
 
 ```bash
@@ -313,4 +317,5 @@ uv venv .venv && uv pip install -e . --group dev
 .venv/bin/pytest
 .venv/bin/ruff check . && .venv/bin/ruff format --check . && .venv/bin/mypy
 make contract-refresh   # re-vendor the SDK contract from the live server
+make docs               # build the documentation site (needs requirements-docs.txt)
 ```

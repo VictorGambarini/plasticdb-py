@@ -45,6 +45,7 @@ plasticdb = "plasticdb.cli:main"
 
 [project.urls]
 Homepage = "https://v2.plasticdb.org"
+Documentation = "https://victorgambarini.github.io/plasticdb-py/"
 Source = "https://github.com/VictorGambarini/plasticdb-py"
 Issues = "https://github.com/VictorGambarini/plasticdb-py/issues"
 Changelog = "https://github.com/VictorGambarini/plasticdb-py/blob/main/CHANGELOG.md"
