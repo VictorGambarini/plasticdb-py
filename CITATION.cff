@@ -7,6 +7,15 @@ authors:
     given-names: Victor
 license: MIT
 version: 0.0.1
+date-released: "2026-11-19"
+doi: 10.5281/zenodo.24352328
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24352328
+    description: "Concept DOI: all versions, resolves to the latest"
+  - type: doi
+    value: 10.5281/zenodo.24352329
+    description: "Version 0.0.1"
 repository-code: "https://github.com/VictorGambarini/plasticdb-py"
 url: "https://v2.plasticdb.org"
 preferred-citation:

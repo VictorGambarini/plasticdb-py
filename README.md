@@ -1,5 +1,8 @@
 # plasticdb
 
+[![PyPI](https://img.shields.io/pypi/v/plasticdb.svg)](https://pypi.org/project/plasticdb/)
+[![DOI](https://zenodo.org/badge/1461059795.svg)](https://doi.org/10.5281/zenodo.24352328)
+
 Python client for the [PlasticDB](https://v2.plasticdb.org) API: microorganisms
 and proteins linked to plastic biodegradation, and the evidence behind them.
 
@@ -334,6 +337,11 @@ release you used, plus the PlasticDB paper:
 > biodegradation. *Database*, 2022:baac008. https://doi.org/10.1093/database/baac008
 
 `client.cite()` returns both, including the release version and DOI.
+
+To cite this software itself (e.g. in a methods section), use its Zenodo DOI
+[10.5281/zenodo.24352328](https://doi.org/10.5281/zenodo.24352328) (all versions;
+each release also has its own DOI on Zenodo) or GitHub's "Cite this repository",
+which reads `CITATION.cff`.
 
 ## Development
 
