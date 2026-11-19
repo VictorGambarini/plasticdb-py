@@ -2,9 +2,14 @@
 
 ## Unreleased
 
-Server 2.88.0 and 2.89.0 (re-vendored SDK contract, fixtures captured live).
-Version 0.1.0 (not yet released).
+## 0.1.0 (2026-11-19)
 
+Server 2.88.0 and 2.89.0 (re-vendored SDK contract, fixtures captured live).
+
+- Security hardening: GitHub Actions are pinned to commit SHAs, Dependabot
+  keeps them and the dependencies current, `SECURITY.md` describes private
+  vulnerability reporting, and the TestPyPI release path is gone (publishing
+  is only on `v*` tags).
 - **Behaviour change: `proteins.get()` defaults to `view="summary"`**, as the
   server's `GET /proteins/{ref}` does since 2.89.0 (the SDK sent `full` before).
   The summary leaves `interactions`, `indirect_interactions`, `variants`,
