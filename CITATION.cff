@@ -5,6 +5,7 @@ type: software
 authors:
   - family-names: Gambarini
     given-names: Victor
+    orcid: "https://orcid.org/0000-0002-5639-6820"
 license: MIT
 version: 0.0.1
 date-released: "2026-11-19"
@@ -24,6 +25,7 @@ preferred-citation:
   authors:
     - family-names: Gambarini
       given-names: Victor
+      orcid: "https://orcid.org/0000-0002-5639-6820"
     - family-names: Pantos
       given-names: Olga
     - family-names: Kingsbury
