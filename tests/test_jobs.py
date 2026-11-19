@@ -611,11 +611,26 @@ def test_provenance_falls_back_to_the_release_headers(
 
 def test_hmm_screen_hits(api: respx.MockRouter, keyed: plasticdb.Client) -> None:
     job = _done(api, keyed, "job_hmm")
-    [hit] = job.hits()
-    assert hit.subject_seq_id == "PET_hydrolase"
-    assert hit.calibration_status == "separable"
+    hits = job.hits()
+    new, old = list(hits)
+    assert new.subject_seq_id == "PET_hydrolase"
+    assert new.calibration_status == "separable"
+    # Alignment fields are null on HMM hits, never coerced to 0.
+    for hit in (new, old):
+        assert (hit.pident, hit.length, hit.qcov, hit.scov) == (None, None, None, None)
+    assert new.profile_accession == "PF12740.1"
+    assert (new.evalue, new.bitscore, new.domain_score) == (1e-150, 412.6, 410.9)
+    assert (new.domain_c_evalue, new.domain_i_evalue) == (2.1e-124, 3.4e-124)
+    assert (new.hmm_from, new.hmm_to, new.env_from, new.env_to) == (3, 262, 24, 285)
+    # A job run before server 2.90.0: every HMM field is null.
+    assert old.profile_accession is None
+    assert (old.domain_score, old.domain_c_evalue, old.domain_i_evalue) == (None, None, None)
+    assert (old.hmm_from, old.hmm_to, old.env_from, old.env_to) == (None, None, None, None)
+    rows = hits.rows()
+    assert rows[0]["env_from"] == 24 and rows[0]["pident"] is None
+    assert rows[1]["env_from"] is None and rows[1]["domain_score"] is None
     assert job.info.result_metadata is not None
-    assert job.info.result_metadata["polymer_hits"] == {"PET_hydrolase": 1}
+    assert job.info.result_metadata["polymer_hits"] == {"PET_hydrolase": 2}
     assert job.provenance.tool_versions == {"hmmer": "3.4"}
 
 

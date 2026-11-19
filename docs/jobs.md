@@ -81,6 +81,19 @@ start from the job's default view (hits covering at least 70 % of the
 reference); `download(scov=0)` or `all_hits=True` turns it off, and `scov`,
 `qcov` and `bitscore` set thresholds. `comparison()` takes the same arguments.
 
+**HMM hits.** An `hmm_screen` hit is a profile match, not an alignment:
+`pident`, `length`, `qcov` and `scov` are always `None` (never 0), on jobs run
+before server 2.90.0 too, so identity and coverage filters do not apply to
+them; skip these columns (or test for `None`) when you filter a mixed set.
+`subject_seq_id` is the profile NAME and `profile_accession` its ACC. `evalue`
+and `bitscore` are the full-sequence values; `domain_score` is the best
+domain's bit score, with `domain_c_evalue` and `domain_i_evalue`. `hmm_from` /
+`hmm_to` give the domain's span on the profile and `env_from` / `env_to` its
+envelope on the submitted sequence (1-based, inclusive). All the HMM fields are
+`None` on DIAMOND hits and on HMM jobs run before 2.90.0. The HMM TSV download
+has 8 more columns after `calibration_status`: read it by header name, never by
+position.
+
 **Waiting.** `wait(timeout=)` raises `JobTimeoutError` but leaves the job
 running: call `wait()` again, or `client.jobs.get(job_id)` later (resume by id).
 A failed job raises `JobFailedError` (`.job`, and the server's reason as its

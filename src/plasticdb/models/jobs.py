@@ -63,8 +63,18 @@ class JobHit(PlasticDBModel):
     """One hit of a search job (annotate, compare genomes, HMM screen).
 
     For ``compare_genomes`` ``source_label`` names the genome. For
-    ``hmm_screen`` the subject is a profile and ``calibration_status`` says
-    whether its cut-off separates the polymer classes. ``evidence`` summarises,
+    ``hmm_screen`` the subject is a profile (``subject_seq_id`` is its NAME,
+    ``profile_accession`` its ACC) and ``calibration_status`` says whether its
+    cut-off separates the polymer classes.
+
+    HMM hits are not alignments: ``pident``, ``length``, ``qcov`` and ``scov``
+    are always ``None`` (never 0), old jobs included, so identity or coverage
+    filters do not apply to them. ``evalue`` and ``bitscore`` are the
+    full-sequence values; ``domain_score`` is the best domain's bit score,
+    ``hmm_from``/``hmm_to`` its span on the profile and ``env_from``/``env_to``
+    its envelope on the submitted sequence (1-based, inclusive). The HMM fields
+    are ``None`` on DIAMOND hits and on HMM jobs run before server 2.90.0.
+    ``evidence`` summarises,
     per plastic, the evidence on the protein (or variant) the hit landed on; as
     a table row it becomes ``plastics_positive`` / ``_negative`` /
     ``_inconclusive``.
@@ -83,6 +93,14 @@ class JobHit(PlasticDBModel):
     bitscore: float | None = None
     qcov: float | None = None
     scov: float | None = None
+    profile_accession: str | None = None
+    domain_score: float | None = None
+    domain_c_evalue: float | None = None
+    domain_i_evalue: float | None = None
+    hmm_from: int | None = None
+    hmm_to: int | None = None
+    env_from: int | None = None
+    env_to: int | None = None
     evidence: list[HitEvidence] = Field(default_factory=list)
     evidence_polarity: str = "none"
     protein: JobHitProtein | None = None
