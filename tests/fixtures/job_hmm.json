@@ -18,7 +18,7 @@
   "created_at": "2026-11-18T01:00:00Z",
   "completed_at": "2026-11-18T01:07:30Z",
   "has_result_file": true,
-  "result_count": 1,
+  "result_count": 2,
   "result_metadata": {
    "release_pin": {
     "version": "2026.30",
@@ -68,9 +68,9 @@
     "reference_sha256": "9d5ed678fe57bcca610140957afab5719d5ed678fe57bcca610140957afab571"
    },
    "polymer_hits": {
-    "PET_hydrolase": 1
+    "PET_hydrolase": 2
    },
-   "total_hits": 1,
+   "total_hits": 2,
    "threshold_mode": "gathering",
    "threshold_mode_applied": "gathering",
    "threshold_fallback": null,
@@ -82,7 +82,7 @@
   "runtime_seconds": 450.0,
   "input_filename": "genome.faa.gz",
   "parameters_summary": "BLASTP; e-value 1e-05; identity >= 30%",
-  "result_summary": "1 hits",
+  "result_summary": "2 hits",
   "results_expire_at": "2027-02-16T01:00:00Z",
   "results_expired_at": null,
   "release": "2026.30",

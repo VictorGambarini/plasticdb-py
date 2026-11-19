@@ -6664,6 +6664,7 @@
         "type": "object"
       },
       "JobResultItem": {
+        "description": "One hit. DIAMOND jobs fill the alignment fields; ``hmm_screen`` hits\nleave ``pident``/``length``/``qcov``/``scov`` null and fill the HMM fields\ninstead (null on HMM jobs run before 2.90.0 and on every DIAMOND hit).",
         "properties": {
           "bitscore": {
             "anyOf": [
@@ -6674,6 +6675,7 @@
                 "type": "null"
               }
             ],
+            "description": "DIAMOND: the alignment's bit score. hmm_screen: the full-sequence bit score (what the gathering cut-off is compared to).",
             "title": "Bitscore"
           },
           "calibration_status": {
@@ -6698,6 +6700,66 @@
             ],
             "title": "Calibration Status Reason"
           },
+          "domain_c_evalue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: the best domain's conditional E-value.",
+            "title": "Domain C Evalue"
+          },
+          "domain_i_evalue": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: the best domain's independent E-value.",
+            "title": "Domain I Evalue"
+          },
+          "domain_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: the best-scoring domain's bit score.",
+            "title": "Domain Score"
+          },
+          "env_from": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: best domain envelope start on the submitted sequence (1-based).",
+            "title": "Env From"
+          },
+          "env_to": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: best domain envelope end on the submitted sequence (inclusive).",
+            "title": "Env To"
+          },
           "evalue": {
             "anyOf": [
               {
@@ -6707,6 +6769,7 @@
                 "type": "null"
               }
             ],
+            "description": "DIAMOND: the alignment's E-value. hmm_screen: the full-sequence E-value.",
             "title": "Evalue"
           },
           "evidence": {
@@ -6722,6 +6785,30 @@
             "title": "Evidence Polarity",
             "type": "string"
           },
+          "hmm_from": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: best domain start on the profile (1-based).",
+            "title": "Hmm From"
+          },
+          "hmm_to": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: best domain end on the profile (inclusive).",
+            "title": "Hmm To"
+          },
           "id": {
             "title": "Id",
             "type": "integer"
@@ -6735,6 +6822,7 @@
                 "type": "null"
               }
             ],
+            "description": "Alignment length. Null on hmm_screen hits.",
             "title": "Length"
           },
           "pident": {
@@ -6746,7 +6834,20 @@
                 "type": "null"
               }
             ],
+            "description": "% identity of the alignment. Null on hmm_screen hits.",
             "title": "Pident"
+          },
+          "profile_accession": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "hmm_screen: the profile's ACC (subject_seq_id is its NAME); null when the profile has none.",
+            "title": "Profile Accession"
           },
           "protein": {
             "anyOf": [
@@ -6767,6 +6868,7 @@
                 "type": "null"
               }
             ],
+            "description": "% of the query the alignment spans. Null on hmm_screen hits.",
             "title": "Qcov"
           },
           "query_seq_id": {
@@ -6789,6 +6891,7 @@
                 "type": "null"
               }
             ],
+            "description": "% of the reference the alignment spans. Null on hmm_screen hits.",
             "title": "Scov"
           },
           "source_label": {
@@ -10706,6 +10809,17 @@
             ],
             "title": "Best Kcat Km Unit"
           },
+          "counts": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProteinDetailCounts"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Summary view only: the sizes of the evidence lists it leaves out (`interactions`, `indirect_interactions`, `variants`, `kinetics`, `properties`)."
+          },
           "cross_references": {
             "anyOf": [
               {
@@ -11062,6 +11176,22 @@
             "title": "Variants",
             "type": "array"
           },
+          "view": {
+            "anyOf": [
+              {
+                "enum": [
+                  "summary",
+                  "full"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "`summary` when the per-record evidence lists were left out (the default view); absent or null for `view=full`.",
+            "title": "View"
+          },
           "year": {
             "anyOf": [
               {
@@ -11080,6 +11210,45 @@
           "name"
         ],
         "title": "ProteinDetail",
+        "type": "object"
+      },
+      "ProteinDetailCounts": {
+        "description": "How many rows each evidence list holds, sent instead of the lists by the\nsummary view (``GET /proteins/{accession}``, the default since 2.89.0).",
+        "properties": {
+          "indirect_interactions": {
+            "description": "Interactions of this protein's variants.",
+            "title": "Indirect Interactions",
+            "type": "integer"
+          },
+          "interactions": {
+            "description": "Direct interactions; page them from `/interactions`.",
+            "title": "Interactions",
+            "type": "integer"
+          },
+          "kinetics": {
+            "description": "Kinetics rows; page them from `/kinetics`.",
+            "title": "Kinetics",
+            "type": "integer"
+          },
+          "properties": {
+            "description": "Enzyme-property rows; page them from `/properties`.",
+            "title": "Properties",
+            "type": "integer"
+          },
+          "variants": {
+            "description": "Variants; page them from `/variants`.",
+            "title": "Variants",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "interactions",
+          "indirect_interactions",
+          "variants",
+          "kinetics",
+          "properties"
+        ],
+        "title": "ProteinDetailCounts",
         "type": "object"
       },
       "ProteinListItem": {

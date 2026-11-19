@@ -238,21 +238,49 @@ def main() -> None:
     }
     write_read("job_compare", compare)
 
+    hmm_null: dict[str, Any] = dict(
+        pident=None,
+        length=None,
+        qcov=None,
+        scov=None,
+        protein=None,
+        evidence=[],
+        evidence_polarity="none",
+        calibration_status="separable",
+        calibration_status_reason=None,
+    )
     hmm_hits = [
+        # A 2.90.0 hit: HMMER's own fields; evalue/bitscore are full-sequence values.
         _hit(
             0,
             subject_seq_id="PET_hydrolase",
             subject_accession="PET_hydrolase",
-            pident=None,
-            length=None,
-            qcov=None,
-            scov=None,
-            protein=None,
-            evidence=[],
-            evidence_polarity="none",
-            calibration_status="separable",
-            calibration_status_reason=None,
-        )
+            profile_accession="PF12740.1",
+            bitscore=412.6,
+            domain_score=410.9,
+            domain_c_evalue=2.1e-124,
+            domain_i_evalue=3.4e-124,
+            hmm_from=3,
+            hmm_to=262,
+            env_from=24,
+            env_to=285,
+            **hmm_null,
+        ),
+        # A job run before 2.90.0: every HMM field is null, never 0.
+        _hit(
+            1,
+            subject_seq_id="PET_hydrolase",
+            subject_accession="PET_hydrolase",
+            profile_accession=None,
+            domain_score=None,
+            domain_c_evalue=None,
+            domain_i_evalue=None,
+            hmm_from=None,
+            hmm_to=None,
+            env_from=None,
+            env_to=None,
+            **hmm_null,
+        ),
     ]
     hmm = _done(
         "hmm_screen",
@@ -263,8 +291,8 @@ def main() -> None:
         tool_versions={"hmmer": "3.4"},
     )
     hmm["result_metadata"].update(
-        polymer_hits={"PET_hydrolase": 1},
-        total_hits=1,
+        polymer_hits={"PET_hydrolase": 2},
+        total_hits=2,
         threshold_mode="gathering",
         threshold_mode_applied="gathering",
         threshold_fallback=None,

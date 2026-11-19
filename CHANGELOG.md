@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 0.1.1 (2026-11-19)
+
+Server 2.90.0 (re-vendored SDK contract).
+
+- `JobHit` gains `profile_accession`, `domain_score`, `domain_c_evalue`,
+  `domain_i_evalue` (floats) and `hmm_from`, `hmm_to`, `env_from`, `env_to`
+  (integers, 1-based inclusive) for `hmm_screen` hits; they are `None` on
+  DIAMOND hits and on HMM jobs run before 2.90.0. They are also columns of
+  `hits().rows()` / `to_dataframe()`.
+- On HMM hits `pident`, `length`, `qcov` and `scov` are always `None`, never 0;
+  identity and coverage filters do not apply to them. `evalue` and `bitscore`
+  are the full-sequence values and `subject_seq_id` is the profile name.
+- The HMM TSV download has 8 trailing columns after `calibration_status`; parse
+  it by header name.
+- New fixtures: an HMM hit with the new fields and an old-style row with all of
+  them null.
+
 ## 0.1.0 (2026-11-19)
 
 Server 2.88.0 and 2.89.0 (re-vendored SDK contract, fixtures captured live).

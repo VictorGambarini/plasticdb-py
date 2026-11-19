@@ -6,7 +6,7 @@
   "x-plasticdb-release-source": "snapshot"
  },
  "body": {
-  "total": 1,
+  "total": 2,
   "items": [
    {
     "id": 100,
@@ -18,14 +18,49 @@
     "pident": null,
     "length": null,
     "evalue": 1e-150,
-    "bitscore": 540.2,
+    "bitscore": 412.6,
     "qcov": null,
     "scov": null,
     "subject_accession": "PET_hydrolase",
     "protein": null,
     "variant": null,
     "calibration_status": "separable",
-    "calibration_status_reason": null
+    "calibration_status_reason": null,
+    "profile_accession": "PF12740.1",
+    "domain_score": 410.9,
+    "domain_c_evalue": 2.1e-124,
+    "domain_i_evalue": 3.4e-124,
+    "hmm_from": 3,
+    "hmm_to": 262,
+    "env_from": 24,
+    "env_to": 285
+   },
+   {
+    "id": 101,
+    "evidence": [],
+    "evidence_polarity": "none",
+    "source_label": null,
+    "query_seq_id": "contig_1_1",
+    "subject_seq_id": "PET_hydrolase",
+    "pident": null,
+    "length": null,
+    "evalue": 1e-150,
+    "bitscore": 539.2,
+    "qcov": null,
+    "scov": null,
+    "subject_accession": "PET_hydrolase",
+    "protein": null,
+    "variant": null,
+    "calibration_status": "separable",
+    "calibration_status_reason": null,
+    "profile_accession": null,
+    "domain_score": null,
+    "domain_c_evalue": null,
+    "domain_i_evalue": null,
+    "hmm_from": null,
+    "hmm_to": null,
+    "env_from": null,
+    "env_to": null
    }
   ]
  }
